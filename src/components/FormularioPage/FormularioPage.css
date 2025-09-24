@@ -1,0 +1,64 @@
+/* Card principal que envolve o formulário */
+.form-card {
+  background-color: var(--color-card);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+
+/* Container de cada etapa do formulário */
+.form-step-container h3 {
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 16px;
+}
+
+/* Grid para alinhar os campos do formulário */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Cria 4 colunas */
+  gap: 20px;
+}
+
+/* Grupo de cada campo (label + input) */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Faz um campo ocupar a largura total do grid */
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-input-bg);
+  color: var(--color-text);
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 15px;
+}
+
+/* Botões no final do formulário */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
+}

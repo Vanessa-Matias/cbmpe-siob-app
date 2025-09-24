@@ -1,0 +1,255 @@
+/* ==========================================================================
+   Estilos da Página de Ocorrências (OcorrenciasPage.css)
+   ========================================================================== */
+
+/* --- ESTRUTURA E GLOBAIS --- */
+
+.page-container {
+  padding: 32px;
+}
+
+/* --- CABEÇALHO E AÇÕES --- */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.page-title h2 {
+  margin: 0 0 4px 0;
+  font-size: 28px;
+  color: var(--color-text);
+}
+
+.page-title p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 16px;
+}
+
+.page-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* --- BOTÕES --- */
+
+.button-primary, .button-secondary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1px solid;
+}
+
+.button-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+.button-primary:hover {
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+}
+
+.button-secondary {
+  background-color: var(--color-card);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+.button-secondary:hover {
+    border-color: var(--color-text);
+}
+
+
+/* --- CARDS DE FILTRO E LISTA --- */
+
+.filter-card, .list-card {
+  background-color: var(--color-card);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  margin-bottom: 24px;
+}
+
+.filter-card h3, .list-card h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  color: var(--color-text);
+}
+
+.filter-card p {
+  margin: 0 0 20px 0;
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+
+/* --- FILTROS DE BUSCA --- */
+
+.filter-inputs {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.search-input-wrapper {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-muted);
+}
+
+.filter-inputs input, .filter-inputs select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-input-bg);
+  color: var(--color-text);
+  box-sizing: border-box;
+}
+
+.filter-inputs input {
+  padding-left: 36px;
+}
+
+
+/* --- TABELA DE OCORRÊNCIAS --- */
+
+.ocorrencias-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.ocorrencias-table th, .ocorrencias-table td {
+  padding: 16px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ocorrencias-table th {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.titulo-descricao span {
+  font-weight: 500;
+  color: var(--color-text);
+  display: block;
+}
+.titulo-descricao small {
+  color: var(--color-muted);
+}
+
+.data-hora-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.data-hora-container small {
+  color: var(--color-muted);
+}
+
+/* Badges de Status e Prioridade (cores fixas para destaque). */
+.status-badge, .prioridade-badge {
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.status-pendente { background-color: #f7d7d7; color: #8c2a2a; }
+.status-em-andamento { background-color: #fcf3d9; color: #8c6d2a; }
+.status-encerrado { background-color: #d7f7e0; color: #2a8c4a; }
+
+.prioridade-alta { background-color: #d32f2f; color: white; }
+.prioridade-média { background-color: #f59e0b; color: white; }
+.prioridade-baixa { background-color: #2e7d32; color: white; }
+
+
+/* ==========================================================================
+   ESTILOS RESPONSIVOS (PARA CELULAR)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .page-container { padding: 16px; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .filter-inputs { grid-template-columns: 1fr; }
+  
+  /* Transforma a tabela em uma lista de "cards". */
+  .ocorrencias-table thead { display: none; }
+  .ocorrencias-table tr {
+    display: block;
+    margin-bottom: 24px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .ocorrencias-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom: none; 
+  }
+  .ocorrencias-table td:not(:last-child) {
+    border-bottom: 1px solid var(--color-border);
+  }
+  /* Usa o atributo 'data-label' do HTML para criar o rótulo da coluna. */
+  .ocorrencias-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: var(--color-text);
+    text-align: left;
+  }
+  .ocorrencias-table td.titulo-descricao {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .data-hora-container {
+    align-items: flex-end;
+  }
+}
+
+/* Estilo para o novo botão de ação dentro da tabela */
+.button-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 6px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.button-action:hover {
+  background-color: var(--color-border);
+}
+
+/* Ajuste para o botão no modo responsivo */
+@media (max-width: 768px) {
+  .ocorrencias-table td .button-action {
+    /* No modo card, o botão fica alinhado à direita junto com os outros dados */
+    margin-left: auto; 
+  }
+}
