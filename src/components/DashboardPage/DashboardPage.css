@@ -149,3 +149,43 @@
   font-size: 14px;
   margin-top: 8px; 
 }
+
+/* ==========================================================================
+   Estilos Responsivos (para telas de celular)
+   ========================================================================== */
+
+/* Regras aplicadas quando a largura da tela é 768px ou menor */
+@media (max-width: 768px) {
+  
+  /* Diminui o espaçamento geral da página em telas menores */
+  .dashboard-main {
+    padding: 16px;
+  }
+
+  /* Ajusta o cabeçalho para telas menores */
+  .dashboard-header {
+    padding: 12px 16px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 16px; /* Diminui o tamanho do texto do cabeçalho */
+  }
+
+  /* Faz os cards de KPI ficarem em 2 colunas */
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Faz os cards de informação ficarem em 1 coluna (empilhados) */
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Regras para telas ainda menores (celulares em modo retrato) */
+@media (max-width: 480px) {
+  /* Agora os cards de KPI também ficam em 1 coluna */
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

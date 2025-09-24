@@ -40,3 +40,27 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* --- Estilização da Barra de Rolagem (para navegadores Webkit como Chrome, Edge, Safari) --- */
+
+/* A barra de rolagem inteira */
+::-webkit-scrollbar {
+  width: 8px; /* Largura da barra */
+}
+
+/* O "trilho" por onde a barra corre */
+::-webkit-scrollbar-track {
+  background: var(--color-bg); /* Fundo do trilho usa a cor de fundo do tema */
+}
+
+/* O "polegar", a parte que você arrasta */
+::-webkit-scrollbar-thumb {
+  background-color: #a9a9a9; /* Uma cor cinza para o polegar */
+  border-radius: 10px;
+  border: 2px solid var(--color-bg); /* Cria um efeito de "borda" ao redor do polegar */
+}
+
+/* Estilo do polegar no modo escuro */
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background-color: #555;
+}
