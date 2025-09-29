@@ -1,7 +1,6 @@
-/* * Variáveis Globais de Tema (Theme Tokens)
- * Define a paleta de cores e fontes para consistência em todo o projeto.
- * Facilita a implementação de temas (ex: light/dark mode).
- */
+/* ==========================================================================
+   Variáveis de Tema (Claro e Escuro)
+   ========================================================================== */
 :root {
   --page-bg: #f8f9fa;
   --card-bg: #ffffff;
@@ -9,232 +8,320 @@
   --text-color: #212529;
   --label-color: #343a40;
   --placeholder-color: #adb5bd;
-  --button-bg: #ae1a16; /* Cor Primária de Ação (Vermelho Bombeiros) */
+  --button-bg: #ae1a16;   /* Vermelho Bombeiros */
   --button-hover-bg: #8e0f14;
 }
 
-/* --- Reset e Estilos Base --- */
-body {
-  background-color: var(--page-bg);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+[data-theme="dark"] {
+  --page-bg: #121212;
+  --card-bg: #1e1e1e;
+  --border-color: #333;
+  --text-color: #f1f1f1;
+  --label-color: #e1e1e1;
+  --placeholder-color: #666;
+  --button-bg: #d62828;
+  --button-hover-bg: #a4161a;
 }
 
-/* --- Estrutura Principal da Página --- */
-.page-container { 
-  max-width: 1200px; /* Limita a largura do conteúdo para melhor legibilidade */
-  margin: 0 auto; 
-  padding: 2rem; 
+/* ==========================================================================
+   Estrutura Principal
+   ========================================================================== */
+.page-container {
+  max-width: 1200px;
+  width: 100%;
+  padding: 2rem;
+  margin: 0 auto;
 }
 
-.page-header h2 { 
-  font-size: 28px; 
-  margin: 0 0 8px 0; 
-  color: var(--text-color); 
-}
-.page-header p { 
-  font-size: 16px; 
-  color: #6c757d; 
-  margin: 0; 
+.page-header {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-/* --- Container Principal do Formulário (Efeito "Folha de Papel") --- */
+.page-header p {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+/* ==========================================================================
+   Card Principal do Formulário
+   ========================================================================== */
 .form-card {
   background-color: var(--card-bg);
-  border-radius: 8px;
-  margin-top: 24px;
-  padding: 2.5rem; /* Espaçamento interno para os fieldsets */
+  border-radius: 12px;
+  margin-top: 2px;
+  padding: 2.5rem;
   border: 1px solid var(--border-color);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.05); /* Efeito de elevação */
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  transition: background-color 0.3s, color 0.3s;
 }
 
-/* --- Seções do Formulário --- */
+/* ==========================================================================
+   Fieldsets
+   ========================================================================== */
 fieldset {
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1.7rem 1.5rem 1rem 1.5rem;
+  border-radius: 10px;
+  padding: 1.5rem;
   margin-bottom: 24px;
-  box-shadow: none; /* A sombra principal está no .form-card */
-}
-fieldset legend { 
-  font-weight: 500; 
-  font-size: 14px; 
-  padding: 0 8px; 
-  margin-left: 12px; 
-  color: var(--label-color); 
 }
 
-/* --- Componentes de Formulário (Inputs, Labels) --- */
-.form-group { 
-  display: flex; 
-  flex-direction: column; 
-  gap: 8px; 
-}
-.form-group label { 
-  font-weight: 500; 
-  font-size: 14px; 
-  color: var(--label-color); 
-}
-.form-group input[type="text"], 
-.form-group input[type="time"], 
-.form-group input[type="date"] { 
-  width: 100%; 
-  padding: 10px 12px; 
-  border-radius: 6px; 
-  border: 1px solid #ced4da; 
-  font-size: 14px; 
-  box-sizing: border-box; 
-}
-.form-group input::placeholder { 
-  color: var(--placeholder-color); 
-}
-.input-pair { 
-  display: flex; 
-  gap: 16px; 
-}
-.ome-text { 
-  margin: 8px 0 0 0; 
-  font-size: 13px; 
-  color: #6c757d; 
-}
-.form-group textarea { 
-  width: 100%; 
-  padding: 10px 12px; 
-  border-radius: 6px; 
-  border: 1px solid #ced4da; 
-  font-size: 14px; 
-  font-family: inherit; 
-  box-sizing: border-box; 
-  resize: vertical; 
-  min-height: 120px; 
+fieldset legend {
+  font-weight: 600;
+  font-size: 15px;
+  padding: 0 4px;
+  margin-left: 14px;
+  color: var(--label-color);
 }
 
-/* --- Estruturas de Grid para Layouts Complexos --- */
-.top-section-grid { 
-  display: grid; 
-  grid-template-columns: 1fr 1fr; 
-  gap: 24px; 
-}
-.form-group-grid { 
-  display: grid; 
-  grid-template-columns: 1fr 1fr; 
-  gap: 16px 24px; 
+/* ==========================================================================
+   Inputs e Textareas
+   ========================================================================== */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-/* Grid para a seção de Guarnição Empenhada */
-.guarnicao-grid { 
-  display: grid; 
-  grid-template-columns: repeat(12, 1fr); /* Grid de 12 colunas para flexibilidade */
-  gap: 24px 16px; 
-  align-items: end; /* Alinha os campos pela base */
+.form-group label {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--label-color);
 }
 
-/* Posicionamento dos itens no grid da Guarnição */
-.guarnicao-grid .posto-grad, 
-.guarnicao-grid .matricula-cmt, 
-.guarnicao-grid .componente-matricula { 
-  grid-column: span 3; 
-}
-.guarnicao-grid .nome-cmt, 
-.guarnicao-grid .visto-divisao { 
-  grid-column: span 6; 
-}
-.guarnicao-grid .assinatura { 
-  grid-column: 1 / -1; /* Ocupa a largura total */
-  text-align: center; 
-  margin-top: 32px; 
-  padding-top: 16px; 
-}
-.guarnicao-grid .assinatura hr { 
-  border: none; 
-  border-top: 1.5px solid var(--placeholder-color); /* Linha destacada */
-  margin-bottom: 8px; 
-}
-.guarnicao-grid .assinatura p { 
-  margin: 0; 
-  font-size: 14px; 
-  color: var(--label-color); 
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: var(--page-bg);
+  color: var(--text-color);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* --- Estilos Customizados para Radio e Checkbox --- */
-.radio-columns, .checkbox-columns { 
-  display: flex; 
-  flex-wrap: wrap; 
-  gap: 16px; 
-}
-.radio-group label, .checkbox-group label { 
-  display: flex; 
-  align-items: center; 
-  gap: 8px; 
-  font-weight: normal; 
-  font-size: 14px; 
-  cursor: pointer; 
+.form-group input::placeholder {
+  color: var(--placeholder-color);
 }
 
-/* Base customizada para ambos os inputs */
-input[type="checkbox"], input[type="radio"] { 
-  appearance: none; 
-  background-color: #fff; 
-  margin: 0; 
-  color: currentColor; 
-  width: 1.15em; 
-  height: 1.15em; 
-  border: 1.5px solid #ced4da; 
-  transform: translateY(-0.075em); 
-  display: grid; 
-  place-content: center; 
-  cursor: pointer; 
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--button-bg);
+  box-shadow: 0 0 0 3px rgba(174,26,22,0.2);
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* ==========================================================================
+   Layouts em Grid
+   ========================================================================== */
+.top-header-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.field-col {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1.5rem;
+  background-color: var(--card-bg);
+}
+
+.form-group-grid-4-col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px 24px;
+}
+
+.form-group-grid-5-col {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px 24px;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px 16px;
+}
+
+.veiculos-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px 24px;
+}
+
+.veiculos-detail-grid h4 {
+  grid-column: span 4;
+  margin-top: 20px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 5px;
+  color: var(--label-color);
+  font-weight: 500;
+}
+
+.guarnicao-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px 16px;
+  align-items: end;
+}
+
+
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .top-header-grid,
+  .form-group-grid-4-col,
+  .form-group-grid-5-col,
+  .veiculos-detail-grid,
+  .guarnicao-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   Checkboxes e Radios Customizados
+   ========================================================================== */
+input[type="checkbox"], input[type="radio"] {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid var(--border-color);
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 input[type="checkbox"] { border-radius: 4px; }
 input[type="radio"] { border-radius: 50%; }
 
-/* Ícone interno (check ou ponto) */
-input[type="checkbox"]::before { 
-  content: ""; 
-  width: 0.65em; 
-  height: 0.65em; 
-  transform: scale(0); 
-  transition: 120ms transform ease-in-out; 
-  box-shadow: inset 1em 1em var(--button-bg); 
-  transform-origin: bottom left; 
-  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%); 
-}
-input[type="radio"]::before { 
-  content: ""; 
-  width: 0.65em; 
-  height: 0.65em; 
-  border-radius: 50%; 
-  transform: scale(0); 
-  transition: 120ms transform ease-in-out; 
-  background-color: var(--button-bg); 
+input[type="checkbox"]::before, input[type="radio"]::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  transform: scale(0);
+  transition: transform 0.15s ease-in-out;
 }
 
-/* Estado :checked */
-input[type="checkbox"]:checked, input[type="radio"]:checked { 
-  border-color: var(--button-bg); 
-}
-input[type="checkbox"]:checked::before, 
-input[type="radio"]:checked::before { 
-  transform: scale(1); 
+input[type="checkbox"]::before {
+  background-color: var(--button-bg);
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
 }
 
-/* --- Botão Principal de Ação --- */
-.form-actions { 
-  display: flex; 
-  justify-content: flex-end; 
-  margin-top: 16px; 
+input[type="radio"]::before {
+  border-radius: 50%;
+  background-color: var(--button-bg);
 }
-.submit-button { 
-  background-color: var(--button-bg); 
-  color: white; 
-  border: none; 
-  padding: 12px 24px; 
-  font-size: 16px; 
-  font-weight: 500; 
-  border-radius: 6px; 
-  cursor: pointer; 
-  transition: background-color 0.2s; 
+
+input[type="checkbox"]:checked::before,
+input[type="radio"]:checked::before {
+  transform: scale(1);
 }
-.submit-button:hover { 
-  background-color: var(--button-hover-bg); 
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  border-color: var(--button-bg);
+}
+
+/* ==========================================================================
+   Seções Especiais
+   ========================================================================== */
+.ome-text {
+  font-size: 13px;
+  color: #6c757d;
+  margin-top: 8px;
+}
+
+.situacao-content {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.5rem 0;
+}
+
+.situacao-content .separator {
+  border-left: 1px solid var(--border-color);
+  height: 80px;
+  margin: 0 20px;
+}
+
+/* ==========================================================================
+   Ações do Formulário
+   ========================================================================== */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.submit-button {
+  background-color: var(--button-bg);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.submit-button:hover {
+  background-color: var(--button-hover-bg);
+}
+
+.submit-button:active {
+  transform: scale(0.97);
+}
+
+/* Container principal das subseções */
+.sub-section {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+/* Grid para os Checkboxes de Apoio */
+.apoio-checkbox-grid {
+    display: grid;
+    /* 4 colunas para manter a lógica do formulário em papel */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 10px 20px;
+    margin-bottom: 15px;
+}
+
+/* Grid para os Inputs das Viaturas e Guarnições */
+.viatura-inputs-grid {
+    display: grid;
+    /* 3 pares de colunas (Viatura + Guarnição) */
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 15px 10px;
+    align-items: end; /* Alinha a base dos inputs */
+}
+
+/* Ajusta as colunas de Viatura (2/6 do total) */
+.form-group-viatura {
+    grid-column: span 2; 
+}
+
+/* Ajusta as colunas de Guarnição (1/6 do total) */
+.form-group-guarnicao {
+    grid-column: span 1; 
+}
+
+/* Estilo para a caixa de texto "Outro" */
+.apoio-checkbox-grid input[type="text"] {
+    margin-left: 5px;
+    width: 100px;
 }
