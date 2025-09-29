@@ -1,36 +1,35 @@
 /**
  * @file FormularioPage.tsx
- * @description Componente principal que gerencia as etapas do formulário de ocorrência.
+ * @description Página que serve como container para o fluxo de criação ou edição de ocorrências.
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import FormularioBasico from './FormularioBasico'; // Importa a primeira etapa
-import './FormularioPage.css';
+import FormularioBasico from './FormularioBasico';
+import './FormularioPage.css'; // Certifique-se que o nome do arquivo CSS está correto
 
-/**
- * Componente funcional FormularioPage.
- * Controla o fluxo de preenchimento do formulário de ocorrência.
- */
 const FormularioPage = () => {
-  // O hook 'useParams' pega o ':id' da ocorrência que definimos na URL.
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
+
+  // Lógica para definir o título da página dinamicamente.
+  const isEditing = Boolean(id);
+  
+  // ===== TEXTOS CORRIGIDOS AQUI =====
+  const pageTitle = isEditing ? `Editando Ocorrência: #${id}` : 'Nova Ocorrência';
+  const pageSubtitle = isEditing ? `Altere os dados necessários da ocorrência` : 'Registre uma nova ocorrência no sistema';
 
   return (
     <div className="page-container">
-      {/* Cabeçalho da página do formulário */}
+      {/* O cabeçalho agora usa os títulos corretos do protótipo. */}
       <header className="page-header">
         <div className="page-title">
-          <h2>Registro de Ocorrência: #{id}</h2>
-          <p>Preencha os dados abaixo para registrar a ocorrência</p>
+          <h2>{pageTitle}</h2>
+          <p>{pageSubtitle}</p>
         </div>
       </header>
-
-      {/* Container principal do formulário */}
-      <div className="form-card">
-        {/* Por enquanto, renderizamos apenas o componente do Formulário Básico */}
-        <FormularioBasico />
-      </div>
+      
+      {/* O componente FormularioBasico é renderizado aqui. */}
+      <FormularioBasico />
     </div>
   );
 };

@@ -1,64 +1,240 @@
-/* Card principal que envolve o formulário */
+/* * Variáveis Globais de Tema (Theme Tokens)
+ * Define a paleta de cores e fontes para consistência em todo o projeto.
+ * Facilita a implementação de temas (ex: light/dark mode).
+ */
+:root {
+  --page-bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --border-color: #dee2e6;
+  --text-color: #212529;
+  --label-color: #343a40;
+  --placeholder-color: #adb5bd;
+  --button-bg: #ae1a16; /* Cor Primária de Ação (Vermelho Bombeiros) */
+  --button-hover-bg: #8e0f14;
+}
+
+/* --- Reset e Estilos Base --- */
+body {
+  background-color: var(--page-bg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* --- Estrutura Principal da Página --- */
+.page-container { 
+  max-width: 1200px; /* Limita a largura do conteúdo para melhor legibilidade */
+  margin: 0 auto; 
+  padding: 2rem; 
+}
+
+.page-header h2 { 
+  font-size: 28px; 
+  margin: 0 0 8px 0; 
+  color: var(--text-color); 
+}
+.page-header p { 
+  font-size: 16px; 
+  color: #6c757d; 
+  margin: 0; 
+}
+
+/* --- Container Principal do Formulário (Efeito "Folha de Papel") --- */
 .form-card {
-  background-color: var(--color-card);
-  padding: 24px;
-  border-radius: 12px;
-  border: 1px solid var(--color-border);
-}
-
-/* Container de cada etapa do formulário */
-.form-step-container h3 {
-  margin-top: 0;
-  margin-bottom: 24px;
-  color: var(--color-text);
-  border-bottom: 1px solid var(--color-border);
-  padding-bottom: 16px;
-}
-
-/* Grid para alinhar os campos do formulário */
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Cria 4 colunas */
-  gap: 20px;
-}
-
-/* Grupo de cada campo (label + input) */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-/* Faz um campo ocupar a largura total do grid */
-.form-group.full-width {
-  grid-column: 1 / -1;
-}
-
-.form-group label {
-  font-weight: 500;
-  font-size: 14px;
-  color: var(--color-text);
-}
-
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 10px;
+  background-color: var(--card-bg);
   border-radius: 8px;
-  border: 1px solid var(--color-border);
-  background-color: var(--color-input-bg);
-  color: var(--color-text);
-  box-sizing: border-box;
-  font-family: inherit;
-  font-size: 15px;
+  margin-top: 24px;
+  padding: 2.5rem; /* Espaçamento interno para os fieldsets */
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.05); /* Efeito de elevação */
 }
 
-/* Botões no final do formulário */
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
-  padding-top: 24px;
-  border-top: 1px solid var(--color-border);
+/* --- Seções do Formulário --- */
+fieldset {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.7rem 1.5rem 1rem 1.5rem;
+  margin-bottom: 24px;
+  box-shadow: none; /* A sombra principal está no .form-card */
+}
+fieldset legend { 
+  font-weight: 500; 
+  font-size: 14px; 
+  padding: 0 8px; 
+  margin-left: 12px; 
+  color: var(--label-color); 
+}
+
+/* --- Componentes de Formulário (Inputs, Labels) --- */
+.form-group { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 8px; 
+}
+.form-group label { 
+  font-weight: 500; 
+  font-size: 14px; 
+  color: var(--label-color); 
+}
+.form-group input[type="text"], 
+.form-group input[type="time"], 
+.form-group input[type="date"] { 
+  width: 100%; 
+  padding: 10px 12px; 
+  border-radius: 6px; 
+  border: 1px solid #ced4da; 
+  font-size: 14px; 
+  box-sizing: border-box; 
+}
+.form-group input::placeholder { 
+  color: var(--placeholder-color); 
+}
+.input-pair { 
+  display: flex; 
+  gap: 16px; 
+}
+.ome-text { 
+  margin: 8px 0 0 0; 
+  font-size: 13px; 
+  color: #6c757d; 
+}
+.form-group textarea { 
+  width: 100%; 
+  padding: 10px 12px; 
+  border-radius: 6px; 
+  border: 1px solid #ced4da; 
+  font-size: 14px; 
+  font-family: inherit; 
+  box-sizing: border-box; 
+  resize: vertical; 
+  min-height: 120px; 
+}
+
+/* --- Estruturas de Grid para Layouts Complexos --- */
+.top-section-grid { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 24px; 
+}
+.form-group-grid { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 16px 24px; 
+}
+
+/* Grid para a seção de Guarnição Empenhada */
+.guarnicao-grid { 
+  display: grid; 
+  grid-template-columns: repeat(12, 1fr); /* Grid de 12 colunas para flexibilidade */
+  gap: 24px 16px; 
+  align-items: end; /* Alinha os campos pela base */
+}
+
+/* Posicionamento dos itens no grid da Guarnição */
+.guarnicao-grid .posto-grad, 
+.guarnicao-grid .matricula-cmt, 
+.guarnicao-grid .componente-matricula { 
+  grid-column: span 3; 
+}
+.guarnicao-grid .nome-cmt, 
+.guarnicao-grid .visto-divisao { 
+  grid-column: span 6; 
+}
+.guarnicao-grid .assinatura { 
+  grid-column: 1 / -1; /* Ocupa a largura total */
+  text-align: center; 
+  margin-top: 32px; 
+  padding-top: 16px; 
+}
+.guarnicao-grid .assinatura hr { 
+  border: none; 
+  border-top: 1.5px solid var(--placeholder-color); /* Linha destacada */
+  margin-bottom: 8px; 
+}
+.guarnicao-grid .assinatura p { 
+  margin: 0; 
+  font-size: 14px; 
+  color: var(--label-color); 
+}
+
+/* --- Estilos Customizados para Radio e Checkbox --- */
+.radio-columns, .checkbox-columns { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 16px; 
+}
+.radio-group label, .checkbox-group label { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  font-weight: normal; 
+  font-size: 14px; 
+  cursor: pointer; 
+}
+
+/* Base customizada para ambos os inputs */
+input[type="checkbox"], input[type="radio"] { 
+  appearance: none; 
+  background-color: #fff; 
+  margin: 0; 
+  color: currentColor; 
+  width: 1.15em; 
+  height: 1.15em; 
+  border: 1.5px solid #ced4da; 
+  transform: translateY(-0.075em); 
+  display: grid; 
+  place-content: center; 
+  cursor: pointer; 
+}
+
+input[type="checkbox"] { border-radius: 4px; }
+input[type="radio"] { border-radius: 50%; }
+
+/* Ícone interno (check ou ponto) */
+input[type="checkbox"]::before { 
+  content: ""; 
+  width: 0.65em; 
+  height: 0.65em; 
+  transform: scale(0); 
+  transition: 120ms transform ease-in-out; 
+  box-shadow: inset 1em 1em var(--button-bg); 
+  transform-origin: bottom left; 
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%); 
+}
+input[type="radio"]::before { 
+  content: ""; 
+  width: 0.65em; 
+  height: 0.65em; 
+  border-radius: 50%; 
+  transform: scale(0); 
+  transition: 120ms transform ease-in-out; 
+  background-color: var(--button-bg); 
+}
+
+/* Estado :checked */
+input[type="checkbox"]:checked, input[type="radio"]:checked { 
+  border-color: var(--button-bg); 
+}
+input[type="checkbox"]:checked::before, 
+input[type="radio"]:checked::before { 
+  transform: scale(1); 
+}
+
+/* --- Botão Principal de Ação --- */
+.form-actions { 
+  display: flex; 
+  justify-content: flex-end; 
+  margin-top: 16px; 
+}
+.submit-button { 
+  background-color: var(--button-bg); 
+  color: white; 
+  border: none; 
+  padding: 12px 24px; 
+  font-size: 16px; 
+  font-weight: 500; 
+  border-radius: 6px; 
+  cursor: pointer; 
+  transition: background-color 0.2s; 
+}
+.submit-button:hover { 
+  background-color: var(--button-hover-bg); 
 }

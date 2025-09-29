@@ -65,7 +65,12 @@ function App() {
               <Route path="ocorrencias" element={<OcorrenciasPage />} />
               {/* Rota para a página de relatórios. */}
               <Route path="relatorios" element={<RelatoriosPage />} />
-              {/* Rota dinâmica para o formulário de uma ocorrência específica. */}
+
+              {/* ===== NOVA ROTA ADICIONADA AQUI ===== */}
+              {/* Rota para a página de CRIAÇÃO de um novo formulário. */}
+              <Route path="formulario" element={<FormularioPage />} />
+
+              {/* Rota dinâmica para EDITAR o formulário de uma ocorrência específica. */}
               <Route path="ocorrencia/:id/formulario" element={<FormularioPage />} />
             </Route>
             {/* Se um usuário logado tentar acessar /login, ele é redirecionado de volta para o dashboard. */}
