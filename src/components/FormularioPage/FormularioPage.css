@@ -1,6 +1,6 @@
-/* ==========================================================================
+/* =============================================================
    Variáveis de Tema (Claro e Escuro)
-   ========================================================================== */
+   ============================================================= */
 :root {
   --page-bg: #f8f9fa;
   --card-bg: #ffffff;
@@ -12,20 +12,23 @@
   --button-hover-bg: #8e0f14;
 }
 
+/* =====================================================================
+   Variáveis de Tema (Claro e Escuro)
+   ===================================================================== */
 [data-theme="dark"] {
-  --page-bg: #121212;
-  --card-bg: #1e1e1e;
-  --border-color: #333;
-  --text-color: #f1f1f1;
+  --page-bg: #f0f2f5;       /* Fundo claro, mantém legibilidade */
+  --card-bg: #f0f2f5;       /* Fundo claro, mantém */
+  --border-color: #444444;
+  --text-color: #131413;
   --label-color: #e1e1e1;
-  --placeholder-color: #666;
-  --button-bg: #d62828;
+  --placeholder-color: #888888;
+  --button-bg: #8c2a2a;
   --button-hover-bg: #a4161a;
 }
 
-/* ==========================================================================
+/* ====================================================
    Estrutura Principal
-   ========================================================================== */
+   ==================================================== */
 .page-container {
   max-width: 1200px;
   width: 100%;
@@ -43,9 +46,9 @@
   color: #6c757d;
 }
 
-/* ==========================================================================
+/* ========================================================
    Card Principal do Formulário
-   ========================================================================== */
+   ======================================================== */
 .form-card {
   background-color: var(--card-bg);
   border-radius: 12px;
@@ -56,9 +59,9 @@
   transition: background-color 0.3s, color 0.3s;
 }
 
-/* ==========================================================================
+/* ======================================================
    Fieldsets
-   ========================================================================== */
+   ====================================================== */
 fieldset {
   border: 1px solid var(--border-color);
   border-radius: 10px;
@@ -74,9 +77,9 @@ fieldset legend {
   color: var(--label-color);
 }
 
-/* ==========================================================================
+/* ======================================================
    Inputs e Textareas
-   ========================================================================== */
+   ===================================================== */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -120,9 +123,9 @@ textarea {
   min-height: 120px;
 }
 
-/* ==========================================================================
+/* ========================================================
    Layouts em Grid
-   ========================================================================== */
+   ======================================================== */
 .top-header-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -177,22 +180,9 @@ textarea {
   align-items: end;
 }
 
-
-
-/* Responsividade */
-@media (max-width: 768px) {
-  .top-header-grid,
-  .form-group-grid-4-col,
-  .form-group-grid-5-col,
-  .veiculos-detail-grid,
-  .guarnicao-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ==========================================================================
+/*==============================================================
    Checkboxes e Radios Customizados
-   ========================================================================== */
+==============================================================*/
 input[type="checkbox"], input[type="radio"] {
   appearance: none;
   width: 15px;
@@ -235,9 +225,9 @@ input[type="radio"]:checked {
   border-color: var(--button-bg);
 }
 
-/* ==========================================================================
+/* ==================================================
    Seções Especiais
-   ========================================================================== */
+   ================================================== */
 .ome-text {
   font-size: 13px;
   color: #6c757d;
@@ -256,9 +246,9 @@ input[type="radio"]:checked {
   margin: 0 20px;
 }
 
-/* ==========================================================================
+/* ========================================================
    Ações do Formulário
-   ========================================================================== */
+   ======================================================== */
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -287,32 +277,62 @@ input[type="radio"]:checked {
 
 /* Container principal das subseções */
 .sub-section {
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+  padding: 1rem; /* AUMENTAMOS O PADDING AQUI (antes era 15px) */
+  margin-bottom: 20px;
+  border-radius: 8px;
 }
+
+.sub-section legend {
+  font-weight: 600; /* Mantém o título em negrito */
+  font-size: 15px;
+  padding: 0 2px;
+  margin-left: 2px;
+  color: var(--label-color);
+  margin-bottom: 1rem; /* ADICIONAMOS ESTA LINHA PARA CRIAR A DISTÂNCIA */
+}
+
 
 /* Grid para os Checkboxes de Apoio */
 .apoio-checkbox-grid {
-    display: grid;
-    /* 4 colunas para manter a lógica do formulário em papel */
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 10px 20px;
-    margin-bottom: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Grid responsivo */
+  gap: 1rem 1.5rem;
 }
+
+.apoio-checkbox-grid label {
+  display: flex; /* Essencial para o alinhamento */
+  align-items: center; /* Alinha o checkbox com o texto */
+  gap: 0.5rem; /* Espaço entre o checkbox e o texto */
+  font-weight: 500;
+}
+
+/* Estilo específico para o campo de texto 'Outro' */
+.apoio-checkbox-grid input[type="text"] {
+  flex-grow: 1; /* Faz o campo de texto ocupar o espaço restante */
+  margin-left: 0;
+  width: auto;
+}
+
 
 /* Grid para os Inputs das Viaturas e Guarnições */
 .viatura-inputs-grid {
-    display: grid;
-    /* 3 pares de colunas (Viatura + Guarnição) */
-    grid-template-columns: repeat(6, 1fr); 
-    gap: 15px 10px;
-    align-items: end; /* Alinha a base dos inputs */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 colunas principais */
+  gap: 2rem 1.5rem;
+  align-items: end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
 }
 
-/* Ajusta as colunas de Viatura (2/6 do total) */
-.form-group-viatura {
-    grid-column: span 2; 
+/* Cada par 'Viatura + Guarnição' agora vive dentro de um container */
+.viatura-guarnicao-pair {
+  grid-column: span 1; /* Cada par ocupa 1 das 3 colunas */
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Viatura ocupa 2/3, Guarnição 1/3 */
+  gap: 1rem;
+  align-items: end;
 }
 
 /* Ajusta as colunas de Guarnição (1/6 do total) */
@@ -324,4 +344,304 @@ input[type="radio"]:checked {
 .apoio-checkbox-grid input[type="text"] {
     margin-left: 5px;
     width: 100px;
+}
+
+/* Grid para a seção de Dificuldades (2 colunas de itens) */
+.dificuldades-grid {
+  display: grid;
+  /* Cria 2 pares de colunas: [caixa, texto], [caixa, texto] */
+  grid-template-columns: repeat(2, auto 1fr);
+  gap: 1rem 2rem; /* Espaçamento vertical e horizontal */
+  align-items: center;
+}
+
+/* Grid para a seção de Formulários Preenchidos (1 coluna de itens) */
+/* Container para qualquer grid de checkboxes com 2 colunas */
+.checkbox-grid-2-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 0.75rem 2rem; /* Espaçamento vertical e horizontal */
+}
+
+/* Item individual dentro do grid (caixinha + texto) */
+.form-check-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Espaço entre a caixinha e o texto */
+  }
+
+.form-check-item label {
+  font-weight: 600; /* Define o texto como semi-negrito, para padronizar */
+}
+
+/* Estiliza especificamente o campo de texto da opção 'Outro' */
+.outro-container input[type="text"] {
+  /* Aumenta o padding vertical para deixar o campo mais alto */
+  padding: 11px 15px;
+
+  /* Aumenta o arredondamento para um efeito mais suave, estilo "pílula" */
+  border-radius: 200px;
+}
+
+/* Estilo genérico para os labels dentro desses grids */
+.dificuldades-grid label,
+.formularios-grid label {
+font-weight: 500;
+cursor: pointer;
+}
+
+/*===============================================================
+   Checkboxes e Radios Customizados
+   ============================================================== */
+   @media (max-width: 768px) {
+  .checkbox-grid-4,
+  .checkbox-grid-3,
+  .checkbox-grid-2,
+  .viatura-inputs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group-viatura,
+  .form-group-guarnicao,
+  .full-width-input {
+    grid-column: span 1;
+  }
+}
+
+/*======================================================
+   Histórico
+   ===================================================== */
+   
+/* 1. REGRA UNIFICADA DE APARÊNCIA */
+/* Aplica o mesmo estilo base para TODOS os campos de formulário */
+.form-group input,
+.form-group select, 
+.form-group textarea {
+ 
+}
+  textarea[name="historico"] {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: var(--page-bg);
+  color: var(--text-color);
+  font-family: inherit; /* Garante a mesma fonte em todos */
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+ 
+/* 2. REGRA UNIFICADA DE FOCO */
+/* Aplica o mesmo brilho vermelho para TODOS os campos quando selecionados */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border: 1px solid var(--button-bg); /* força o vermelho no foco */
+  box-shadow: 0 0 0 3px rgba(174, 26, 22, 0.2); /* brilho suave vermelho */
+  outline: none; /* remove o outline preto padrão */
+}
+
+/* 3. REGRA ESPECÍFICA PARA O TEXTAREA */
+/* Apenas para propriedades exclusivas do textarea */
+.form-group textarea {
+  resize: vertical;
+  min-height: 150px;
+}
+
+/*======================================================
+   Guarnição Empenhada
+   ===================================================== */
+.form-group-grid-4-col input,
+.guarnicao-grid input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px; /* Borda arredondada aplicada a TODOS */
+  border: 1px solid #ced4da;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: var(--page-bg);
+  color: var(--text-color);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  
+}
+
+/* Também unificamos a regra de foco para consistência */
+.form-group-grid-4-col input:focus,
+.guarnicao-grid input:focus {
+  border-color: var(--button-bg);
+  box-shadow: 0 0 0 3px rgba(174, 26, 22, 0.2);
+  outline: none;
+  
+}
+.guarnicao-grid {
+  display: grid;
+  
+  /* repeat(3, 1fr)' cria 3 colunas de larguras iguais
+     que se esticam para ocupar todo o espaço disponível. */
+  grid-template-columns: repeat(3, 1fr);
+  
+  /* Um espaçamento consistente para um visual mais limpo */
+  gap: 1rem; /* 1rem de espaço vertical e horizontal */
+  
+  /* Adiciona uma separação visual da linha de cima */
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/*======================================================
+   Assinatura
+   ===================================================== */
+.assinatura {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.assinatura p {
+  margin-bottom: 40px;
+  font-weight: bold;
+}
+
+.assinatura::after {
+  content: "";
+  display: block;
+  margin: 10px auto 0;
+  width: 500px; /* largura da linha */
+  border-bottom: 1px solid #000; /* cria a linha */
+}
+
+/* Container alinhado horizontalmente para o "Outro relatório específico" */
+.form-group-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* espaço entre a caixinha, o texto e o campo */
+  margin-top: 10px;
+}
+
+/* Mantém o checkbox alinhado corretamente */
+.form-group-inline input[type="checkbox"] {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+}
+
+/* Padroniza o input de texto do "Outro" com os demais */
+.form-group-inline input[type="text"] {
+  flex: 1; /* ocupa o espaço restante */
+  max-width: 400px; /* limite controlado */
+  padding: 10px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 8px; /* mesmo arredondado dos outros */
+  font-size: 14px;
+  background-color: var(--page-bg);
+  color: var(--text-color);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group-inline input[type="text"]:focus {
+  border-color: var(--button-bg);
+  box-shadow: 0 0 0 3px rgba(174,26,22,0.2);
+  outline: none;
+}
+
+/* ========================================================
+   RESPONSIVIDADE GERAL (Tablets e Celulares)
+   ======================================================== */
+@media (max-width: 1024px) {
+  .page-container {
+    padding: 1.5rem;
+  }
+
+  .form-card {
+    padding: 2rem;
+  }
+
+  .top-header-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+}
+
+/* ========================================================
+   CELULARES (≤ 768px)
+   ======================================================== */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 1rem;
+  }
+
+  .form-card {
+    padding: 1.5rem;
+  }
+
+  /* Quebra todos os grids em 1 coluna */
+  .top-header-grid,
+  .form-group-grid-4-col,
+  .form-group-grid-5-col,
+  .checkbox-grid,
+  .veiculos-detail-grid,
+  .guarnicao-grid,
+  .viatura-inputs-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Títulos e legendas menores para caber melhor */
+  fieldset legend {
+    font-size: 14px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  /* Botão full-width no celular */
+  .form-actions {
+    justify-content: center;
+  }
+
+  .submit-button {
+    width: 100%;
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  /* Histórico ocupa 100% */
+  textarea[name="historico"] {
+    min-height: 120px;
+  }
+
+  /* Assinatura ajustada */
+  .assinatura::after {
+    width: 100%; /* linha acompanha tela menor */
+  }
+}
+
+/* ========================================================
+   CELULARES PEQUENOS (≤ 480px)
+   ======================================================== */
+@media (max-width: 480px) {
+  .page-container {
+    padding: 0.8rem;
+  }
+
+  .form-card {
+    padding: 1rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  .submit-button {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  fieldset legend {
+    font-size: 13px;
+  }
 }
