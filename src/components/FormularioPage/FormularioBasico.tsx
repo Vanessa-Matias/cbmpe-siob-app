@@ -386,31 +386,66 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange }) => {
         </div>
       </fieldset>
 
-      {/* --- SEÇÃO 10: VEÍCULOS ENVOLVIDOS --- */}
+     {/* --- SEÇÃO 10: VEÍCULOS ENVOLVIDOS --- */}
       <fieldset>
         <legend>Veículos Envolvidos</legend>
         <div className="radio-columns">
-          <label><input type="radio" name="veiculosEnvolvidos" value="SIM" checked={formData.veiculosEnvolvidos==='SIM'} onChange={handleChange}/> Sim</label>
-          <label><input type="radio" name="veiculosEnvolvidos" value="NAO" checked={formData.veiculosEnvolvidos==='NAO'} onChange={handleChange}/> Não</label>
+          <label><input type="radio" name="veiculosEnvolvidos" value="SIM" checked={formData.veiculosEnvolvidos === 'SIM'} onChange={handleChange} /> Sim</label>
+          <label><input type="radio" name="veiculosEnvolvidos" value="NAO" checked={formData.veiculosEnvolvidos === 'NAO'} onChange={handleChange} /> Não</label>
         </div>
+
+        {/* Renderiza os campos apenas se a opção "Sim" estiver marcada */}
         {formData.veiculosEnvolvidos === 'SIM' && (
           <div className="veiculos-detail-grid">
+            
+            {/* Veículo 1 */}
             <h4>Veículo 1</h4>
-            <input type="text" name="veiculo1.modelo" value={formData.veiculo1.modelo} onChange={handleChange} placeholder="Modelo"/>
-            <input type="text" name="veiculo1.cor" value={formData.veiculo1.cor} onChange={handleChange} placeholder="Cor"/>
-            <input type="text" name="veiculo1.placa" value={formData.veiculo1.placa} onChange={handleChange} placeholder="Placa"/>
-            <input type="text" name="veiculo1.estado" value={formData.veiculo1.estado} onChange={handleChange} placeholder="Estado"/>
-            <input type="text" name="veiculo1.nomeCondutor" value={formData.veiculo1.nomeCondutor} onChange={handleChange} placeholder="Nome do Condutor"/>
-            <input type="text" name="veiculo1.rgCpfCondutor" value={formData.veiculo1.rgCpfCondutor} onChange={handleChange} placeholder="RG/CPF"/>
-            <input type="text" name="veiculo1.orgaoExpCondutor" value={formData.veiculo1.orgaoExpCondutor} onChange={handleChange} placeholder="Órgão Expedidor"/>
+            <div className="form-group">
+              <input type="text" name="veiculo1.modelo" value={formData.veiculo1.modelo} onChange={handleChange} placeholder="Modelo" />
+            </div>
+            <div className="form-group">
+              <input type="text" name="veiculo1.cor" value={formData.veiculo1.cor} onChange={handleChange} placeholder="Cor" />
+            </div>
+            <div className="form-group">
+              <input type="text" name="veiculo1.placa" value={formData.veiculo1.placa} onChange={handleChange} placeholder="Placa" />
+            </div>
+            <div className="form-group">
+              <input type="text" name="veiculo1.estado" value={formData.veiculo1.estado} onChange={handleChange} placeholder="Estado" />
+            </div>
+            <div className="form-group">
+              <input type="text" name="veiculo1.nomeCondutor" value={formData.veiculo1.nomeCondutor} onChange={handleChange} placeholder="Nome do Condutor" />
+            </div>
+            <div className="form-group">
+              <input type="text" name="veiculo1.rgCpfCondutor" value={formData.veiculo1.rgCpfCondutor} onChange={handleChange} placeholder="RG/CPF" />
+            </div>
+            <div className="form-group">
+              <input type="text" name="veiculo1.orgaoExpCondutor" value={formData.veiculo1.orgaoExpCondutor} onChange={handleChange} placeholder="Órgão Expedidor" />
+            </div>
+
+            {/* Veículo 2 */}
             <h4>Veículo 2</h4>
-            <input type="text" name="veiculo2.modelo" value={formData.veiculo2.modelo} onChange={handleChange} placeholder="Modelo"/>
-            <input type="text" name="veiculo2.cor" value={formData.veiculo2.cor} onChange={handleChange} placeholder="Cor"/>
-            <input type="text" name="veiculo2.placa" value={formData.veiculo2.placa} onChange={handleChange} placeholder="Placa"/>
-            <input type="text" name="veiculo2.estado" value={formData.veiculo2.estado} onChange={handleChange} placeholder="Estado"/>
-            <input type="text" name="veiculo2.nomeCondutor" value={formData.veiculo2.nomeCondutor} onChange={handleChange} placeholder="Nome do Condutor"/>
-            <input type="text" name="veiculo2.rgCpfCondutor" value={formData.veiculo2.rgCpfCondutor} onChange={handleChange} placeholder="RG/CPF"/>
-            <input type="text" name="veiculo2.orgaoExpCondutor" value={formData.veiculo2.orgaoExpCondutor} onChange={handleChange} placeholder="Órgão Expedidor"/>
+            <div className="form-group">
+              <input type="text" name="veiculo2.modelo" value={formData.veiculo2.modelo} onChange={handleChange} placeholder="Modelo" />
+            </div>
+            <div className="form-group">
+              <input type="text" name="veiculo2.cor" value={formData.veiculo2.cor} onChange={handleChange} placeholder="Cor" />
+            </div>
+            <div className="form-group">
+              <input type="text" name="veiculo2.placa" value={formData.veiculo2.placa} onChange={handleChange} placeholder="Placa" />
+            </div>
+            <div className="form-group">
+              <input type="text" name="veiculo2.estado" value={formData.veiculo2.estado} onChange={handleChange} placeholder="Estado" />
+            </div>
+            <div className="form-group">
+              <input type="text" name="veiculo2.nomeCondutor" value={formData.veiculo2.nomeCondutor} onChange={handleChange} placeholder="Nome do Condutor" />
+            </div>
+            <div className="form-group">
+              <input type="text" name="veiculo2.rgCpfCondutor" value={formData.veiculo2.rgCpfCondutor} onChange={handleChange} placeholder="RG/CPF" />
+            </div>
+            <div className="form-group">
+              <input type="text" name="veiculo2.orgaoExpCondutor" value={formData.veiculo2.orgaoExpCondutor} onChange={handleChange} placeholder="Órgão Expedidor" />
+            </div>
+
           </div>
         )}
       </fieldset>

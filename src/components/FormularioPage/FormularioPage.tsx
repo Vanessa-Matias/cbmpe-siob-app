@@ -47,26 +47,55 @@ const FormularioPage = () => {
     guarnicaoEmpenhada: { postoGrad: '', matriculaCmt: '', nomeGuerraCmt: '', vistoDivisao: '', componentes: ['', '', '', '', '', ''] }
   });
 
-  // ===== HANDLE CHANGE GENÉRICO =====
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value, type } = e.target;
+  // ===== HANDLE CHANGE GENÉRICO (VERSÃO FINAL E ROBUSTA) =====
+const handleChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+) => {
+  const { name, value, type } = e.target;
+  const finalValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+  const parts = name.split('.');
 
-    if (type === 'checkbox') {
-      const { checked } = e.target as HTMLInputElement;
-      const [key, subkey] = name.split('.');
-      if (subkey) {
-        setFormData(prev => ({
-          ...prev,
-          [key]: { ...(prev as any)[key], [subkey]: checked }
-        }));
+  // CASO 1: Três níveis de profundidade (ex: guarnicaoEmpenhada.componentes.0)
+  // Este bloco é específico para atualizar um item dentro de um array aninhado.
+  if (parts.length === 3) {
+    const [key, subkey, indexStr] = parts;
+    const index = parseInt(indexStr, 10);
+
+    setFormData(prev => {
+      // Cria uma cópia do array que queremos modificar
+      const newArray = [...(prev as any)[key][subkey]];
+      // Atualiza apenas o elemento no índice correto
+      newArray[index] = finalValue;
+
+      // Retorna o novo estado com o array atualizado
+      return {
+        ...prev,
+        [key]: {
+          ...(prev as any)[key],
+          [subkey]: newArray
+        }
+      };
+    });
+
+  // CASO 2: Dois níveis de profundidade (ex: veiculo1.modelo)
+  } else if (parts.length === 2) {
+    const [key, subkey] = parts;
+    setFormData(prev => ({
+      ...prev,
+      [key]: {
+        ...(prev as any)[key],
+        [subkey]: finalValue
       }
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
-    }
-  };
-
+    }));
+    
+  // CASO 3: Nível único (ex: pontoBase)
+  } else {
+    setFormData(prev => ({
+      ...prev,
+      [name]: finalValue
+    }));
+  }
+};
   return (
     <div className="page-container">
       <header className="page-header">

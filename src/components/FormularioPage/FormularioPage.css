@@ -4,7 +4,7 @@
 :root {
   --page-bg: #f8f9fa;
   --card-bg: #ffffff;
-  --border-color: #dee2e6;
+  --border-color: #cbcdd0;
   --text-color: #212529;
   --label-color: #343a40;
   --placeholder-color: #adb5bd;
@@ -18,9 +18,9 @@
 [data-theme="dark"] {
   --page-bg: #f0f2f5;       /* Fundo claro, mantém legibilidade */
   --card-bg: #f0f2f5;       /* Fundo claro, mantém */
-  --border-color: #444444;
+  --border-color: #cbcdd0;
   --text-color: #131413;
-  --label-color: #e1e1e1;
+  --label-color: #343a40;
   --placeholder-color: #888888;
   --button-bg: #8c2a2a;
   --button-hover-bg: #a4161a;
@@ -194,8 +194,19 @@ input[type="checkbox"], input[type="radio"] {
   transition: all 0.2s;
 }
 
-input[type="checkbox"] { border-radius: 4px; }
-input[type="radio"] { border-radius: 50%; }
+/* REGRA ABAIXO PARA REMOVER O BRILHO DE FOCO */
+/* 1. Define a forma PADRÃO e FINAL do checkbox */
+input[type="checkbox"],
+input[type="radio"] {
+  border-radius: 4px;
+}
+
+/* 2. REGRA para remover o brilho de foco, sem tocar na forma */
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible {
+  box-shadow: none; /* Remove o brilho vermelho */
+  outline: none;    /* Remove a borda padrão do navegador */
+}
 
 input[type="checkbox"]::before, input[type="radio"]::before {
   content: "";
@@ -205,7 +216,8 @@ input[type="checkbox"]::before, input[type="radio"]::before {
   transition: transform 0.15s ease-in-out;
 }
 
-input[type="checkbox"]::before {
+input[type="checkbox"]::before,
+input[type="radio"]::before {
   background-color: var(--button-bg);
   clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
 }
@@ -244,6 +256,15 @@ input[type="radio"]:checked {
   border-left: 1px solid var(--border-color);
   height: 80px;
   margin: 0 20px;
+}
+
+/* ==================================================
+  ESTILO PARA O PAR DE INPUTS DA VIATURA
+  ================================================== */
+.input-pair {
+  display: flex;
+  flex-direction: column; /* Organiza os inputs em coluna */
+  gap: 1rem;             /* CRIA O ESPAÇAMENTO ENTRE ELES (1rem = 16px) */
 }
 
 /* ========================================================
@@ -644,4 +665,26 @@ cursor: pointer;
   fieldset legend {
     font-size: 13px;
   }
+}
+
+/* =================================================================
+  REGRA UNIFICADA DE FOCO PARA TODO O FORMULÁRIO (VERSÃO FINAL)
+  ================================================================= */
+
+/* Para campos de texto, select e textarea */
+.form-group input:focus-visible,
+.form-group select:focus-visible,
+.form-group textarea:focus-visible,
+.guarnicao-grid input:focus-visible,
+.form-group-inline input[type="text"]:focus-visible {
+  border-color: var(--button-hover-bg); /* Usamos o vermelho mais escuro */
+  border-width: 2px;                 /* Opcional: deixa a borda um pouco mais grossa */
+  box-shadow: none;                      /* REMOVEMOS completamente o brilho */
+  outline: none;
+}
+
+/* Para checkboxes e radios */
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible {
+  border-color: var(--button-hover-bg); /* Usamos o mesmo vermelho escuro para consistência */
 }
