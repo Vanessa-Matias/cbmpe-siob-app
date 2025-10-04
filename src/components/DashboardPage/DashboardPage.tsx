@@ -21,11 +21,6 @@ const DashboardLayout = ({ toggleTheme }: { toggleTheme: () => void }) => {
             <FaBars className="header-icon" onClick={() => setSidebarOpen(true)} />
             <h1>Sistema Integrado de Ocorrências dos Bombeiros</h1>
           </div>
-          <div className="header-actions">
-            <button onClick={toggleTheme} className="button-secondary theme-toggle-btn" title="Alternar tema">
-              {currentTheme === 'dark' ? <FaSun /> : <FaMoon />}
-            </button>
-          </div>
         </header>
         <main className="dashboard-main">
           <Outlet />

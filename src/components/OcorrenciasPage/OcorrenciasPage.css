@@ -1,26 +1,35 @@
 /* ==========================================================================
-   Estilos da Página de Ocorrências (OcorrenciasPage.css)
+                          Estilos da Página de Ocorrências
    ========================================================================== */
 
-/* --- ESTRUTURA E GLOBAIS --- */
+
+/*==========================
+    ESTRUTURA E GLOBAIS 
+============================= */
 
 .page-container {
-  padding: 32px;
+  padding: 48px;
 }
 
-/* --- CABEÇALHO E AÇÕES --- */
+/*==========================
+     CABEÇALHO E AÇÕES
+============================*/
 
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+  /* No modo escuro, o texto do cabeçalho deve ser claro */
+  color: var(--text-color); 
+  
 }
 
 .page-title h2 {
   margin: 0 0 4px 0;
   font-size: 28px;
   color: var(--color-text);
+  text-align: left; /* Deixa o nome ocorrências no canto*/
 }
 
 .page-title p {
@@ -34,23 +43,26 @@
   gap: 12px;
 }
 
-/* --- BOTÕES --- */
+/*=================================
+              BOTÕES 
+================================= */
 
 .button-primary, .button-secondary {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 16px;
+  padding: 12px 20px;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  border: 1px solid;
 }
 
 .button-primary {
   background-color: var(--color-primary);
   border-color: var(--color-primary);
   color: rgb(255, 255, 255);
+   border: 2px solid var(--color-primary);
+  padding: 9px 15px;
 }
 .button-primary:hover {
     background-color: var(--color-primary-hover);
@@ -59,38 +71,50 @@
 
 .button-secondary {
   background-color: var(--color-card);
-  border-color: var(--color-border);
   color: var(--color-text);
+  padding: 9px 15px; 
+  transition: all 0.2s ease-in-out;
+  border-radius: 8px; /* Adicionado para garantir o arredondamento */
+  font-weight: bold; /* Adicionado para garantir a consistência */
+  cursor: pointer; /* Adicionado para garantir a consistência */
+  border: 2px solid var(--color-border); /*borda agora começa com 2px e a cor cinza padrão */
 }
+
 .button-secondary:hover {
-    border-color: var(--color-text);
+  border-color: var(--color-primary); /* Revela a borda vermelha */
+  color: var(--color-primary);       /* Deixa o texto vermelho para combinar */
+  background-color: #fdecea;       /* Opcional: Adiciona um fundo sutil para preencher */
 }
 
 
-/* --- CARDS DE FILTRO E LISTA --- */
+/* ===================================
+        CARDS DE FILTRO E LISTA 
+====================================== */
 
 .filter-card, .list-card {
   background-color: var(--color-card);
-  padding: 24px;
+  padding: 32px;
   border-radius: 12px;
   border: 1px solid var(--color-border);
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .filter-card h3, .list-card h3 {
-  margin: 0 0 4px 0;
-  font-size: 18px;
+  margin: 0 0 8px 0;
+  font-size: 20px;
   color: var(--color-text);
 }
 
 .filter-card p {
-  margin: 0 0 20px 0;
+  margin: 0 0 24px 0;
   color: var(--color-muted);
   font-size: 14px;
 }
 
 
-/* --- FILTROS DE BUSCA --- */
+/* =======================================
+              FILTROS DE BUSCA 
+ ========================================= */
 
 .filter-inputs {
   display: grid;
@@ -125,7 +149,9 @@
 }
 
 
-/* --- TABELA DE OCORRÊNCIAS --- */
+/*===============================               
+        TABELA DE OCORRÊNCIAS
+================================= */
 
 .ocorrencias-table {
   width: 100%;
@@ -164,7 +190,9 @@
   color: var(--color-muted);
 }
 
-/* Badges de Status e Prioridade (cores fixas para destaque). */
+/*==========================================================
+Badges de Status e Prioridade (cores fixas para destaque). 
+============================================================*/
 .status-badge, .prioridade-badge {
   padding: 4px 10px;
   border-radius: 50px;
@@ -181,9 +209,9 @@
 .prioridade-baixa { background-color: #2e7d32; color: white; }
 
 
-/* ==========================================================================
-   ESTILOS RESPONSIVOS (PARA CELULAR)
-   ========================================================================== */
+/* ================================================================
+          ESTILOS RESPONSIVOS (PARA CELULAR)
+=================================================================== */
 
 @media (max-width: 768px) {
   .page-container { padding: 16px; }
@@ -209,7 +237,10 @@
   .ocorrencias-table td:not(:last-child) {
     border-bottom: 1px solid var(--color-border);
   }
-  /* Usa o atributo 'data-label' do HTML para criar o rótulo da coluna. */
+
+  /* ========================================================
+  Atributo 'data-label' do HTML para criar o rótulo da coluna.
+  ============================================================ */
   .ocorrencias-table td::before {
     content: attr(data-label);
     font-weight: bold;
@@ -225,7 +256,9 @@
   }
 }
 
-/* Estilo para o novo botão de ação dentro da tabela */
+/* =====================================================
+      Estilo para o novo botão de ação dentro da tabela 
+========================================================*/
 .button-action {
   display: flex;
   align-items: center;
@@ -246,10 +279,61 @@
   background-color: var(--color-border);
 }
 
-/* Ajuste para o botão no modo responsivo */
+/* =========================================
+    Ajuste para o botão no modo responsivo 
+==============================================*/
 @media (max-width: 768px) {
   .ocorrencias-table td .button-action {
     /* No modo card, o botão fica alinhado à direita junto com os outros dados */
     margin-left: auto; 
   }
+}
+
+/*===========================================
+        RODAPÉ DA TABELA E PAGINAÇÃO
+==============================================*/
+.table-footer {
+    display: flex;
+    /* A CORREÇÃO PRINCIPAL: Alinha tudo (texto e botões) para a direita */
+    justify-content: flex-end; 
+    align-items: center;
+    padding: 20px 16px;
+    font-size: 14px;
+    gap: 2rem; /* Adiciona um espaço entre o texto "Exibindo..." e os botões */
+}
+
+.pagination-info {
+    color: var(--color-muted);
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Espaço entre os botões e o texto da página */
+}
+
+.pagination-controls button {
+    background-color: transparent; /* Fundo transparente para um look mais limpo */
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* Efeito de hover mais moderno */
+.pagination-controls button:hover {
+    background-color: #f0f0f0; 
+    border-color: #ccc;
+}
+
+/* Deixa o texto do contador de páginas com mais destaque */
+.pagination-controls span {
+    font-weight: 500;
+    color: var(--color-text);
 }

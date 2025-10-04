@@ -1,5 +1,5 @@
 /* =============================================================
-   Variáveis de Tema (Claro e Escuro)
+   Variáveis de Tema (Claro )
    ============================================================= */
 :root {
   --page-bg: #f8f9fa;
@@ -13,17 +13,32 @@
 }
 
 /* =====================================================================
-   Variáveis de Tema (Claro e Escuro)
+   Variáveis de Tema (Escuro)
    ===================================================================== */
 [data-theme="dark"] {
-  --page-bg: #f0f2f5;       /* Fundo claro, mantém legibilidade */
-  --card-bg: #f0f2f5;       /* Fundo claro, mantém */
-  --border-color: #cbcdd0;
-  --text-color: #131413;
+  /* 1. O fundo da PÁGINA fica escuro */
+  --page-bg: #ffffff;
+  
+  /* 2. O fundo do FORMULÁRIO (o card) volta a ser BRANCO */
+  --card-bg: #ffffff;
+  
+  /* 3. A cor das BORDAS volta a ser a do tema claro */
+  --border-color: #dee2e6;
+  
+  /* 4. A cor do TEXTO dentro do formulário volta a ser ESCURA */
+  --text-color: #212529;
   --label-color: #343a40;
-  --placeholder-color: #888888;
-  --button-bg: #8c2a2a;
-  --button-hover-bg: #a4161a;
+  --placeholder-color: #bcbdad;
+  
+  /* Cores do botão para consistência com a marca */
+  --button-bg: #ae1a16;
+  --button-hover-bg: #c93d41;
+}
+
+/* Regra específica para o modo escuro do cabeçalho */
+[data-theme="dark"] .page-header h2,
+[data-theme="dark"] .page-header p {
+  color: #EAEAEA;
 }
 
 /* ====================================================
@@ -41,10 +56,12 @@
   margin-bottom: 20px;
 }
 
+.page-header h2,
 .page-header p {
-  font-size: 14px;
-  color: #6c757d;
+  /* No modo escuro, o texto do cabeçalho deve ser claro */
+  color: var(--text-color); 
 }
+
 
 /* ========================================================
    Card Principal do Formulário
@@ -56,8 +73,9 @@
   padding: 2.5rem;
   border: 1px solid var(--border-color);
   box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
+
 
 /* ======================================================
    Fieldsets
@@ -180,6 +198,21 @@ textarea {
   align-items: end;
 }
 
+/* =====================================
+ CORREÇÃO FINAL PARA TEXTOS 
+======================================== */ 
+fieldset legend,
+.form-group label,
+.form-check-item label,
+.assinatura p {
+  color: var(--label-color) !important; /* Usamos !important para garantir a prioridade */
+  font-weight: 600;
+}
+
+.ome-text {
+  color: var(--text-muted-color);
+}
+
 /*==============================================================
    Checkboxes e Radios Customizados
 ==============================================================*/
@@ -299,7 +332,7 @@ input[type="radio"]:checked {
 /* Container principal das subseções */
 .sub-section {
   border: 1px solid var(--border-color);
-  padding: 1rem; /* AUMENTAMOS O PADDING AQUI (antes era 15px) */
+  padding: 1rem; 
   margin-bottom: 20px;
   border-radius: 8px;
 }
@@ -310,7 +343,7 @@ input[type="radio"]:checked {
   padding: 0 2px;
   margin-left: 2px;
   color: var(--label-color);
-  margin-bottom: 1rem; /* ADICIONAMOS ESTA LINHA PARA CRIAR A DISTÂNCIA */
+  margin-bottom: 1rem; /* LINHA PARA CRIAR A DISTÂNCIA */
 }
 
 
@@ -334,7 +367,6 @@ input[type="radio"]:checked {
   margin-left: 0;
   width: auto;
 }
-
 
 /* Grid para os Inputs das Viaturas e Guarnições */
 .viatura-inputs-grid {
@@ -488,13 +520,14 @@ cursor: pointer;
 }
 
 /* Também unificamos a regra de foco para consistência */
-.form-group-grid-4-col input:focus,
-.guarnicao-grid input:focus {
-  border-color: var(--button-bg);
-  box-shadow: 0 0 0 3px rgba(174, 26, 22, 0.2);
-  outline: none;
-  
+.guarnicao-grid input[type="text"]:focus,
+.guarnicao-grid input[type="date"]:focus {
+  border-color: var(--button-bg) !important; /* vermelho bombeiro */
+  border-width: 1.5px !important; /* linha fina e elegante */
+  box-shadow: none !important; /* remove o brilho */
+  outline: none !important; /* remove o contorno padrão */
 }
+
 .guarnicao-grid {
   display: grid;
   
@@ -506,9 +539,8 @@ cursor: pointer;
   gap: 1rem; /* 1rem de espaço vertical e horizontal */
   
   /* Adiciona uma separação visual da linha de cima */
-  margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--border-color);
+
 }
 
 /*======================================================
@@ -516,7 +548,7 @@ cursor: pointer;
    ===================================================== */
 .assinatura {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 60px;
 }
 
 .assinatura p {
@@ -532,7 +564,10 @@ cursor: pointer;
   border-bottom: 1px solid #000; /* cria a linha */
 }
 
-/* Container alinhado horizontalmente para o "Outro relatório específico" */
+
+/* ==================================================
+Container alinhado horizontalmente para o "Outro relatório específico" 
+======================================================*/
 .form-group-inline {
   display: flex;
   align-items: center;
@@ -668,7 +703,7 @@ cursor: pointer;
 }
 
 /* =================================================================
-  REGRA UNIFICADA DE FOCO PARA TODO O FORMULÁRIO (VERSÃO FINAL)
+  REGRA UNIFICADA DE FOCO PARA TODO O FORMULÁRIO 
   ================================================================= */
 
 /* Para campos de texto, select e textarea */
@@ -688,3 +723,27 @@ input[type="checkbox"]:focus-visible,
 input[type="radio"]:focus-visible {
   border-color: var(--button-hover-bg); /* Usamos o mesmo vermelho escuro para consistência */
 }
+
+/* ========================================================
+   AJUSTES FINAIS - CAMPO "OUTRO"
+   ======================================================== */
+.apoio-checkbox-grid input[type="text"],
+.form-group-inline input[type="text"] {
+  border-radius: 8px !important;
+  border: 1px solid #ced4da !important;
+  padding: 10px 12px !important;
+  font-size: 14px;
+  transition: border-color 0.2s;
+  background-color: var(--page-bg);
+  color: var(--text-color);
+}
+
+/* Foco com linha vermelha sólida, sem brilho */
+.apoio-checkbox-grid input[type="text"]:focus,
+.form-group-inline input[type="text"]:focus {
+  border-color: var(--button-bg) !important; /* vermelho bombeiro */
+  border-width: 2px !important; /* linha um pouco mais marcante */
+  box-shadow: none !important; /* remove completamente o brilho */
+  outline: none !important;
+}
+

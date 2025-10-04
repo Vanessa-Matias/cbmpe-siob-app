@@ -37,10 +37,13 @@ const OcorrenciasPage = () => {
   // Dados estáticos para simulação da tabela de ocorrências.
   // No futuro, estes dados virão de uma API.
   const ocorrencias: Ocorrencia[] = [
-    { id: 'OCR-2025-001', tipo: 'Incêndio', titulo: 'Incêndio em Residência - Rua das Flores', descricao: 'Incêndio em grandes proporções...', status: 'Pendente', prioridade: 'Alta', regiao: 'Recife - Centro', data: '20/01/2025', hora: '12:40', equipe: 'Aguardando designação' },
-    { id: 'OCR-2025-002', tipo: 'Emergência Médica', titulo: 'Acidente de Trânsito - BR-101', descricao: 'Colisão entre dois veículos...', status: 'Em andamento', prioridade: 'Média', regiao: 'Jaboatão dos Guararapes', data: '20/01/2025', hora: '11:55', equipe: 'Por: Sgt. Oliveira' },
-    { id: 'OCR-2025-003', tipo: 'Acidente', titulo: 'Emergência Médica - Idoso com Mal Súbito', descricao: 'Homem de 78 anos com suspeita de AVC...', status: 'Encerrado', prioridade: 'Baixa', regiao: 'Olinda', data: '20/01/2025', hora: '11:15', equipe: 'Por: Sgt. Oliveira' },
-    { id: 'OCR-2025-004', tipo: 'Resgate', titulo: 'Resgate em altura - Prédio Residencial', descricao: 'Gato preso e janela do 8º andar...', status: 'Encerrado', prioridade: 'Baixa', regiao: 'Recife - Boa Viagem', data: '20/01/2025', hora: '11:15', equipe: 'Por: Sgt. Oliveira' },
+    { id: 'OCR-2025-001', tipo: 'Incêndio', titulo: 'Incêndio em Residência - Rua das Flores', descricao: '', status: 'Pendente', prioridade: 'Alta', regiao: 'Recife - Centro', data: '20/01/2025', hora: '12:40', equipe: 'Aguardando designação' },
+
+    { id: 'OCR-2025-002', tipo: 'Emergência Médica', titulo: 'Acidente de Trânsito - BR-101', descricao: '', status: 'Em andamento', prioridade: 'Média', regiao: 'Jaboatão dos Guararapes', data: '20/01/2025', hora: '11:55', equipe: 'Por: Sgt. Oliveira' },
+
+    { id: 'OCR-2025-003', tipo: 'Acidente', titulo: 'Emergência Médica - Idoso com Mal Súbito', descricao: '', status: 'Encerrado', prioridade: 'Baixa', regiao: 'Olinda - Centro', data: '20/01/2025', hora: '11:15', equipe: 'Por: Sgt. Oliveira' },
+
+    { id: 'OCR-2025-004', tipo: 'Resgate', titulo: 'Resgate em altura - Prédio Residencial', descricao: '', status: 'Encerrado', prioridade: 'Baixa', regiao: 'Recife - Boa Viagem', data: '20/01/2025', hora: '11:15', equipe: 'Por: Sgt. Oliveira' },
   ];
 
   // Define as listas de opções para cada filtro.

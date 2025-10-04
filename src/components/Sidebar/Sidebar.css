@@ -2,7 +2,10 @@
    Estilos da Barra Lateral (Sidebar.css)
    ========================================================================== */
 
-/* Container principal que gerencia a visibilidade e o fundo escuro (overlay). */
+
+/*==========================================================
+Container principal que gerencia a visibilidade e o fundo escuro (overlay). 
+==============================================================*/
 .sidebar-container {
   position: fixed;
   top: 0;
@@ -58,7 +61,9 @@
   transform: translateX(0);
 }
 
-/* Cabeçalho do menu (logo e botão de fechar). */
+/*===============================================
+      Cabeçalho do menu (logo e botão de fechar). 
+===================================================*/
 .sidebar-header {
   display: flex;
   justify-content: space-between;
@@ -102,7 +107,9 @@
   cursor: pointer;
 }
 
-/* Estilos para o texto ao lado da logo. */
+/*============================================
+     Estilos para o texto ao lado da logo. 
+================================================*/
 .sidebar-logo-text {
   display: flex;
   flex-direction: column;
@@ -118,7 +125,9 @@
   opacity: 0.8;
 }
 
-/* Menu de navegação. */
+/*=================================
+        Menu de navegação. 
+===================================*/
 .sidebar-nav p {
   font-size: 12px;
   text-transform: uppercase;
@@ -144,17 +153,23 @@
   transition: background-color 0.2s ease;
 }
 
-/* Efeito visual ao passar o mouse sobre um item do menu. */
+/*========================================================
+    Efeito visual ao passar o mouse sobre um item do menu. 
+==========================================================*/
 .sidebar-nav li a:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Estilo para o link da página que está ativa no momento. */
+/*=============================================================
+    Estilo para o link da página que está ativa no momento. 
+===============================================================*/
 .sidebar-nav li a.active-link {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-/* Rodapé do menu (perfil do usuário e botão de sair). */
+/*===========================================================
+      Rodapé do menu (perfil do usuário e botão de sair). 
+============================================================*/
 .sidebar-footer {
   margin-top: auto; /* Empurra o rodapé para o fim do menu. */
   padding-top: 24px;
@@ -208,4 +223,36 @@
 .logout-button-sidebar:hover {
   background-color: rgba(0, 0, 0, 0.2);
   border-color: rgba(255, 255, 255, 0.5);
+}
+
+.footer-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.logout-button-sidebar {
+  flex-grow: 1; /* Faz o botão Sair ocupar mais espaço */
+  /* ... (o resto do estilo que você já tem) */
+}
+
+/*========================================================
+  Estilo para o novo botão de tema dentro do Sidebar 
+=========================================================*/
+.theme-toggle-button-sidebar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.2s ease;
+}
+
+.theme-toggle-button-sidebar:hover {
+  background-color: rgba(0, 0, 0, 0.2);
 }

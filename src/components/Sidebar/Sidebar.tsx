@@ -48,16 +48,23 @@ const Sidebar = ({ isOpen, onClose, toggleTheme }: SidebarProps) => {
         </nav>
 
         <footer className="sidebar-footer">
-          <div className="user-profile">
-            <div className="user-avatar">CS</div>
-            <div className="user-info">
-              <span>Comandante Silva</span>
-              <small>Admin</small>
-            </div>
+  <div className="user-profile">
+    <div className="user-avatar">CS</div>
+    <div className="user-info">
+      <span>Comandante Silva</span>
+      <small>Admin</small>
+    </div>
+  </div>
+          {/* Container para alinhar os botões do rodapé */}
+          <div className="footer-actions">
+            <button className="logout-button-sidebar">
+              <FaArrowRightFromBracket /> <span>Sair</span>
+            </button>
+            
+            <button className="theme-toggle-button-sidebar" onClick={toggleTheme} title="Alternar tema">
+              {currentTheme === 'dark' ? <FaSun /> : <FaMoon />}
+            </button>
           </div>
-          <button className="logout-button-sidebar">
-            <FaArrowRightFromBracket /> Sair
-          </button>
         </footer>
       </aside>
     </div>
