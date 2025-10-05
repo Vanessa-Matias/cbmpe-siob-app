@@ -1,113 +1,119 @@
 /**
  * @file FormularioPage.tsx
- * @description Página que serve como container para o fluxo de criação ou edição de ocorrências.
+ * @description Componente "container" ou "inteligente". Gerencia o estado
+ * e a lógica para o fluxo de criação/edição de ocorrências.
  */
 
+//========== Imports =================
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import FormularioBasico from './FormularioBasico';
 import './FormularioPage.css'; 
 
+// 1. IMPORTE A IMAGEM DO BRASÃO AQUI
+import brasaoLogo from '../../assets/brasao.cbm.pe.png'; // Verifique se o caminho e o nome estão corretos
+
 const FormularioPage = () => {
+  //========== Hooks ===============
+  // Hook para ler parâmetros da URL (ex: ID da ocorrência)
   const { id } = useParams<{ id: string }>();
-  const isEditing = Boolean(id);
+  // Hook para controlar a navegação entre as páginas
+  const navigate = useNavigate();
 
-  const pageTitle = isEditing ? `Editando Ocorrência: #${id}` : 'Nova Ocorrência';
-  const pageSubtitle = isEditing
-    ? `Altere os dados necessários da ocorrência`
-    : 'Registre uma nova ocorrência no sistema';
-
-  // ===== ESTADO CENTRALIZADO =====
+  //================= State ===============
+  // Objeto de estado único para armazenar todos os dados do formulário
   const [formData, setFormData] = useState({
     pontoBase: '', viaturaTipo: '', viaturaOrdem: '', numAviso: '', dataAviso: '',
-
     horaRecebimento: '', formaAcionamento: '', situacaoOcorrencia: '', motivoNaoAtendida: '', outroMotivoNaoAtendida: '',
-
     localAcionamento: '', rua: '', numero: '', aptoSala: '', bairro: '', telefone: '', municipio: '', uf: 'PE', areaOBM: 'S', outraUF: '', coordenadas: '', codigoLocal: '', referencia: '',
 
     nomeSolicitante: '', cpfRg: '', orgaoExpedidor: '', idadeSolicitante: '', sexoSolicitante: '', contatoTelefonico: '',
-
     horarioSaida: '', horarioNoLocal: '', horarioSaidaLocal: '', horarioChegadaDestino: '', horarioRetornoQuartel: '', hodometroSaida: '', hodometroLocal: '', primeiraVtrPrefixo: '', primeiraVtrPlaca: '',
 
-    apoio: { celpe: false, samu: false, compesa: false, defesaCivil: false, orgaoAmbiental: false, pmpe: false, prf: false, guardaMunicipal: false, ffaa: false, outro: false, outroDesc: '' },
+    apoio: { celpe: false, samu: false, compesa: false, defesaCivil: false, orgaoAmbiental: false, pmpe: false, prf: false, guardaDeTransitoMunicipal: false, ffaa: false, outro: false, outroDesc: '' },
+
     viatura1: '', guarnicao1: '', viatura2: '', guarnicao2: '', viatura3: '', guarnicao3: '',
-
     historico: '',
-
     dificuldades: { tempoDeslocamento: false, obmProximaAtendimento: false, faltaIncorrecaoDados: false, obmSemViatura: false, faltaSinalizacao: false, transitoIntenso: false, areaDificilAcesso: false, paneEquipamento: false, paneViatura: false, faltaMaterial: false, naoHouve: false, outro: false },
-    eventoNaturezaInicial: '',
 
+    eventoNaturezaInicial: '',
     formulariosPreenchidos: { atdPreHospitalar: false, salvamento: false, atividadeComunitaria: false, prevencao: false, formularioGerenciamento: false, produtoPerigoso: false, incendio: false, outroRelatorio: false, outroRelatorioEspec: '' },
 
     qtdTotalVitimas: '', feridas: '', fatais: '', ilesas: '', desaparecidas: '',
     veiculosEnvolvidos: 'NAO',
     veiculo1: { modelo: '', cor: '', placa: '', estado: '', nomeCondutor: '', rgCpfCondutor: '', orgaoExpCondutor: '' },
     veiculo2: { modelo: '', cor: '', placa: '', estado: '', nomeCondutor: '', rgCpfCondutor: '', orgaoExpCondutor: '' },
-
     guarnicaoEmpenhada: { postoGrad: '', matriculaCmt: '', nomeGuerraCmt: '', vistoDivisao: '', componentes: ['', '', '', '', '', ''] }
   });
 
-  // ===== HANDLE CHANGE GENÉRICO (VERSÃO FINAL E ROBUSTA) =====
-const handleChange = (
-  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-) => {
-  const { name, value, type } = e.target;
-  const finalValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
-  const parts = name.split('.');
+  /* ========================= Handlers (Manipuladores de Eventos) ===================== /*
+   * Handler genérico e robusto para todos os inputs.
+   * Suporta dados aninhados em até 3 níveis.
+   */
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    const finalValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+    const parts = name.split('.');
 
-  // CASO 1: Três níveis de profundidade (ex: guarnicaoEmpenhada.componentes.0)
-  // Este bloco é específico para atualizar um item dentro de um array aninhado.
-  if (parts.length === 3) {
-    const [key, subkey, indexStr] = parts;
-    const index = parseInt(indexStr, 10);
+    if (parts.length === 3) {
+      const [key, subkey, indexStr] = parts;
+      const index = parseInt(indexStr, 10);
+      setFormData(prev => {
+        const newArray = [...(prev as any)[key][subkey]];
+        newArray[index] = finalValue;
+        return { ...prev, [key]: { ...(prev as any)[key], [subkey]: newArray } };
+      });
+    } else if (parts.length === 2) {
+      const [key, subkey] = parts;
+      setFormData(prev => ({ ...prev, [key]: { ...(prev as any)[key], [subkey]: finalValue } }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: finalValue }));
+    }
+  };
 
-    setFormData(prev => {
-      // Cria uma cópia do array que queremos modificar
-      const newArray = [...(prev as any)[key][subkey]];
-      // Atualiza apenas o elemento no índice correto
-      newArray[index] = finalValue;
+  /* =================== Handler para o botão 'Avançar' ============= */
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Dados da ocorrência:", formData);
+    alert("Próxima etapa! (Verifique o console)");
+  };
 
-      // Retorna o novo estado com o array atualizado
-      return {
-        ...prev,
-        [key]: {
-          ...(prev as any)[key],
-          [subkey]: newArray
-        }
-      };
-    });
+  /* ================== Handler para o botão 'Cancelar' ============== */
+  const handleCancel = () => {
+    navigate('/ocorrencias');
+  };
 
-  // CASO 2: Dois níveis de profundidade (ex: veiculo1.modelo)
-  } else if (parts.length === 2) {
-    const [key, subkey] = parts;
-    setFormData(prev => ({
-      ...prev,
-      [key]: {
-        ...(prev as any)[key],
-        [subkey]: finalValue
-      }
-    }));
-    
-  // CASO 3: Nível único (ex: pontoBase)
-  } else {
-    setFormData(prev => ({
-      ...prev,
-      [name]: finalValue
-    }));
-  }
-};
-  return (
+  /* ================ Lógica de Renderização ================== */
+  const isEditing = Boolean(id);
+  const pageTitle = isEditing ? `Editando Ocorrência: #${id}` : 'Nova Ocorrência';
+  const pageSubtitle = 'Registre uma nova ocorrência no sistema';
+
+    return (
     <div className="page-container">
-      <header className="page-header">
-        <div className="page-title">
-          <h2>{pageTitle}</h2>
-          <p>{pageSubtitle}</p>
-        </div>
-      </header>
+      {/* O <header> foi movido para DENTRO do novo card unificado */}
+      <div className="unified-card"> 
+            <header className="page-header">
+            {/* O título e subtítulo ficam na div .page-title */}
+            <div className="page-title">
+              <h2>{pageTitle}</h2>
+              <p>{pageSubtitle}</p>
+            </div>
 
-      <FormularioBasico formData={formData} handleChange={handleChange} />
+            {/* A logo agora é um "irmão" do .page-title, diretamente dentro do header */}
+            <img src={brasaoLogo} alt="Brasão CBMPE" className="header-logo" />
+          </header>
+
+        {/* O FormularioBasico agora é renderizado logo abaixo do header, dentro do mesmo card */}
+        <FormularioBasico 
+          formData={formData} 
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          handleCancel={handleCancel}
+        />
+      </div>
     </div>
   );
 };
+
 
 export default FormularioPage;

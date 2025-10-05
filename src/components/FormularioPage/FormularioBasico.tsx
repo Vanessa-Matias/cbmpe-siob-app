@@ -1,14 +1,23 @@
+/**
+ * @file FormularioBasico.tsx
+ * @description Componente de "apresentação" que renderiza a UI completa do formulário básico.
+ * Recebe todos os dados e funções de seu componente pai via props.
+ */
 import React from 'react';
 import './FormularioPage.css';
 
+// Define o "contrato" de props que este componente espera receber do pai.
 interface Props {
   formData: any;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  handleSubmit: (e: React.FormEvent) => void;
+  handleCancel: () => void;
 }
 
-const FormularioBasico: React.FC<Props> = ({ formData, handleChange }) => {
+const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmit, handleCancel }) => {
   return (
-    <form className="form-card">
+    // O formulário invoca a função handleSubmit do pai ao ser submetido.
+    <form className="form-card" onSubmit={handleSubmit}>
 
       {/* --- SEÇÃO 1: CABEÇALHO --- */}
       <div className="top-header-grid">
@@ -450,10 +459,18 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange }) => {
         )}
       </fieldset>
 
-      {/* --- SEÇÃO 11: HISTÓRICO --- */}
-      <fieldset>
-        <legend>Histórico</legend>
-        <textarea name="historico" rows={8} value={formData.historico} onChange={handleChange} placeholder="Descreva a ocorrência..."></textarea>
+            {/* --- SEÇÃO 11: HISTÓRICO --- */}
+            <fieldset>
+              <legend>Histórico</legend>
+              <div className="form-group">
+          <textarea 
+            name="historico" 
+            rows={8} 
+            value={formData.historico} 
+            onChange={handleChange} 
+            placeholder="Descreva a ocorrência..."
+          ></textarea>
+        </div>
       </fieldset>
 
       {/* --- SEÇÃO 12: GUARNIÇÃO EMPENHADA --- */}
@@ -473,9 +490,18 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange }) => {
         <div className="assinatura"><p>Assinatura</p></div>
       </fieldset>
 
-      {/* --- BOTÃO --- */}
+      {/* --- BOTÕES DE AÇÃO --- */}
       <div className="form-actions">
-        <button type="submit" className="submit-button">Salvar Ocorrência</button>
+        <button 
+          type="button" 
+          className="button-cancel" 
+          onClick={handleCancel}
+        >
+          Cancelar
+        </button>
+        <button type="submit" className="submit-button">
+          Avançar
+        </button>
       </div>
 
     </form>

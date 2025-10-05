@@ -4,6 +4,7 @@
 :root {
   --page-bg: #f8f9fa;
   --card-bg: #ffffff;
+  --input-bg: #fdfdfd;
   --border-color: #cbcdd0;
   --text-color: #212529;
   --label-color: #343a40;
@@ -16,23 +17,28 @@
    Variáveis de Tema (Escuro)
    ===================================================================== */
 [data-theme="dark"] {
-  /* 1. O fundo da PÁGINA fica escuro */
+  /* 1. O fundo da PÁGINA fica claro */
   --page-bg: #ffffff;
   
-  /* 2. O fundo do FORMULÁRIO (o card) volta a ser BRANCO */
+  /* 2. O formulário (card) e seu conteúdo permanecem claros */
   --card-bg: #ffffff;
-  
-  /* 3. A cor das BORDAS volta a ser a do tema claro */
+  --input-bg: #fdfdfd;
   --border-color: #dee2e6;
-  
-  /* 4. A cor do TEXTO dentro do formulário volta a ser ESCURA */
   --text-color: #212529;
   --label-color: #343a40;
-  --placeholder-color: #bcbdad;
-  
+  --text-muted-color: #6c757d;
+  --placeholder-color: #adb5bd;
   /* Cores do botão para consistência com a marca */
   --button-bg: #ae1a16;
   --button-hover-bg: #c93d41;
+}
+
+/* --- Estilos Globais --- */
+body {
+  background-color: var(--page-bg);
+  color: var(--text-color);
+  transition: background-color 0.3s;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* Regra específica para o modo escuro do cabeçalho */
@@ -56,30 +62,34 @@
   margin-bottom: 20px;
 }
 
+/* O texto do cabeçalho principal usa a cor padrão... */
 .page-header h2,
 .page-header p {
-  /* No modo escuro, o texto do cabeçalho deve ser claro */
-  color: var(--text-color); 
+  color: var(--label-color);
+  transition: color 0.3s;
 }
 
+/* ... exceto no modo escuro, onde ele deve ser claro. */
+[data-theme="dark"] .page-header h2,
+[data-theme="dark"] .page-header p {
+  color: #EAEAEA;
+}
 
-/* ========================================================
+/*=================================================
    Card Principal do Formulário
-   ======================================================== */
-.form-card {
-  background-color: var(--card-bg);
-  border-radius: 12px;
+=================================================== */
+.form-card { 
+  background-color: transparent; /* 1. Fundo fica transparente */
+  border-radius: 0;
   margin-top: 2px;
-  padding: 2.5rem;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  padding: 0;                   /* 2. Removemos o padding */
+  border: none;                   /* 3. Removemos a borda */
+  box-shadow: none;               /* 4. Removemos a sombra */
 }
 
-
-/* ======================================================
-   Fieldsets
-   ====================================================== */
+/*=================================================
+          Fieldsets
+==================================================== */
 fieldset {
   border: 1px solid var(--border-color);
   border-radius: 10px;
@@ -301,14 +311,14 @@ input[type="radio"]:checked {
 }
 
 /* ========================================================
-   Ações do Formulário
+   Ações do Formulário (botões cancelar e avançar)
    ======================================================== */
 .form-actions {
   display: flex;
   justify-content: flex-end;
+  gap: 1rem; /* O 'gap' pertence aqui, no container dos botões */
   margin-top: 16px;
 }
-
 .submit-button {
   background-color: var(--button-bg);
   color: white;
@@ -470,9 +480,6 @@ cursor: pointer;
 .form-group input,
 .form-group select, 
 .form-group textarea {
- 
-}
-  textarea[name="historico"] {
   width: 100%;
   padding: 10px 12px;
   border-radius: 8px;
@@ -481,7 +488,7 @@ cursor: pointer;
   box-sizing: border-box;
   background-color: var(--page-bg);
   color: var(--text-color);
-  font-family: inherit; /* Garante a mesma fonte em todos */
+  font-family: inherit;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
  
@@ -497,9 +504,9 @@ cursor: pointer;
 
 /* 3. REGRA ESPECÍFICA PARA O TEXTAREA */
 /* Apenas para propriedades exclusivas do textarea */
-.form-group textarea {
+.form-card .form-group textarea {
   resize: vertical;
-  min-height: 150px;
+  min-height: 150px !important; /* !important garante que esta regra vença */
 }
 
 /*======================================================
@@ -564,6 +571,35 @@ cursor: pointer;
   border-bottom: 1px solid #000; /* cria a linha */
 }
 
+/* ============================
+      Botão cancelar
+================================*/
+.button-cancel {
+  /* Aparência */
+  background-color: transparent;
+  color: var(--text-muted-color);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  
+  /* Tamanho e Espaçamento */
+  padding: 10px 26px; 
+  font-size: 16px;
+  font-weight: 500;
+  
+  /* Comportamento */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Efeito ao passar o mouse */
+.button-cancel:hover {
+  /* Borda e texto ficam com o vermelho principal do tema */
+  border-color: var(--button-bg); 
+  color: var(--button-bg);
+
+  /* Fundo com um vermelho bem claro e suave (5% de opacidade da cor do botão) */
+  background-color: rgba(174, 26, 22, 0.05); 
+}
 
 /* ==================================================
 Container alinhado horizontalmente para o "Outro relatório específico" 
@@ -726,7 +762,7 @@ input[type="radio"]:focus-visible {
 
 /* ========================================================
    AJUSTES FINAIS - CAMPO "OUTRO"
-   ======================================================== */
+======================================================== */
 .apoio-checkbox-grid input[type="text"],
 .form-group-inline input[type="text"] {
   border-radius: 8px !important;
@@ -747,3 +783,38 @@ input[type="radio"]:focus-visible {
   outline: none !important;
 }
 
+/*========================================
+      Estilos para o Cabeçalho com Logo 
+===========================================*/
+
+/* Transforma o cabeçalho em um container flex */
+.unified-card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  margin-top: 2px;
+  padding: 2.5rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between; /* Empurra o título para a esquerda e a logo para a direita */
+  align-items: center;
+  
+  /* Mantém a linha separadora */
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-title {
+  /* Remove a necessidade de flex aqui, o pai já está cuidando disso */
+  text-align: left;
+}
+
+.header-logo {
+  height: 120px; 
+  width: auto;
+}
