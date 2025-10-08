@@ -12,9 +12,10 @@ interface Props {
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
   handleSubmit: (e: React.FormEvent) => void;
   handleCancel: () => void;
+  submitText: string;
 }
 
-const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmit, handleCancel }) => {
+const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmit, handleCancel, submitText }) => {
   return (
     // O formulário invoca a função handleSubmit do pai ao ser submetido.
     <form className="form-card" onSubmit={handleSubmit}>
@@ -500,7 +501,7 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
           Cancelar
         </button>
         <button type="submit" className="submit-button">
-          Avançar
+          {submitText}
         </button>
       </div>
 
