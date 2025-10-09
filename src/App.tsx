@@ -13,6 +13,7 @@ import DashboardLayout from './components/DashboardPage/DashboardPage';
 import OcorrenciasPage from './components/OcorrenciasPage/OcorrenciasPage';
 import DashboardContent from './components/DashboardContent/DashboardContent';
 import RelatoriosPage from './components/RelatoriosPage/RelatoriosPage';
+import UsuariosPage from './Pages/UsuariosPage/UsuariosPage';
 import FormularioPage from './components/FormularioPage/FormularioPage';
 
 /**
@@ -65,11 +66,10 @@ function App() {
               <Route path="ocorrencias" element={<OcorrenciasPage />} />
               {/* Rota para a página de relatórios. */}
               <Route path="relatorios" element={<RelatoriosPage />} />
-
-              {/* ===== NOVA ROTA ADICIONADA AQUI ===== */}
+              {/* ===== Rota de usuários ===== */}
+              <Route path="usuarios" element={<UsuariosPage />} />
               {/* Rota para a página de CRIAÇÃO de um novo formulário. */}
               <Route path="formulario" element={<FormularioPage />} />
-
               {/* Rota dinâmica para EDITAR o formulário de uma ocorrência específica. */}
               <Route path="ocorrencia/:id/formulario" element={<FormularioPage />} />
             </Route>

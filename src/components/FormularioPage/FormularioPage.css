@@ -75,11 +75,20 @@ body {
   transition: color 0.3s;
 }
 
-/* ... exceto no modo escuro, onde ele deve ser claro. */
-[data-theme="dark"] .page-header h2,
-[data-theme="dark"] .page-header p {
-  color: #363333;
+/**
+ * Garante que o título e subtítulo do formulário mantenham a cor escura
+ * em ambos os temas, já que o fundo do card é sempre claro.
+ * O seletor `html:not([data-theme="dark"])` aplica a cor apenas se o tema NÃO for escuro,
+ * enquanto a segunda regra força a cor escura no tema escuro.
+ */ 
+.unified-card .page-header h2,
+.unified-card .page-header p {
+    color: var(--label-color); /* Cor padrão para o tema claro */
+}
 
+[data-theme="dark"] .unified-card .page-header h2,
+[data-theme="dark"] .unified-card .page-header p {
+    color: #343a40 !important; /* Cor escura para o tema escuro, com !important para garantir prioridade */
 }
 
 /*=================================================
