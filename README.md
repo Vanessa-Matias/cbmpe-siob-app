@@ -1,46 +1,85 @@
-# Getting Started with Create React App
+## 📌 Sobre o Projeto
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+O **SIOB (Sistema Integrado de Ocorrências de Bombeiros)** é uma solução digital completa desenvolvida para **modernizar e otimizar o processo de coleta e gestão de dados de ocorrências em campo** para o **Corpo de Bombeiros Militar de Pernambuco (CBMPE)**.
 
-## Available Scripts
+A plataforma substitui o preenchimento manual de formulários em papel por um sistema **digital eficiente e responsivo**, que funciona **tanto online quanto offline**, garantindo a integridade e agilidade das informações.
 
-In the project directory, you can run:
+O sistema é composto por duas frentes principais:
 
-### `npm start`
+### 📱 Aplicativo de Campo (PWA / Mobile)
+Ferramenta robusta para os militares em atendimento, permitindo o **registro padronizado de ocorrências em tempo real**, com captura de mídias (fotos, vídeos), **geolocalização e assinaturas digitais**.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 💻 Painel Administrativo (Web)
+Plataforma central para o comando e analistas, oferecendo **dashboards, relatórios, gestão de usuários e visão geral das operações registradas**.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+> Este projeto está sendo desenvolvido pela equipe de alunas do **3º período do curso de Análise e Desenvolvimento de Sistemas (2025.2)** da **Faculdade Senac Pernambuco**.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## ✨ Funcionalidades Principais
 
-### `npm run build`
+### 💻 Painel Administrativo (Web)
+- 🔑 **Autenticação e Perfis:** múltiplos níveis de acesso (admin, analista, chefe).  
+- 🔎 **Listagem e Filtro de Ocorrências:** busca por período, tipo, região e status.  
+- 📄 **Visualização de Detalhes:** acesso completo às informações e mídias da ocorrência.  
+- 📊 **Relatórios e Exportação:** relatórios em CSV e PDF.  
+- 👤 **Gestão de Usuários:** CRUD, redefinição de senha e controle de perfis.  
+- 🛡️ **Auditoria e Logs:** rastreabilidade de ações críticas.  
+- 📈 **Dashboard Operacional:** KPIs e gráficos dinâmicos sobre as ocorrências.  
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 📱 Aplicativo de Campo (Mobile)
+- 🔒 **Autenticação Segura:** login com credenciais institucionais.  
+- 📝 **Registro de Ocorrência:** formulários padronizados (Básico, Incêndio, APH, etc.).  
+- 📴 **Modo Offline:** registro de dados sem conexão, com sincronização posterior.  
+- 📍 **Captura de GPS:** localização automática da ocorrência.  
+- 📸 **Captura de Fotos:** anexos diretamente da câmera.  
+- ✍️ **Assinatura Digital:** coleta de assinaturas de testemunhas/vítimas.  
+- 🔄 **Edição Offline:** ajustes antes da sincronização.  
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🛠️ Ferramentas e Tecnologias
 
-### `npm run eject`
+| Categoria | Ferramenta / Tecnologia |
+|------------|--------------------------|
+| **Frontend** | React.js, TypeScript, React Router |
+| **Estilização** | CSS com Variáveis Globais (Temas) |
+| **Backend** | Node.js com Express *(sugerido)* |
+| **Banco de Dados** | MongoDB ou PostgreSQL *(sugerido)* |
+| **Mobile** | React Native *(planejado para próxima fase)* |
+| **Controle de Versão** | Git & GitHub |
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+---
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🚀 Como Executar o Projeto
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+# 1. Clone o repositório
+git clone https://github.com/Vanessa-Matias/cbmpe-siob-app
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+# 2. Acesse a pasta do projeto
+cd cbmpe-app
 
-## Learn More
+# 3. Instale as dependências
+npm install
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# 4. Execute a aplicação
+npm start
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+| Membro             | Responsabilidade(s)                               | LinkedIn   |
+| ------------------ | ------------------------------------------------- | ---------- |
+| **Vanessa Matias** | Desenvolvimento Frontend & Backend                | [Perfil]() |
+| **Wedja Souza**    | Gestão de Projetos, Documentação & UX/UI Designer | [Perfil]() |
+| **Marcela Negrão** | UX/UI Designer & Banco de Dados                   | [Perfil]() |
+| **Wslany Amorim**  | Banco de Dados                                    | [Perfil]() |
+| **Sophia Santos**  | UX/UI Designer                                    | [Perfil]() |
+| **Agnes Soares**   | Documentação                                      | [Perfil]() |
+
+<p align="center">
+  Projeto desenvolvido sob a orientação dos professores
+  <b><a href="https://www.linkedin.com/in/geraldogomes/" target="_blank">Geraldo Gomes</a></b>,
+  <b><a href="https://www.linkedin.com/in/dansoaresfarias/" target="_blank">Danilo Farias</a></b>,
+  <b><a href="https://www.linkedin.com/in/marcos-tenorio/" target="_blank">Marcos Roberto</a></b> e
+  <b><a href="https://www.linkedin.com/in/weltondionisio/" target="_blank">Welton Dionísio</a></b>.<br>
+  <b>Faculdade SENAC Pernambuco</b> — Disciplina de Projeto Integrador.
+</p>
