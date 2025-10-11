@@ -4,7 +4,7 @@ O **SIOB (Sistema Integrado de Ocorrências de Bombeiros)** é uma solução dig
 
 A plataforma substitui o preenchimento manual de formulários em papel por um sistema **digital eficiente e responsivo**, que funciona **tanto online quanto offline**, garantindo a integridade e agilidade das informações.
 
-O sistema é composto por duas frentes principais:
+## O sistema é composto por duas frentes principais:
 
 ### 📱 Aplicativo de Campo (PWA / Mobile)
 Ferramenta robusta para os militares em atendimento, permitindo o **registro padronizado de ocorrências em tempo real**, com captura de mídias (fotos, vídeos), **geolocalização e assinaturas digitais**.
@@ -83,7 +83,7 @@ Após executar o comando start, abra seu navegador e acesse http://localhost:300
 | **Marcela Negrão** | UX/UI Designer & Banco de Dados                   | `(adicionar)`                                              | [Perfil](https://www.linkedin.com/in/marcela-negrão-0974582a5/)        |
 | **Wslany Amorim** | Banco de Dados                                    | [wslanyl](https://github.com/wslanyl)                      | [Perfil](https://www.linkedin.com/in/wslanylima/)                     |
 | **Sophia Santos** | UX/UI Designer                                    | [sophiasousaa](https://github.com/sophiasousaa)            | [Perfil](https://www.linkedin.com/in/santos-sophia/)                  |
-| **Agnes Ribeiro** | Documentação                                      | [AgnesRibeiro](https://github.com/AgnesRibeiro/AgnesRibeiro) | [Perfil](https://www.linkedin.com/in/agnes-ribeiro-6446392ab/)        |
+| **Agnes Ribeiro** | Documentação                                      | [AgnesRibeiro](https://github.com/AgnesRibeiro) | [Perfil](https://www.linkedin.com/in/agnes-ribeiro-6446392ab/)        |
 
 ---
 
