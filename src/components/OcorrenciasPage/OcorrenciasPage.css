@@ -238,7 +238,7 @@ Badges de Status e Prioridade (cores fixas para destaque).
     border-bottom: 1px solid var(--color-border);
   }
 
-  /* ========================================================
+  /*==========================================================
   Atributo 'data-label' do HTML para criar o rótulo da coluna.
   ============================================================ */
   .ocorrencias-table td::before {

@@ -14,6 +14,8 @@ import OcorrenciasPage from './components/OcorrenciasPage/OcorrenciasPage';
 import DashboardContent from './components/DashboardContent/DashboardContent';
 import RelatoriosPage from './components/RelatoriosPage/RelatoriosPage';
 import UsuariosPage from './Pages/UsuariosPage/UsuariosPage';
+import AuditoriaPage from './components/AuditoriaPage/AuditoriaPage';
+import ConfiguracoesPage from './components/ConfiguracoesPage/ConfiguracoesPage';
 import FormularioPage from './components/FormularioPage/FormularioPage';
 
 /**
@@ -60,18 +62,31 @@ function App() {
             <Route path="/" element={<DashboardLayout toggleTheme={toggleTheme} />}>
               {/* Rota inicial ('/'), redireciona para a página principal do dashboard. */}
               <Route index element={<Navigate to="/dashboard" />} />
-              {/* Rota para o conteúdo do dashboard. */}
+
+              {/*======== Rota para o conteúdo do dashboard ========= */}
               <Route path="dashboard" element={<DashboardContent />} />
-              {/* Rota para a página de ocorrências. */}
+
+              {/*======== Rota para a página de ocorrências ========== */}
               <Route path="ocorrencias" element={<OcorrenciasPage />} />
-              {/* Rota para a página de relatórios. */}
+
+              {/*======== Rota para a página de relatórios =========== */}
               <Route path="relatorios" element={<RelatoriosPage />} />
-              {/* ===== Rota de usuários ===== */}
+
+              {/* ================== Rota de usuários ================ */}
               <Route path="usuarios" element={<UsuariosPage />} />
-              {/* Rota para a página de CRIAÇÃO de um novo formulário. */}
+
+              {/* ================ Rota de Auditoria ================= */}
+              <Route path='auditoria' element={<AuditoriaPage/>} />
+
+              {/* =============== Rota de Configuração ================ */}
+              <Route path='configuracoes' element={<ConfiguracoesPage/>} />
+
+              {/*= Rota para a página de CRIAÇÃO de um novo formulário =*/}
               <Route path="formulario" element={<FormularioPage />} />
-              {/* Rota dinâmica para EDITAR o formulário de uma ocorrência específica. */}
+
+              {/* Rota dinâmica para editar o formulário de uma ocorrência específica. */}
               <Route path="ocorrencia/:id/formulario" element={<FormularioPage />} />
+
             </Route>
             {/* Se um usuário logado tentar acessar /login, ele é redirecionado de volta para o dashboard. */}
             <Route path="/login" element={<Navigate to="/dashboard" />} />

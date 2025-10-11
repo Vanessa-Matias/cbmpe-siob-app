@@ -51,7 +51,7 @@ const Sidebar = ({ isOpen, onClose, toggleTheme }: SidebarProps) => {
   <div className="user-profile">
     <div className="user-avatar">CS</div>
     <div className="user-info">
-      <span>Comandante Silva</span>
+      <span>Capitã Vanessa</span>
       <small>Admin</small>
     </div>
   </div>
