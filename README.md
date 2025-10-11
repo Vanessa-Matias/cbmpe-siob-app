@@ -52,24 +52,29 @@ Plataforma central para o comando e analistas, oferecendo **dashboards, relatór
 ---
 
 ## 🚀 Como Executar o Projeto
+
 Para executar o projeto do painel web em seu ambiente de desenvolvimento local, siga os passos abaixo.
 
-1. **Clone o repositório**
+### Clone o Repositório
 ```bash
-git clone https://github.com/Vanessa-Matias/cbmpe-siob-app
+git clone [https://github.com/Vanessa-Matias/cbmpe-siob-app](https://github.com/Vanessa-Matias/cbmpe-siob-app)
+```
 
 2. **Acesse a pasta do projeto**
 ```bash
 cd cbmpe-siob-app
+```
 
 3. **Instale as dependências**
 ```bash
 npm install
+```
 
 4. **Execute a aplicação**
 ```bash
 npm start
 ```
+
 Após executar o comando start, abra seu navegador e acesse http://localhost:3000 para ver a aplicação em execução.
 
 ---
