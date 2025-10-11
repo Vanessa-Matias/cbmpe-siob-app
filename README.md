@@ -45,35 +45,47 @@ Plataforma central para o comando e analistas, oferecendo **dashboards, relatór
 | **Frontend** | React.js, TypeScript, React Router |
 | **Estilização** | CSS com Variáveis Globais (Temas) |
 | **Backend** | Node.js com Express *(sugerido)* |
-| **Banco de Dados** | MongoDB ou PostgreSQL *(sugerido)* |
+| **Banco de Dados** | MySQL  *(sugerido)* |
 | **Mobile** | React Native *(planejado para próxima fase)* |
 | **Controle de Versão** | Git & GitHub |
 
 ---
 
 ## 🚀 Como Executar o Projeto
+Para executar o projeto do painel web em seu ambiente de desenvolvimento local, siga os passos abaixo.
 
+1. **Clone o repositório**
 ```bash
-# 1. Clone o repositório
 git clone https://github.com/Vanessa-Matias/cbmpe-siob-app
 
-# 2. Acesse a pasta do projeto
-cd cbmpe-app
+2. **Acesse a pasta do projeto**
+```bash
+cd cbmpe-siob-app
 
-# 3. Instale as dependências
+3. **Instale as dependências**
+```bash
 npm install
 
-# 4. Execute a aplicação
+4. **Execute a aplicação**
+```bash
 npm start
+```
+Após executar o comando start, abra seu navegador e acesse http://localhost:3000 para ver a aplicação em execução.
 
-| Membro             | Responsabilidade(s)                               | LinkedIn   |
-| ------------------ | ------------------------------------------------- | ---------- |
-| **Vanessa Matias** | Desenvolvimento Frontend & Backend                | [Perfil]() |
-| **Wedja Souza**    | Gestão de Projetos, Documentação & UX/UI Designer | [Perfil]() |
-| **Marcela Negrão** | UX/UI Designer & Banco de Dados                   | [Perfil]() |
-| **Wslany Amorim**  | Banco de Dados                                    | [Perfil]() |
-| **Sophia Santos**  | UX/UI Designer                                    | [Perfil]() |
-| **Agnes Soares**   | Documentação                                      | [Perfil]() |
+---
+
+## 👩‍💻 Equipe
+
+| Membro             | Responsabilidade(s)                               | GitHub                                                     | LinkedIn                                                              |
+| :----------------- | :------------------------------------------------ | :--------------------------------------------------------- | :-------------------------------------------------------------------- |
+| **Vanessa Matias** | Desenvolvimento Frontend & Backend              | [Vanessa-Matias](https://github.com/Vanessa-Matias)        | [Perfil](https://www.linkedin.com/in/vanessamatiasdev/)               |
+| **Wedja Souza** | Gestão de Projetos, Documentação & UX/UI Designer | [WedjaSousa](https://github.com/WedjaSousa)                | [Perfil](https://www.linkedin.com/in/wedja-sousa-43639b19b/)           |
+| **Marcela Negrão** | UX/UI Designer & Banco de Dados                   | `(adicionar)`                                              | [Perfil](https://www.linkedin.com/in/marcela-negrão-0974582a5/)        |
+| **Wslany Amorim** | Banco de Dados                                    | [wslanyl](https://github.com/wslanyl)                      | [Perfil](https://www.linkedin.com/in/wslanylima/)                     |
+| **Sophia Santos** | UX/UI Designer                                    | [sophiasousaa](https://github.com/sophiasousaa)            | [Perfil](https://www.linkedin.com/in/santos-sophia/)                  |
+| **Agnes Ribeiro** | Documentação                                      | [AgnesRibeiro](https://github.com/AgnesRibeiro/AgnesRibeiro) | [Perfil](https://www.linkedin.com/in/agnes-ribeiro-6446392ab/)        |
+
+---
 
 <p align="center">
   Projeto desenvolvido sob a orientação dos professores
