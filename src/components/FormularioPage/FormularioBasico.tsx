@@ -1,12 +1,11 @@
 /**
  * @file FormularioBasico.tsx
- * @description Componente de "apresentação" que renderiza a UI completa do formulário básico.
- * Recebe todos os dados e funções de seu componente pai via props.
+ * @description Renderiza a UI completa do formulário básico de ocorrência.
+ * Corrigido para compatibilidade com o FormularioPage.tsx e tipagem TSX.
  */
 import React from 'react';
 import './FormularioPage.css';
 
-// Define o "contrato" de props que este componente espera receber do pai.
 interface Props {
   formData: any;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
@@ -16,13 +15,31 @@ interface Props {
 }
 
 const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmit, handleCancel, submitText }) => {
-  return (
-    // O formulário invoca a função handleSubmit do pai ao ser submetido.
-    <form className="form-card" onSubmit={handleSubmit}>
+  // --- Função de captura de localização GPS ---
+  const handleGPSCapture = () => {
+    if (!navigator.geolocation) {
+      alert('Geolocalização não é suportada neste dispositivo.');
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        handleChange({
+          target: { name: 'endereco.latitude', value: latitude, type: 'text' },
+        } as any);
+        handleChange({
+          target: { name: 'endereco.longitude', value: longitude, type: 'text' },
+        } as any);
+      },
+      (error) => alert('Erro ao capturar localização: ' + error.message)
+    );
+  };
 
+  return (
+    <form className="form-card" onSubmit={handleSubmit}>
       {/* --- SEÇÃO 1: CABEÇALHO --- */}
       <div className="top-header-grid">
-        {/* Coluna 1 - Ponto Base */}
+        {/* Ponto Base */}
         <fieldset className="field-col">
           <div className="form-group">
             <label htmlFor="pontoBase">Ponto Base</label>
@@ -38,7 +55,7 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
           </div>
         </fieldset>
 
-        {/* Coluna 2 - Viatura Responsável */}
+        {/* Viatura Responsável */}
         <fieldset className="field-col">
           <div className="form-group">
             <label>Viatura Responsável</label>
@@ -61,7 +78,7 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
           </div>
         </fieldset>
 
-        {/* Coluna 3 - Formulário Básico */}
+        {/* Formulário Básico */}
         <fieldset className="field-col">
           <legend>Formulário Básico</legend>
           <div className="form-group-grid">
@@ -71,7 +88,7 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
                 type="text"
                 id="numAviso"
                 name="numAviso"
-                placeholder="Informe o tipo e o número ordem"
+                placeholder="Informe o tipo e número de ordem"
                 value={formData.numAviso}
                 onChange={handleChange}
               />
@@ -89,6 +106,87 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
           </div>
         </fieldset>
       </div>
+
+      {/* --- SEÇÃO 2: DADOS DA OCORRÊNCIA --- */}
+      <fieldset>
+        <legend>Dados da Ocorrência</legend>
+
+        {/* Primeira linha: Hora e Forma de Acionamento */}
+        <div className="ocorrencia-grid">
+          <div className="form-group">
+            <label htmlFor="horaRecebimento">Hora do Recebimento</label>
+            <input type="time" id="horaRecebimento" name="horaRecebimento" />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="formaAcionamento">Forma de Acionamento</label>
+            <input
+              type="text"
+              id="formaAcionamento"
+              name="formaAcionamento"
+              placeholder="Ex: Telefonema, presencial..."
+            />
+          </div>
+        </div>
+
+        {/* Segunda linha: CO, CIOPS e 193 */}
+        <div className="ocorrencia-mini-grid">
+          <div className="form-group">
+            <label htmlFor="co">CO</label>
+            <input type="text" id="co" name="co" placeholder="Ex: 123" />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="ciods">CIODS</label>
+            <input type="text" id="ciods" name="ciods" placeholder="Ex: 45" />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="numero193">193</label>
+            <input type="text" id="numero193" name="numero193" placeholder="Ex: 567" />
+          </div>
+        </div>
+
+        {/* Terceira linha: Situação da Ocorrência */}
+        <div className="form-group">
+          <label htmlFor="situacao">Situação da Ocorrência</label>
+          <select id="situacao" name="situacao">
+            <option value="">Selecione</option>
+            <option value="em-andamento">Em andamento</option>
+            <option value="finalizada">Finalizada</option>
+            <option value="cancelada">Cancelada</option>
+            <option value="cancelada">Trote</option>
+          </select>
+        </div>
+      </fieldset>
+
+      {/* --- SEÇÃO 3: LOCALIZAÇÃO --- */}
+      <fieldset>
+        <legend>Localização da Ocorrência</legend>
+        <div className="form-group">
+          <label htmlFor="rua">Rua / Avenida</label>
+          <input type="text" id="rua" name="endereco.rua" value={formData.endereco?.rua || ''} onChange={handleChange} placeholder="Ex: Av. Gov. Agamenon Magalhães" />
+        </div>
+        <div className="form-group-grid-4-col" style={{ marginTop: '1rem' }}>
+          <div className="form-group"><label htmlFor="numero">Nº</label><input type="text" id="numero" name="endereco.numero" value={formData.endereco?.numero || ''} onChange={handleChange} placeholder="Ex: 123" /></div>
+          <div className="form-group"><label htmlFor="bairro">Bairro</label><input type="text" id="bairro" name="endereco.bairro" value={formData.endereco?.bairro || ''} onChange={handleChange} placeholder="Ex: Boa Viagem" /></div>
+          <div className="form-group"><label htmlFor="municipio">Município</label><input type="text" id="municipio" name="endereco.municipio" value={formData.endereco?.municipio || ''} onChange={handleChange} placeholder="Ex: Recife" /></div>
+          <div className="form-group"><label htmlFor="codigoLocal">Código do Local</label><input type="text" id="codigoLocal" name="endereco.codigoLocal" value={formData.endereco?.codigoLocal || ''} onChange={handleChange} placeholder="Cód. Anexo B" /></div>
+        </div>
+        <div className="form-group" style={{ marginTop: '1rem' }}>
+          <label htmlFor="referencia">Ponto de Referência</label>
+          <input type="text" id="referencia" name="endereco.referencia" value={formData.endereco?.referencia || ''} onChange={handleChange} placeholder="Ex: Próximo ao Shopping Recife" />
+        </div>
+        {/* Adicionado style inline para garantir o espaçamento superior */}
+        <div className="form-group" style={{ marginTop: '1.5rem' }}>
+          <label>Coordenadas GPS</label>
+          <div className="gps-capture-group">
+            <input type="text" name="endereco.latitude" value={formData.endereco?.latitude || ''} readOnly placeholder="Latitude" />
+            <input type="text" name="endereco.longitude" value={formData.endereco?.longitude || ''} readOnly placeholder="Longitude" />
+            <button type="button" onClick={handleGPSCapture} className="gps-button">Capturar GPS</button>
+          </div>
+        </div>
+      </fieldset>
 
       {/* --- SEÇÃO 4: SOLICITANTE --- */}
       <fieldset>
@@ -488,23 +586,18 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
             <input key={idx} type="text" name={`guarnicaoEmpenhada.componentes.${idx}`} value={comp} onChange={handleChange} placeholder={`Matrícula componente ${idx+1}`}/>
           ))}
         </div>
-        <div className="assinatura"><p>Assinatura</p></div>
+        <div className="assinatura"><p>Assinatura do CMT</p></div>
       </fieldset>
 
-      {/* --- BOTÕES DE AÇÃO --- */}
+      {/* --- BOTÕES --- */}
       <div className="form-actions">
-        <button 
-          type="button" 
-          className="button-cancel" 
-          onClick={handleCancel}
-        >
+        <button type="button" className="button-cancel" onClick={handleCancel}>
           Cancelar
         </button>
         <button type="submit" className="submit-button">
           {submitText}
         </button>
       </div>
-
     </form>
   );
 };
