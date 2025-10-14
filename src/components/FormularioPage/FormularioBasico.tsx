@@ -420,67 +420,67 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
 
       {/* --- SEÇÃO 8: FORMULÁRIOS PREENCHIDOS --- */}
       <fieldset>
-  <legend>Formulários Preenchidos (decorrentes da natureza do atendimento)</legend>
-  
-  {/* Usamos a classe de grid padrão para 2 colunas */}
-  <div className="checkbox-grid-2-col">
+      <legend>Formulários Preenchidos (decorrentes da natureza do atendimento)</legend>
+      
+      {/* Usamos a classe de grid padrão para 2 colunas */}
+      <div className="checkbox-grid-2-col">
 
-    {/* Cada par (input + label) é agrupado em um "form-check-item" */}
-    <div className="form-check-item">
-      <input type="checkbox" id="formAph" name="formulariosPreenchidos.atdPreHospitalar" checked={formData.formulariosPreenchidos.atdPreHospitalar} onChange={handleChange} />
-      <label htmlFor="formAph">Atendimento pré-hospitalar</label>
-    </div>
-    
-    <div className="form-check-item">
-      <input type="checkbox" id="formGerenciamento" name="formulariosPreenchidos.formularioGerenciamento" checked={formData.formulariosPreenchidos.formularioGerenciamento} onChange={handleChange} />
-      <label htmlFor="formGerenciamento">Formulário de Gerenciamento</label>
-    </div>
+        {/* Cada par (input + label) é agrupado em um "form-check-item" */}
+        <div className="form-check-item">
+          <input type="checkbox" id="formAph" name="formulariosPreenchidos.atdPreHospitalar" checked={formData.formulariosPreenchidos.atdPreHospitalar} onChange={handleChange} />
+          <label htmlFor="formAph">Atendimento pré-hospitalar</label>
+        </div>
+        
+        <div className="form-check-item">
+          <input type="checkbox" id="formGerenciamento" name="formulariosPreenchidos.formularioGerenciamento" checked={formData.formulariosPreenchidos.formularioGerenciamento} onChange={handleChange} />
+          <label htmlFor="formGerenciamento">Formulário de Gerenciamento</label>
+        </div>
 
-    <div className="form-check-item">
-      <input type="checkbox" id="formComunitaria" name="formulariosPreenchidos.atividadeComunitaria" checked={formData.formulariosPreenchidos.atividadeComunitaria} onChange={handleChange} />
-      <label htmlFor="formComunitaria">Atividade Comunitária</label>
-    </div>
+        <div className="form-check-item">
+          <input type="checkbox" id="formComunitaria" name="formulariosPreenchidos.atividadeComunitaria" checked={formData.formulariosPreenchidos.atividadeComunitaria} onChange={handleChange} />
+          <label htmlFor="formComunitaria">Atividade Comunitária</label>
+        </div>
 
-    <div className="form-check-item">
-      <input type="checkbox" id="formProdutoPerigoso" name="formulariosPreenchidos.produtoPerigoso" checked={formData.formulariosPreenchidos.produtoPerigoso} onChange={handleChange} />
-      <label htmlFor="formProdutoPerigoso">Produto perigoso</label>
-    </div>
+        <div className="form-check-item">
+          <input type="checkbox" id="formProdutoPerigoso" name="formulariosPreenchidos.produtoPerigoso" checked={formData.formulariosPreenchidos.produtoPerigoso} onChange={handleChange} />
+          <label htmlFor="formProdutoPerigoso">Produto perigoso</label>
+        </div>
 
-    <div className="form-check-item">
-      <input type="checkbox" id="formIncendio" name="formulariosPreenchidos.incendio" checked={formData.formulariosPreenchidos.incendio} onChange={handleChange} />
-      <label htmlFor="formIncendio">Incêndio</label>
-    </div>
+        <div className="form-check-item">
+          <input type="checkbox" id="formIncendio" name="formulariosPreenchidos.incendio" checked={formData.formulariosPreenchidos.incendio} onChange={handleChange} />
+          <label htmlFor="formIncendio">Incêndio</label>
+        </div>
 
-    <div className="form-check-item">
-      <input type="checkbox" id="formSalvamento" name="formulariosPreenchidos.salvamento" checked={formData.formulariosPreenchidos.salvamento} onChange={handleChange} />
-      <label htmlFor="formSalvamento">Salvamento</label>
-    </div>
+        <div className="form-check-item">
+          <input type="checkbox" id="formSalvamento" name="formulariosPreenchidos.salvamento" checked={formData.formulariosPreenchidos.salvamento} onChange={handleChange} />
+          <label htmlFor="formSalvamento">Salvamento</label>
+        </div>
 
-    <div className="form-check-item">
-      <input type="checkbox" id="formPrevencao" name="formulariosPreenchidos.prevencao" checked={formData.formulariosPreenchidos.prevencao} onChange={handleChange} />
-      <label htmlFor="formPrevencao">Prevenção</label>
-    </div>
-  </div>
+        <div className="form-check-item">
+          <input type="checkbox" id="formPrevencao" name="formulariosPreenchidos.prevencao" checked={formData.formulariosPreenchidos.prevencao} onChange={handleChange} />
+          <label htmlFor="formPrevencao">Prevenção</label>
+        </div>
+      </div>
 
-  {/* O campo 'Outro' fica fora do grid para tratamento especial */}
-  <div className="form-group-inline">
-  <input 
-    type="checkbox" 
-    id="outroRelatorio" 
-    name="formulariosPreenchidos.outroRelatorio" 
-    checked={formData.formulariosPreenchidos.outroRelatorio} 
-    onChange={handleChange} 
-  />
-  <label htmlFor="outroRelatorio">Outro relatório específico:</label>
-  <input 
-    type="text" 
-    name="formulariosPreenchidos.outroRelatorioEspec" 
-    value={formData.formulariosPreenchidos.outroRelatorioEspec} 
-    onChange={handleChange} 
-    disabled={!formData.formulariosPreenchidos.outroRelatorio}
-  />
-</div>
-</fieldset>
+      {/* O campo 'Outro' fica fora do grid para tratamento especial */}
+      <div className="form-group-inline">
+      <input 
+        type="checkbox" 
+        id="outroRelatorio" 
+        name="formulariosPreenchidos.outroRelatorio" 
+        checked={formData.formulariosPreenchidos.outroRelatorio} 
+        onChange={handleChange} 
+      />
+      <label htmlFor="outroRelatorio">Outro relatório específico:</label>
+      <input 
+        type="text" 
+        name="formulariosPreenchidos.outroRelatorioEspec" 
+        value={formData.formulariosPreenchidos.outroRelatorioEspec} 
+        onChange={handleChange} 
+        disabled={!formData.formulariosPreenchidos.outroRelatorio}
+      />
+    </div>
+    </fieldset>
 
       {/* --- SEÇÃO 9: TIPO DE VÍTIMA --- */}
       <fieldset>
