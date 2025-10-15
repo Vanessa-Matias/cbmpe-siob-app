@@ -179,12 +179,7 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
         </div>
         {/* Adicionado style inline para garantir o espaçamento superior */}
         <div className="form-group" style={{ marginTop: '1.5rem' }}>
-          <label>Coordenadas GPS</label>
-          <div className="gps-capture-group">
-            <input type="text" name="endereco.latitude" value={formData.endereco?.latitude || ''} readOnly placeholder="Latitude" />
-            <input type="text" name="endereco.longitude" value={formData.endereco?.longitude || ''} readOnly placeholder="Longitude" />
-            <button type="button" onClick={handleGPSCapture} className="gps-button">Capturar GPS</button>
-          </div>
+
         </div>
       </fieldset>
 
@@ -298,25 +293,25 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
         <legend>Apoio e Viaturas Envolvidas</legend>
 
         {/* Sub: Apoio de Órgãos */}
-  <div className="sub-section">
-    <legend>Apoio de Órgãos</legend>
-    <div className="apoio-checkbox-grid">
-        {/* Usamos o name com ponto para o handleChange genérico funcionar */}
-        <label><input type="checkbox" name="apoio.celpe" checked={formData.apoio.celpe} onChange={handleChange}/> Celpe</label>
-        <label><input type="checkbox" name="apoio.samu" checked={formData.apoio.samu} onChange={handleChange}/> Samu</label>
-        <label><input type="checkbox" name="apoio.compesa" checked={formData.apoio.compesa} onChange={handleChange}/> Compesa</label>
-        <label><input type="checkbox" name="apoio.defesaCivil" checked={formData.apoio.defesaCivil} onChange={handleChange}/> Defesa Civil</label>
-        <label><input type="checkbox" name="apoio.orgaoAmbiental" checked={formData.apoio.orgaoAmbiental} onChange={handleChange}/> Órgão Ambiental</label>
-        <label><input type="checkbox" name="apoio.pmpe" checked={formData.apoio.pmpe} onChange={handleChange}/> PMPE</label>
-        <label><input type="checkbox" name="apoio.prf" checked={formData.apoio.prf} onChange={handleChange}/> PRF</label>
-        <label><input type="checkbox" name="apoio.guardaMunicipal" checked={formData.apoio.guardaMunicipal} onChange={handleChange}/> Guarda Municipal</label>
-        <label><input type="checkbox" name="apoio.ffaa" checked={formData.apoio.ffaa} onChange={handleChange}/> FFAA</label>
-        <label>
-          <input type="checkbox" name="apoio.outro" checked={formData.apoio.outro} onChange={handleChange}/> Outro:
-          <input type="text" name="apoio.outroDesc" value={formData.apoio.outroDesc} onChange={handleChange} disabled={!formData.apoio.outro}/>
-        </label>
-    </div>
-  </div>
+        <div className="sub-section">
+          <legend>Apoio de Órgãos</legend>
+          <div className="apoio-checkbox-grid">
+              {/* Usamos o name com ponto para o handleChange genérico funcionar */}
+              <label><input type="checkbox" name="apoio.celpe" checked={formData.apoio.celpe} onChange={handleChange}/> Celpe</label>
+              <label><input type="checkbox" name="apoio.samu" checked={formData.apoio.samu} onChange={handleChange}/> Samu</label>
+              <label><input type="checkbox" name="apoio.compesa" checked={formData.apoio.compesa} onChange={handleChange}/> Compesa</label>
+              <label><input type="checkbox" name="apoio.defesaCivil" checked={formData.apoio.defesaCivil} onChange={handleChange}/> Defesa Civil</label>
+              <label><input type="checkbox" name="apoio.orgaoAmbiental" checked={formData.apoio.orgaoAmbiental} onChange={handleChange}/> Órgão Ambiental</label>
+              <label><input type="checkbox" name="apoio.pmpe" checked={formData.apoio.pmpe} onChange={handleChange}/> PMPE</label>
+              <label><input type="checkbox" name="apoio.prf" checked={formData.apoio.prf} onChange={handleChange}/> PRF</label>
+              <label><input type="checkbox" name="apoio.guardaMunicipal" checked={formData.apoio.guardaMunicipal} onChange={handleChange}/> Guarda Municipal</label>
+              <label><input type="checkbox" name="apoio.ffaa" checked={formData.apoio.ffaa} onChange={handleChange}/> FFAA</label>
+              <label>
+                <input type="checkbox" name="apoio.outro" checked={formData.apoio.outro} onChange={handleChange}/> Outro:
+                <input type="text" name="apoio.outroDesc" value={formData.apoio.outroDesc} onChange={handleChange} disabled={!formData.apoio.outro}/>
+              </label>
+          </div>
+        </div>
 
   {/* Sub: Viaturas de Apoio */}
   <div className="sub-section">
