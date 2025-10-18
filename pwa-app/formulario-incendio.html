@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Ocorrência - Incêndio</title>
+    <link rel="stylesheet" href="formulario-incendio.css">
+</head>
+<body>
+
+    <form class="form-card">
+        
+        <div class="header-container">
+            <div class="header-text">
+                <h1>Nova Ocorrência</h1>
+                <p>Etapa 2 de 2: Detalhes do Incêndio</p>
+            </div>
+            <img src="assets/brasao.cbm.pe.png" alt="Brasão CBMPE" class="header-logo">
+        </div>
+        <hr class="header-divider">
+
+        <div class="form-section-header-incendio">
+            <h3>Natureza 2: Incêndio</h3>
+        </div>
+
+        <fieldset>
+            <legend>Grupo do Incêndio</legend>
+            <div class="checkbox-grid-2-col">
+                <div class="form-check-item">
+                    <input type="radio" id="grupoEdificacao" name="incendio.grupo" value="edificacao">
+                    <label for="grupoEdificacao">Incêndio em Edificação</label>
+                </div>
+                <div class="form-check-item">
+                    <input type="radio" id="grupoTransporte" name="incendio.grupo" value="transporte">
+                    <label for="grupoTransporte">Incêndio em Meio de Transporte</label>
+                </div>
+                <div class="form-check-item">
+                    <input type="radio" id="grupoVegetacao" name="incendio.grupo" value="vegetacao">
+                    <label for="grupoVegetacao">Incêndio em Vegetação</label>
+                </div>
+                <div class="form-check-item">
+                    <input type="radio" id="grupoDescarte" name="incendio.grupo" value="descarte">
+                    <label for="grupoDescarte">Incêndio em Área de Descarte</label>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Detalhes Operacionais</legend>
+            <div class="form-group-grid-4-col">
+                <div class="form-group">
+                    <label for="tempoExtincao">Tempo de Extinção (hh:mm)</label>
+                    <input type="text" id="tempoExtincao" name="incendio.operacao.tempoExtincao" placeholder="01:30">
+                </div>
+                <div class="form-group">
+                    <label for="tempoRescaldo">Tempo de Rescaldo (hh:mm)</label>
+                    <input type="text" id="tempoRescaldo" name="incendio.operacao.tempoRescaldo" placeholder="00:45">
+                </div>
+                <div class="form-group">
+                    <label for="consumoAgua">Consumo de Água (litros)</label>
+                    <input type="number" id="consumoAgua" name="incendio.operacao.consumoAgua">
+                </div>
+                <div class="form-group">
+                    <label for="consumoLGE">Consumo de LGE/EFE (litros)</label>
+                    <input type="number" id="consumoLGE" name="incendio.operacao.consumoLGE">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Ações Realizadas e Recursos Hídricos</legend>
+            
+            <label class="sub-legend">Ações Realizadas</label>
+            <div class="checkbox-grid-4-col">
+                <div class="form-check-item">
+                    <input type="checkbox" id="acaoExtincao" name="incendio.acoes.extincao">
+                    <label for="acaoExtincao">Extinção de incêndio</label>
+                </div>
+                <div class="form-check-item">
+                    <input type="checkbox" id="acaoRescaldo" name="incendio.acoes.rescaldo">
+                    <label for="acaoRescaldo">Rescaldo</label>
+                </div>
+                <div class="form-check-item">
+                    <input type="checkbox" id="acaoVentilacao" name="incendio.acoes.ventilacao">
+                    <label for="acaoVentilacao">Ventilação</label>
+                </div>
+                <div class="form-check-item">
+                    <input type="checkbox" id="acaoResfriamento" name="incendio.acoes.resfriamento">
+                    <label for="acaoResfriamento">Resfriamento</label>
+                </div>
+            </div>
+
+            <label class="sub-legend" style="margin-top: 24px;">Recursos Hídricos Utilizados</label>
+            <div class="checkbox-grid-4-col">
+                <div class="form-check-item">
+                    <input type="checkbox" id="recursoHidranteUrbano" name="incendio.recursos.hidranteUrbano">
+                    <label for="recursoHidranteUrbano">Hidrante urbano</label>
+                </div>
+                <div class="form-check-item">
+                    <input type="checkbox" id="recursoAguaTransportada" name="incendio.recursos.aguaTransportada">
+                    <label for="recursoAguaTransportada">Água transportada</label>
+                </div>
+                <div class="form-check-item">
+                    <input type="checkbox" id="recursoRio" name="incendio.recursos.rio">
+                    <label for="recursoRio">Rio</label>
+                </div>
+                <div class="form-check-item">
+                    <input type="checkbox" id="recursoPiscina" name="incendio.recursos.piscina">
+                    <label for="recursoPiscina">Piscina</label>
+                </div>
+            </div>
+        </fieldset>
+        
+        <div class="form-actions">
+            <button type="button" class="button-cancel">Cancelar</button>
+            <button type="submit" class="submit-button">Salvar Relatório</button>
+        </div>
+
+    </form>
+</body>
+</html>

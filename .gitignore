@@ -1,0 +1,14 @@
+# Dependências gerais em qualquer subpasta (inclui backend-api e CBMPE-APP)
+**/node_modules
+**/.pnp
+**/.pnp.js
+
+# Saídas de build
+**/build
+**/coverage
+
+# Arquivos de sistema e logs
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário Básico de Ocorrência</title>
+    <link rel="stylesheet" href="formulario-basico.css">
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+    <div class="page-container">
+        <div class="unified-card">
+            
+            <header class="page-header">
+                <div class="page-title">
+                    <h2>Nova Ocorrência</h2>
+                    <p>Etapa 1 de 2: Formulário Básico</p>
+                </div>
+                <img src="assets/brasao.cbm.pe.png" alt="Logo CBMPE" class="header-logo">
+            </header>
+
+            <form id="ocorrenciaForm">
+
+                <!-- ... (seções anteriores do formulário permanecem iguais) ... -->
+                 <div class="top-header-grid">
+                    <fieldset class="field-col">
+                        <div class="form-group">
+                            <label for="pontoBase">Ponto Base</label>
+                            <input type="text" id="pontoBase" name="pontoBase" placeholder="Ex: Garanhuns" required />
+                            <p class="ome-text">OME ________ / GB / Seção ________</p>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="field-col">
+                        <div class="form-group">
+                            <label>Viatura Responsável</label>
+                            <div class="input-pair">
+                                <input type="text" name="viaturaTipo" placeholder="Tipo (Ex: ABT)" required />
+                                <input type="text" name="viaturaOrdem" placeholder="Nº Ordem" required />
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="field-col">
+                        <legend>Formulário Básico</legend>
+                        <div class="form-group">
+                            <label for="numAviso">Nº do aviso (I-NETDISPATCHER)</label>
+                            <input type="text" id="numAviso" name="numAviso" placeholder="B-2025001234" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="dataAviso">Data</label>
+                            <input type="date" id="dataAviso" name="dataAviso" required />
+                        </div>
+                    </fieldset>
+                </div>
+
+
+                <!-- classe "situacao-grid" para melhor agrupamento -->
+                <fieldset>
+                <legend>Dados da Ocorrência</legend>
+
+                <div class="ocorrencia-mini-grid">
+                    <div class="check-item">
+                        <input type="checkbox" id="co" name="co">
+                        <label for="co">CO</label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="ciods" name="ciods">
+                        <label for="ciods">CIODS</label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="bombeiro193" name="bombeiro193">
+                        <label for="bombeiro193">193</label>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="situacaoOcorrencia">Situação da Ocorrência</label>
+                    <select id="situacaoOcorrencia" name="situacaoOcorrencia" required>
+                    <option value="">Selecione</option>
+                    <option value="em-andamento">Em andamento</option>
+                    <option value="finalizada">Finalizada</option>
+                    <option value="cancelada">Cancelada</option>
+                    <option value="trote">Trote</option>
+                    </select>
+                </div>
+                </fieldset>
+
+                <!-- ATUALIZAÇÃO: Nova div "gps-capture-group" para agrupar os campos de GPS e o botão -->
+                <fieldset>
+                    <legend>Localização da Ocorrência</legend>
+                    <div class="form-group">
+                        <label for="rua">Rua / Avenida </label>
+                        <input type="text" id="rua" name="endereco.rua" placeholder="Ex: Av. Gov. Agamenon Magalhães" required>
+                    </div>
+                    <div class="form-group-grid-4-col" style="margin-top: 1rem;">
+                        <div class="form-group"><label for="numero">Nº</label><input type="text" id="numero" name="endereco.numero" placeholder="Ex: 123"></div>
+                        <div class="form-group"><label for="bairro">Bairro</label><input type="text" id="bairro" name="endereco.bairro" placeholder="Ex: Boa Viagem"></div>
+                        <div class="form-group"><label for="municipio">Município</label><input type="text" id="municipio" name="endereco.municipio" placeholder="Ex: Recife" required></div>
+                        <div class="form-group"><label for="codigoLocal">Código do Local</label><input type="text" id="codigoLocal" name="endereco.codigoLocal" placeholder="Cód. Anexo B"></div>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="referencia">Ponto de Referência</label>
+                        <input type="text" id="referencia" name="endereco.referencia" placeholder="Ex: Próximo ao Shopping Recife">
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Coordenadas GPS</label>
+                        <!-- Novo container para o grupo de captura -->
+                        <div class="gps-capture-group">
+                            <input type="text" id="latitude" name="endereco.latitude" placeholder="Latitude" readonly>
+                            <input type="text" id="longitude" name="endereco.longitude" placeholder="Longitude" readonly>
+                            <!-- Botão agora usa uma classe e não tem mais estilo inline -->
+                            <button type="button" id="btnCapturarGps" class="gps-button">Capturar GPS</button>
+                        </div>
+                    </div>
+                </fieldset>
+                
+                <!-- SEÇÕES PADRÃO DO FORMULÁRIO -->
+                <fieldset>
+                    <legend>Dados do Solicitante</legend>
+                    <div class="form-group-grid-4-col">
+                        <div class="form-group"><label for="nomeSolicitante">Nome</label><input type="text" id="nomeSolicitante" name="nomeSolicitante" placeholder="Ex: João da Silva" required /></div>
+                        <div class="form-group"><label for="cpfRg">CPF/RG</label><input type="text" id="cpfRg" name="cpfRg" placeholder="000.000.000-00" /></div>
+                        <div class="form-group"><label for="orgaoExpedidor">Órgão Expedidor</label><input type="text" id="orgaoExpedidor" name="orgaoExpedidor" placeholder="SDS-PE" /></div>
+                        <div class="form-group"><label for="idadeSolicitante">Idade</label><input type="number" id="idadeSolicitante" name="idadeSolicitante" placeholder="Ex: 35" /></div>
+                        <div class="form-group"><label for="sexoSolicitante">Sexo</label><select id="sexoSolicitante" name="sexoSolicitante"><option value="">Selecione</option><option value="M">Masculino</option><option value="F">Feminino</option><option value="O">Outro</option></select></div>
+                        <div class="form-group"><label for="contatoTelefonico">Telefone</label><input type="tel" id="contatoTelefonico" name="contatoTelefonico" placeholder="(81) 99999-0000" required /></div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Deslocamento</legend>
+                    <div class="form-group-grid-5-col">
+                        <div class="form-group"><label>Horário de Saída</label><input type="time" name="horarioSaida" /></div>
+                        <div class="form-group"><label>Horário no Local</label><input type="time" name="horarioNoLocal" /></div>
+                        <div class="form-group"><label>Saída do Local</label><input type="time" name="horarioSaidaLocal" /></div>
+                        <div class="form-group"><label>Chegada ao Destino</label><input type="time" name="horarioChegadaDestino" /></div>
+                        <div class="form-group"><label>Retorno ao Quartel</label><input type="time" name="horarioRetornoQuartel" /></div>
+                        <div class="form-group"><label>Hodômetro Saída</label><input type="number" name="hodometroSaida" placeholder="Ex: 12000" /></div>
+                        <div class="form-group"><label>Hodômetro Local</label><input type="number" name="hodometroLocal" placeholder="Ex: 12015" /></div>
+                    </div>
+                </fieldset>
+
+<!-- ====================================================== -->
+<!------------------ SEÇÃO 6: APOIO E VIATURAS --------------->
+<!-- ====================================================== -->
+
+<fieldset>
+  <legend>Apoio e Viaturas Envolvidas</legend>
+
+  <!-- Sub: Apoio de Órgãos -->
+  <div class="sub-section">
+    <legend>Apoio de Órgãos</legend>
+    <div class="apoio-checkbox-grid">
+      <label><input type="checkbox" id="apoioCelpe"> Celpe</label>
+      <label><input type="checkbox" id="apoioSamu"> Samu</label>
+      <label><input type="checkbox" id="apoioCompesa"> Compesa</label>
+      <label><input type="checkbox" id="apoioDefesaCivil"> Defesa Civil</label>
+      <label><input type="checkbox" id="apoioAmbiental"> Órgão Ambiental</label>
+      <label><input type="checkbox" id="apoioPmpe"> PMPE</label>
+      <label><input type="checkbox" id="apoioPrf"> PRF</label>
+      <label><input type="checkbox" id="apoioGuarda"> Guarda Municipal</label>
+      <label><input type="checkbox" id="apoioFfaa"> FFAA</label>
+      <label>
+        <input type="checkbox" id="apoioOutroCheck"> Outro:
+        <input type="text" id="apoioOutroDesc" placeholder="Descreva..." disabled>
+      </label>
+    </div>
+  </div>
+
+  <!-- Sub: Apoio de Viaturas -->
+  <div class="sub-section">
+    <legend>Apoio de Viaturas</legend>
+    <div class="viatura-inputs-grid">
+      <!-- Par 1 -->
+      <div class="viatura-guarnicao-pair">
+        <div class="form-group">
+          <label>Viatura 1 (Tipo e Número)</label>
+          <input type="text" id="viatura1" placeholder="Ex: ABS 3106">
+        </div>
+        <div class="form-group">
+          <label>Guarnição</label>
+          <input type="text" id="guarnicao1" placeholder="Ex: 05">
+        </div>
+      </div>
+
+      <!-- Par 2 -->
+      <div class="viatura-guarnicao-pair">
+        <div class="form-group">
+          <label>Viatura 2 (Tipo e Número)</label>
+          <input type="text" id="viatura2" placeholder="Ex: ABT 111">
+        </div>
+        <div class="form-group">
+          <label>Guarnição</label>
+          <input type="text" id="guarnicao2" placeholder="Ex: 04">
+        </div>
+      </div>
+
+      <!-- Par 3 -->
+      <div class="viatura-guarnicao-pair">
+        <div class="form-group">
+          <label>Viatura 3 (Tipo e Número)</label>
+          <input type="text" id="viatura3" placeholder="Opcional">
+        </div>
+        <div class="form-group">
+          <label>Guarnição</label>
+          <input type="text" id="guarnicao3" placeholder="Opcional">
+        </div>
+      </div>
+    </div>
+  </div>
+</fieldset>
+
+
+<!-- ====================================================== -->
+<!------------------- SEÇÃO 7: DIFICULDADES ------------------>
+<!-- ====================================================== -->
+<fieldset>
+  <legend>Dificuldades na Atuação e Natureza do Aviso</legend>
+
+  <div class="dificuldades-grid">
+    <label><input type="checkbox" id="difTempo"> Tempo de deslocamento superior a 15 minutos</label>
+    <label><input type="checkbox" id="difObmSemViatura"> OBM mais próxima sem viatura apropriada</label>
+    <label><input type="checkbox" id="difObmEmAtendimento"> OBM mais próxima em atendimento</label>
+    <label><input type="checkbox" id="difFaltaSinalizacao"> Falta de sinalização de endereço</label>
+    <label><input type="checkbox" id="difFaltaDados"> Falta ou incorreção nos dados do envio</label>
+    <label><input type="checkbox" id="difTransito"> Trânsito intenso</label>
+    <label><input type="checkbox" id="difAcesso"> Área de difícil acesso</label>
+    <label><input type="checkbox" id="difPaneEquip"> Pane em equipamento</label>
+    <label><input type="checkbox" id="difPaneViatura"> Pane em viatura</label>
+    <label><input type="checkbox" id="difFaltaMaterial"> Falta de material</label>
+    <label><input type="checkbox" id="difNaoHouve"> Não houve</label>
+    <label><input type="checkbox" id="difOutro"> Outro</label>
+  </div>
+
+  <div class="form-group" style="margin-top: 1rem;">
+    <label for="eventoNaturezaInicial">Evento - Natureza Inicial do Aviso</label>
+    <input type="text" id="eventoNaturezaInicial" placeholder="Ex: Fogo no lixo; Desabamento do Atacadão">
+  </div>
+</fieldset>
+
+<!-- ====================================================== -->
+<!--------------- SEÇÃO: FORMULÁRIOS PREENCHIDOS ------------->
+<!-- ====================================================== -->
+
+<fieldset>
+<legend>Formulários Preenchidos (decorrentes da natureza do atendimento)</legend>
+
+<div class="checkbox-grid-2-col">
+    <div class="form-check-item">
+    <input type="checkbox" id="formAph" name="formAph">
+    <label for="formAph">Atendimento pré-hospitalar</label>
+    </div>
+
+    <div class="form-check-item">
+    <input type="checkbox" id="formGerenciamento" name="formGerenciamento">
+    <label for="formGerenciamento">Formulário de Gerenciamento</label>
+    </div>
+
+    <div class="form-check-item">
+    <input type="checkbox" id="formComunitaria" name="formComunitaria">
+    <label for="formComunitaria">Atividade Comunitária</label>
+    </div>
+
+    <div class="form-check-item">
+    <input type="checkbox" id="formProdutoPerigoso" name="formProdutoPerigoso">
+    <label for="formProdutoPerigoso">Produto perigoso</label>
+    </div>
+
+    <div class="form-check-item">
+    <input type="checkbox" id="formIncendio" name="formIncendio">
+    <label for="formIncendio">Incêndio</label>
+    </div>
+
+    <div class="form-check-item">
+    <input type="checkbox" id="formSalvamento" name="formSalvamento">
+    <label for="formSalvamento">Salvamento</label>
+    </div>
+
+    <div class="form-check-item">
+    <input type="checkbox" id="formPrevencao" name="formPrevencao">
+    <label for="formPrevencao">Prevenção</label>
+    </div>
+</div>
+
+<div class="form-group-inline">
+    <input type="checkbox" id="outroRelatorio" name="outroRelatorio">
+    <label for="outroRelatorio">Outro relatório específico:</label>
+    <input type="text" id="outroRelatorioEspec" name="outroRelatorioEspec" disabled>
+</div>
+</fieldset>
+
+<!-- ====================================================== -->
+<!------------ ADIÇÃO: SEÇÃO DE MÍDIA E ASSINATURAS ---------->
+<!-- ====================================================== -->
+<fieldset>
+    <legend>Mídia e Assinaturas</legend>
+    <div class="form-group">
+        <label for="fotoOcorrencia">Fotografia da Ocorrência</label>
+        <input type="file" id="fotoOcorrencia" name="fotoOcorrencia" accept="image/*" capture="environment">
+        <small>Toque para abrir a câmera e registrar uma foto.</small>
+    </div>
+    <div class="form-group" style="margin-top: 1.5rem;">
+        <label>Assinatura Digital (Testemunha / Vítima)</label>
+        <div id="signature-pad-container" style="border: 1px solid #ccc; border-radius: 8px; min-height: 150px; cursor: crosshair; position: relative;">
+            <canvas id="signature-canvas" style="position: absolute; left: 0; top: 0; width:100%; height:100%;"></canvas>
+        </div>
+        <button type="button" id="btnClearSignature" class="button-cancel" style="margin-top: 10px; width: auto;">Limpar Assinatura</button>
+    </div>
+</fieldset>
+
+            
+
+    <!-------------------------- CONTINUAÇÃO DAS SEÇÕES PADRÃO ------------------------->
+    <fieldset>
+        <legend>Tipo de Vítima</legend>
+        <div class="form-group-grid-5-col">
+            <div class="form-group"><label>Total</label><input type="number" name="vitimas.total"/></div>
+            <div class="form-group"><label>Feridas</label><input type="number" name="vitimas.feridas"/></div>
+            <div class="form-group"><label>Fatais</label><input type="number" name="vitimas.fatais"/></div>
+            <div class="form-group"><label>Ilesas</label><input type="number" name="vitimas.ilesas"/></div>
+            <div class="form-group"><label>Desaparecidas</label><input type="number" name="vitimas.desaparecidas"/></div>
+        </div>
+    </fieldset>
+
+<!-- ====================================================== -->
+<!--             SEÇÃO 10: VEÍCULOS ENVOLVIDOS              -->
+<!-- ====================================================== -->
+<fieldset>
+    <legend>Veículos Envolvidos</legend>
+    <div class="radio-columns">
+        <!-- Estes botões de rádio disparam o evento -->
+        <label><input type="radio" name="veiculosEnvolvidos" value="SIM" /> Sim</label>
+        <label><input type="radio" name="veiculosEnvolvidos" value="NAO" checked /> Não</label>
+    </div>
+    
+    <!-- Este é o container que o JavaScript irá mostrar/esconder. O ID é crucial. -->
+    <div class="veiculos-detail-grid" id="veiculos-detalhes-container" style="display: none;">
+        
+        <!-- === Veículo 1 === -->
+        <h4>Veículo 1</h4>
+        <div class="form-group"><input type="text" name="veiculo1.modelo" placeholder="Modelo" /></div>
+        <div class="form-group"><input type="text" name="veiculo1.cor" placeholder="Cor" /></div>
+        <div class="form-group"><input type="text" name="veiculo1.placa" placeholder="Placa" /></div>
+        <div class="form-group"><input type="text" name="veiculo1.estado" placeholder="Estado" /></div>
+        <div class="form-group" style="grid-column: 1 / -1;"><input type="text" name="veiculo1.nomeCondutor" placeholder="Nome do Condutor" /></div>
+        <div class="form-group" style="grid-column: 1 / span 2;"><input type="text" name="veiculo1.rgCpfCondutor" placeholder="RG/CPF" /></div>
+        <div class="form-group" style="grid-column: 3 / -1;"><input type="text" name="veiculo1.orgaoExpCondutor" placeholder="Órgão Expedidor" /></div>
+
+        <!-- === Veículo 2 === -->
+        <h4>Veículo 2</h4>
+        <div class="form-group"><input type="text" name="veiculo2.modelo" placeholder="Modelo" /></div>
+        <div class="form-group"><input type="text" name="veiculo2.cor" placeholder="Cor" /></div>
+        <div class="form-group"><input type="text" name="veiculo2.placa" placeholder="Placa" /></div>
+        <div class="form-group"><input type="text" name="veiculo2.estado" placeholder="Estado" /></div>
+        <div class="form-group" style="grid-column: 1 / -1;"><input type="text" name="veiculo2.nomeCondutor" placeholder="Nome do Condutor" /></div>
+        <div class="form-group" style="grid-column: 1 / span 2;"><input type="text" name="veiculo2.rgCpfCondutor" placeholder="RG/CPF" /></div>
+        <div class="form-group" style="grid-column: 3 / -1;"><input type="text" name="veiculo2.orgaoExpCondutor" placeholder="Órgão Expedidor" /></div>
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>Histórico</legend>
+    <div class="form-group">
+        <textarea name="historico" rows="8" placeholder="Descreva a ocorrência..."></textarea>
+    </div>
+</fieldset>
+    
+<!-- ====================================================== -->
+<!-- SEÇÃO 13: GUARNIÇÃO EMPENHADA (VERSÃO COMPLETA)        -->
+<!-- ====================================================== -->
+<fieldset>
+    <legend>Guarnição Empenhada</legend>
+    
+    <!-- Dados do Comandante da Operação -->
+    <div class="form-group-grid-4-col">
+        <div class="form-group">
+            <input type="text" name="guarnicao.postoGrad" placeholder="Posto/Grad."/>
+        </div>
+        <div class="form-group">
+            <input type="text" name="guarnicao.matriculaCmt" placeholder="Matrícula CMT"/>
+        </div>
+        <div class="form-group">
+            <input type="text" name="guarnicao.nomeGuerraCmt" placeholder="Nome de Guerra"/>
+        </div>
+        <div class="form-group">
+            <input type="date" name="guarnicao.vistoDivisao"/>
+        </div>
+    </div>
+    
+    <!-- Matrícula dos Componentes da Guarnição -->
+    <div class="guarnicao-grid">
+        <input type="text" name="guarnicao.componentes.0" placeholder="Matrícula componente 1"/>
+        <input type="text" name="guarnicao.componentes.1" placeholder="Matrícula componente 2"/>
+        <input type="text" name="guarnicao.componentes.2" placeholder="Matrícula componente 3"/>
+        <input type="text" name="guarnicao.componentes.3" placeholder="Matrícula componente 4"/>
+        <input type="text" name="guarnicao.componentes.4" placeholder="Matrícula componente 5"/>
+        <input type="text" name="guarnicao.componentes.5" placeholder="Matrícula componente 6"/>
+    </div>
+    
+    <!-- Linha de Assinatura -->
+    <div class="assinatura">
+        <p>Assinatura do CMT</p>
+    </div>
+</fieldset>
+<!------------------------- Biblioteca para o campo de assinatura digital ------------------------->
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script src="formulario-basico.js" defer></script>
+
+<div class="form-actions">
+  <button type="button" id="cancelButton" class="button-cancel">Cancelar</button>
+    <button type="button" id="avancarButton" class="submit-button">Avançar</button>
+</div>
+
+</body>
+</html>
