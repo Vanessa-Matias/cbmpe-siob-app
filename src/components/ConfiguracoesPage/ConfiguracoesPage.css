@@ -1,0 +1,314 @@
+/* ==========================================================================
+        Estilos da Página de Configurações (com Correção Final de Tema)
+========================================================================== */
+
+/* --- Container Principal --- */
+.configuracoes-page-container {
+    padding: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- Cabeçalho da Página (Padrão) --- */
+.configuracoes-page-container .page-header {
+    margin-bottom: 24px;
+}
+.configuracoes-page-container .page-title h2 {
+    margin: 0 0 4px 0;
+    font-size: 28px;
+    color: var(--color-text);
+}
+.configuracoes-page-container .page-title p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 16px;
+}
+
+/* --- Card de Configuração (Padrão) --- */
+.configuracoes-page-container .settings-card {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+/* --- Cabeçalho do Card de Perfil --- */
+.configuracoes-page-container .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+}
+.configuracoes-page-container .profile-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--color-primary);
+}
+.configuracoes-page-container .profile-header-info h3 {
+    margin: 0 0 4px 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--color-text);
+}
+.configuracoes-page-container .profile-header-info p {
+    margin: 0;
+    color: var(--color-muted);
+}
+.configuracoes-page-container .profile-header .button-edit {
+    margin-left: auto;
+}
+
+/* --- Cabeçalho Genérico dos Cards --- */
+.configuracoes-page-container .settings-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--color-border);
+}
+.configuracoes-page-container .settings-card-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--color-text);
+}
+.configuracoes-page-container .header-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.configuracoes-page-container .header-with-icon svg {
+    width: 20px;
+    height: 20px;
+    color: var(--color-muted);
+}
+
+/* --- Estilos do Formulário --- */
+.configuracoes-page-container .profile-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 24px;
+    padding: 24px;
+}
+.configuracoes-page-container .form-group {
+    display: flex;
+    flex-direction: column;
+}
+.configuracoes-page-container .form-group label,
+.configuracoes-page-container .modal-body .form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-muted); /* USA VARIÁVEL */
+    margin-bottom: 8px;
+}
+.configuracoes-page-container .form-group input,
+.configuracoes-page-container .modal-body .form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-input-bg);
+    color: var(--color-text); /* USA VARIÁVEL */
+    box-sizing: border-box;
+    font-size: 16px;
+}
+.configuracoes-page-container .form-group input:disabled {
+    background-color: var(--color-bg);
+    color: var(--color-muted); /* USA VARIÁVEL */
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+/* --- Rodapé do Card --- */
+.configuracoes-page-container .settings-card-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background-color: var(--color-bg);
+}
+
+/* --- Botões (Padrão do Projeto) --- */
+.configuracoes-page-container .button-primary,
+.configuracoes-page-container .button-secondary,
+.configuracoes-page-container .button-edit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    font-size: 14px;
+    padding: 9px 15px;
+}
+.configuracoes-page-container .button-primary {
+    background-color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    color: white;
+}
+.configuracoes-page-container .button-primary:hover {
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+}
+.configuracoes-page-container .button-secondary {
+    background-color: var(--color-card);
+    color: var(--color-text);
+    border: 2px solid var(--color-border);
+}
+.configuracoes-page-container .button-secondary:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background-color: #fdecea; /* Mantive uma cor fixa aqui para o hover sutil */
+}
+.configuracoes-page-container .button-edit {
+    background-color: var(--color-card);
+    color: var(--color-text);
+    border: 2px solid var(--color-border);
+}
+.configuracoes-page-container .button-edit:hover {
+    background-color: var(--color-bg);
+}
+
+/* --- Seção de Segurança --- */
+.configuracoes-page-container .security-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+}
+.configuracoes-page-container .security-item h4 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    color: var(--color-text);
+}
+.configuracoes-page-container .security-item p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--color-muted);
+}
+
+/* configurações para senha*/
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding-right: 38px; /* espaço pro ícone */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.toggle-password:hover {
+  color: var(--color-primary);
+}
+
+/* --- Modal --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.modal-content {
+    background-color: var(--color-card);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--color-border);
+}
+.modal-header h3 {
+    margin: 0;
+    color: var(--color-text);
+}
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--color-muted);
+}
+.modal-body {
+    padding: 24px;
+}
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 20px 24px;
+    border-top: 1px solid var(--color-border);
+}
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+    .configuracoes-page-container {
+        padding: 16px;
+    }
+    .configuracoes-page-container .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    .configuracoes-page-container .profile-header .button-edit {
+        margin-left: 0;
+        width: 100%;
+        margin-top: 16px;
+    }
+    .configuracoes-page-container .profile-form {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .configuracoes-page-container .security-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    .configuracoes-page-container .security-item .button-secondary {
+        width: 100%;
+    }
+}
+
+/* === Correção de contraste para campos no tema escuro === */
+[data-theme="dark"] .configuracoes-page-container .form-group label {
+  color: #ffffff !important; /* Texto branco */
+}
+
+[data-theme="dark"] .configuracoes-page-container .form-group input,
+[data-theme="dark"] .configuracoes-page-container .form-group input:disabled {
+  color: #ffffff !important; /* Texto dentro do campo branco */
+  background-color: #1f1f1f !important; /* Fundo levemente mais claro que o card */
+  border-color: #444 !important; /* Borda mais visível */
+}

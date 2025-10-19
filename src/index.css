@@ -1,0 +1,66 @@
+:root {
+  --color-bg: #f4f7fa;
+  --color-text: #222;
+  --color-card: #fff;
+  --color-border: #e0e0e0;
+  --color-primary: #ad131a;
+  --color-primary-hover: #8e0f14;
+  --color-secondary: #8e0f14;
+  --color-muted: #7f8c8d;
+  --color-input-bg: #f9f9f9;
+}
+
+/* No seu index.css */
+
+/* 2. Variáveis para Dark Mode */
+[data-theme="dark"] {
+  --color-bg: #1a1a1a;     /* Um cinza bem escuro em vez de preto. */
+  --color-text: #f1f1f1;
+  --color-card: #2c2c2c;   /* Um cinza um pouco mais claro para os cards. */
+  --color-border: #444;   /*  Uma borda um pouco mais clara para ter contraste. */
+  --color-primary: #e53935;
+  --color-primary-hover: #b71c1c;
+  --color-secondary: #878d92;
+  --color-muted: #c6c0c0;
+  --color-input-bg: #2a2a2a;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid var(--color-secondary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* --- Estilização da Barra de Rolagem (para navegadores Webkit como Chrome, Edge, Safari) --- */
+
+/* A barra de rolagem inteira */
+::-webkit-scrollbar {
+  width: 8px; /* Largura da barra */
+}
+
+/* O "trilho" por onde a barra corre */
+::-webkit-scrollbar-track {
+  background: var(--color-bg); /* Fundo do trilho usa a cor de fundo do tema */
+}
+
+/* O "polegar", a parte que você arrasta */
+::-webkit-scrollbar-thumb {
+  background-color: #a9a9a9; /* Uma cor cinza para o polegar */
+  border-radius: 10px;
+  border: 2px solid var(--color-bg); /* Cria um efeito de "borda" ao redor do polegar */
+}
+
+/* Estilo do polegar no modo escuro */
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background-color: #555;
+}

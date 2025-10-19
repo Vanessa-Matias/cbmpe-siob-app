@@ -1,0 +1,249 @@
+/**
+ * @file UsuariosPage.css
+ * @description Folha de estilos para a página de Gerenciamento de Usuários.
+ */
+
+/* ==========================================================================
+   ESTRUTURA GERAL E LAYOUT DA PÁGINA
+   ========================================================================== */
+
+/**
+ * Define o container principal da página para ocupar no mínimo 100% da
+ * altura da tela, garantindo que o conteúdo tenha espaço para expandir.
+ * Isso resolve o problema do seletor <select> abrir para cima.
+ * O cálculo subtrai a altura aproximada do cabeçalho principal.
+ */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 73px);
+  padding: 32px;
+}
+
+
+/* ==========================================================================
+   ESTRUTURA DOS CARDS DE CONTEÚDO
+   ========================================================================== */
+.filter-card, .user-list-card {
+  background-color: var(--color-card);
+  padding: 32px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  margin-bottom: 32px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.filter-card h3, .user-list-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  color: var(--color-text);
+}
+.filter-card p {
+  margin: 0 0 24px 0;
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   COMPONENTES DE FILTRO E BUSCA
+   ========================================================================== */
+.filter-inputs {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 16px;
+}
+.search-input-wrapper {
+  position: relative;
+}
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-muted);
+  display: flex;
+}
+.filter-inputs input, .filter-inputs select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-input-bg);
+  color: var(--color-text);
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.filter-inputs input {
+  padding-left: 40px;
+}
+
+/* ==========================================================================
+   TABELA DE DADOS DE USUÁRIOS
+   ========================================================================== */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+.user-table th, .user-table td {
+  padding: 16px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+.user-table th {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.user-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.status-dot.status-ativo {
+  background-color: #28a745;
+}
+.status-badge.status-ativo {
+    background-color: #d7f7e0;
+    color: #2a8c4a;
+}
+.status-dot.status-inativo {
+  background-color: #dc3545;
+}
+.status-badge.status-inativo {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.action-buttons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-muted);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+.action-buttons button:hover {
+  color: var(--color-primary);
+}
+
+/* ==========================================================================
+   REGRAS DE TEMA ESCURO (DARK THEME)
+   ========================================================================== */
+
+html[data-theme="dark"] body {
+  background-color: #121212;
+}
+
+html[data-theme="dark"] .page-title h2,
+html[data-theme="dark"] .page-title p {
+  color: #FFFFFF !important;
+}
+
+html[data-theme="dark"] .filter-card,
+html[data-theme="dark"] .user-list-card {
+  background-color: #1E1E1E;
+  border-color: #333333;
+  --color-text: #FFFFFF;
+  --color-muted: #AAAAAA;
+  --color-input-bg: #2a2a2a;
+  --color-border: #444444;
+}
+
+html[data-theme="dark"] .user-table th,
+html[data-theme="dark"] .user-table td {
+    color: var(--color-text);
+}
+
+html[data-theme="dark"] .status-badge.status-inativo {
+    background-color: #4a4a4a;
+    color: #cccccc;
+}
+
+/* ==========================================================================
+   REGRAS DE RESPONSIVIDADE
+   ========================================================================== */
+@media (max-width: 768px) {
+  .page-container { padding: 16px; }
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .filter-inputs {
+    grid-template-columns: 1fr;
+  }
+  .filter-card, .user-list-card {
+    padding: 24px;
+  }
+  .user-table thead {
+    display: none;
+  }
+  .user-table tr {
+    display: block;
+    margin-bottom: 24px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .user-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom: none;
+  }
+  .user-table td:not(:last-child) {
+    border-bottom: 1px solid var(--color-border);
+  }
+  .user-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: var(--color-text);
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-card, .user-list-card {
+    padding: 16px;
+  }
+}
+
+/* ==========================================================================
+   AJUSTE FINO PARA O COMPORTAMENTO DO SELETOR <select>
+   ========================================================================== */
+
+/**
+ * Limita a altura máxima dos seletores e adiciona uma barra de rolagem
+ * quando a lista de opções é muito grande. Isso "sugere" ao navegador
+ * que sempre haverá espaço para abrir a lista para baixo.
+ */
+.filter-inputs select {
+  max-height: 150px; /* Define uma altura máxima. Ajuste se necessário. */
+}
+
+/* Para navegadores baseados em WebKit (Chrome, Safari, Edge) */
+.filter-inputs select option {
+    max-height: 30px; /* Define uma altura para cada opção */
+}
