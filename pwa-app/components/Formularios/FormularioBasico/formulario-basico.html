@@ -17,7 +17,7 @@
                     <h2>Nova Ocorrência</h2>
                     <p>Etapa 1 de 2: Formulário Básico</p>
                 </div>
-                <img src="assets/brasao.cbm.pe.png" alt="Logo CBMPE" class="header-logo">
+                <img src="/pwa-app/assets/brasao.cbm.pe.png" alt="Logo CBMPE" class="header-logo">
             </header>
 
             <form id="ocorrenciaForm">
@@ -122,11 +122,17 @@
                     <legend>Dados do Solicitante</legend>
                     <div class="form-group-grid-4-col">
                         <div class="form-group"><label for="nomeSolicitante">Nome</label><input type="text" id="nomeSolicitante" name="nomeSolicitante" placeholder="Ex: João da Silva" required /></div>
-                        <div class="form-group"><label for="cpfRg">CPF/RG</label><input type="text" id="cpfRg" name="cpfRg" placeholder="000.000.000-00" /></div>
+                        <div class="form-group"><label for="cpfRg">CPF/RG</label>
+                            <!-- inputmode e maxlength para facilitar entrada em mobile; formato: 000.000.000-00 -->
+                            <input type="text" id="cpfRg" name="cpfRg" placeholder="000.000.000-00" inputmode="numeric" maxlength="14" />
+                        </div>
                         <div class="form-group"><label for="orgaoExpedidor">Órgão Expedidor</label><input type="text" id="orgaoExpedidor" name="orgaoExpedidor" placeholder="SDS-PE" /></div>
                         <div class="form-group"><label for="idadeSolicitante">Idade</label><input type="number" id="idadeSolicitante" name="idadeSolicitante" placeholder="Ex: 35" /></div>
                         <div class="form-group"><label for="sexoSolicitante">Sexo</label><select id="sexoSolicitante" name="sexoSolicitante"><option value="">Selecione</option><option value="M">Masculino</option><option value="F">Feminino</option><option value="O">Outro</option></select></div>
-                        <div class="form-group"><label for="contatoTelefonico">Telefone</label><input type="tel" id="contatoTelefonico" name="contatoTelefonico" placeholder="(81) 99999-0000" required /></div>
+                        <div class="form-group"><label for="contatoTelefonico">Telefone</label>
+                            <!-- inputmode e maxlength para telefone BR: (XX) 9XXXX-XXXX ou (XX) XXXX-XXXX -->
+                            <input type="tel" id="contatoTelefonico" name="contatoTelefonico" placeholder="(81) 99999-0000" inputmode="tel" maxlength="15" required />
+                        </div>
                     </div>
                 </fieldset>
 
@@ -235,10 +241,11 @@
     <label><input type="checkbox" id="difOutro"> Outro</label>
   </div>
 
-  <div class="form-group" style="margin-top: 1rem;">
-    <label for="eventoNaturezaInicial">Evento - Natureza Inicial do Aviso</label>
-    <input type="text" id="eventoNaturezaInicial" placeholder="Ex: Fogo no lixo; Desabamento do Atacadão">
-  </div>
+    <div class="form-group" style="margin-top: 1rem;">
+        <label for="eventoNaturezaInicial">Evento - Natureza Inicial do Aviso</label>
+        <!-- name adicionado para inclusão no FormData e required para validação -->
+        <input type="text" id="eventoNaturezaInicial" name="eventoNaturezaInicial" placeholder="Ex: Fogo no lixo; Desabamento do Atacadão" required>
+    </div>
 </fieldset>
 
 <!-- ====================================================== -->
@@ -364,7 +371,8 @@
 <fieldset>
     <legend>Histórico</legend>
     <div class="form-group">
-        <textarea name="historico" rows="8" placeholder="Descreva a ocorrência..."></textarea>
+        <!-- Tornar descrição obrigatória para garantir contexto mínimo da ocorrência -->
+        <textarea name="historico" rows="8" placeholder="Descreva a ocorrência..." required></textarea>
     </div>
 </fieldset>
     

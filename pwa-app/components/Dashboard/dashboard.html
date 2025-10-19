@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sistema Integrado de Ocorrências dos Bombeiros</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <!-- Sidebar (cópia do layout web) -->
+  <div id="sidebarContainer" class="sidebar-container">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar" id="sidebar">
+      <header class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="sidebar-logo-container">
+            <img src="../../assets/siob-logo.png" alt="Logo SIOB" class="sidebar-logo-image">
+          </div>
+          <div class="sidebar-logo-text">
+            <strong>SIOB</strong>
+            <small>Sistema Operacional</small>
+          </div>
+        </div>
+        <button id="sidebarCloseBtn" class="sidebar-close-btn">✕</button>
+      </header>
+
+      <nav class="sidebar-nav">
+        <p>Navegação Principal</p>
+        <ul>
+          <li><a href="#" class="active-link">Dashboard</a></li>
+          <li><a href="#">Ocorrências</a></li>
+          <li><a href="#">Relatórios</a></li>
+          <li><a href="#">Usuários</a></li>
+          <li><a href="#">Auditoria</a></li>
+          <li><a href="#">Configurações</a></li>
+        </ul>
+      </nav>
+
+      <footer class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar">CS</div>
+          <div class="user-info">
+            <span id="sidebarUserName">Capitã Vanessa</span>
+            <small>Admin</small>
+          </div>
+        </div>
+        <div class="footer-actions">
+          <button id="logoutSidebarBtn" class="logout-button-sidebar">Sair</button>
+          <button id="themeToggleSidebar" class="theme-toggle-button-sidebar">◐</button>
+        </div>
+      </footer>
+    </aside>
+  </div>
+
+  <!-- Top bar com botão hamburguer -->
+  <header class="dashboard-header" style="margin-bottom:16px;">
+    <div class="header-left">
+      <button id="hamburgerBtn" class="header-icon" aria-label="Abrir menu">☰</button>
+      <h1>Sistema Integrado de Ocorrências dos Bombeiros</h1>
+    </div>
+  </header>
+  <!-- O conteúdo foi movido para o home.html para criar a "casca" do app. -->
+  <!-- Este arquivo agora contém apenas a parte interna do dashboard. -->
+
+  <div class="dashboard-title">
+    <h2>Dashboard Operacional</h2>
+    <p>Visão geral das ocorrências do Corpo de Bombeiros Militar de Pernambuco</p>
+  </div>
+  <section class="kpi-grid">
+    <div class="kpi-card kpi-red">
+      <div class="kpi-info">
+        <span class="kpi-title">Ocorrências Hoje</span>
+        <span class="kpi-value">8</span>
+        <span class="kpi-details">Registradas nas últimas 24h</span>
+        <span class="kpi-comparison">↓12% vs. mês anterior</span>
+      </div>
+      <div class="kpi-icon"></div>
+    </div>
+
+    <div class="kpi-card kpi-yellow">
+      <div class="kpi-info">
+        <span class="kpi-title">Em andamento</span>
+        <span class="kpi-value">8</span>
+        <span class="kpi-details">Equipes mobilizadas</span>
+        <span class="kpi-comparison">↓5% vs. mês anterior</span>
+      </div>
+      <div class="kpi-icon"></div>
+    </div>
+
+    <div class="kpi-card kpi-green">
+      <div class="kpi-info">
+        <span class="kpi-title">Concluídas</span>
+        <span class="kpi-value">1</span>
+        <span class="kpi-details">Este mês</span>
+        <span class="kpi-comparison">↑8% vs. mês anterior</span>
+      </div>
+      <div class="kpi-icon"></div>
+    </div>
+
+    <div class="kpi-card kpi-blue">
+      <div class="kpi-info">
+        <span class="kpi-title">Tempo Médio</span>
+        <span class="kpi-value">12.5min</span>
+        <span class="kpi-details">Respostas das equipes</span>
+        <span class="kpi-comparison">↓3% vs. mês anterior</span>
+      </div>
+      <div class="kpi-icon"></div>
+    </div>
+  </section>
+
+  <section class="content-grid">
+    <div class="info-card">
+      <h3>Ocorrência por tipo</h3>
+      <p>Distribuição no mês atual</p>
+      <ul id="byTypeContainer" class="info-list">
+        <!-- preenchido via JS -->
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3>Por Região</h3>
+      <p>Atendimento por localidade</p>
+      <ul id="byRegionContainer" class="info-list">
+        <!-- preenchido via JS -->
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3>Recentes</h3>
+      <p>Últimas ocorrências registradas</p>
+      <ul id="recentList" class="info-list-recent">
+        <!-- preenchido via JS -->
+      </ul>
+    </div>
+  </section>
+
+  <section class="info-card">
+    <h3>Status Geral das Operacoes</h3>
+    <p>Panorama atual das atividades</p>
+    <div class="status-grid">
+      <div class="status-card status-pending"><span class="status-value">15</span><span class="status-label">Pendentes</span></div>
+      <div class="status-card status-ongoing"><span class="status-value">8</span><span class="status-label">Em andamento</span></div>
+      <div class="status-card status-completed"><span class="status-value">231</span><span class="status-label">Concluídas</span></div>
+    </div>
+  </section>
+  
+  <script src="dashboard.js" defer></script>
+</body>
+</html>
+

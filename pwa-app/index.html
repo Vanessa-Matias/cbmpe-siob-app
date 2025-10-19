@@ -173,8 +173,8 @@
                     // ATUALIZAÇÃO: Salva os dados do usuário no localStorage.
                     localStorage.setItem('loggedInUser', JSON.stringify(data.user));
                     
-                    // ATUALIZAÇÃO: Redireciona para a página principal.
-                    window.location.href = 'home.html';
+                    // ATUALIZAÇÃO: Redireciona para o dashboard principal do PWA.
+                    window.location.href = 'components/Dashboard/dashboard.html';
                 } else {
                     alert(`Erro: ${data.message}`);
                 }
