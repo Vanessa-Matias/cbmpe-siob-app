@@ -1,0 +1,70 @@
+<div class="page-header">
+  <div class="page-title">
+    <h2 class="font-bold">Lista de Ocorrências</h2>
+  </div>
+  <div class="page-actions">
+    <button id="btn-nova-ocorrencia" class="button-primary">
+      <i class="fa-solid fa-plus mr-1"></i> Nova Ocorrência
+    </button>
+  </div>
+</div>
+
+<!-- ==================== FILTROS E BUSCA ==================== -->
+<div class="info-card mb-6 filter-card">
+  <h3 class="font-bold">Filtro e Busca</h3>
+  <p>Use o filtro para encontrar ocorrências específicas</p>
+
+  <!-- GRID COM BUSCA + FILTROS ALINHADOS -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 filter-inputs">
+
+    <!-- 🔍 Campo de busca -->
+    <div class="search-input-wrapper">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input
+        type="text"
+        id="filtro-busca-texto"
+        name="filtro-busca-texto"
+        placeholder="Buscar por ID, título ou região..."
+      />
+    </div>
+
+    <!-- Tipo -->
+    <div>
+      <select id="filtro-tipo" name="filtro-tipo">
+        <option value="Todos">Todos os Tipos</option>
+        <option value="Incêndio">Incêndio</option>
+        <option value="Acidente">Acidente</option>
+        <option value="Emergência Médica">Emergência Médica</option>
+        <option value="Resgate">Resgate</option>
+        <option value="Vazamento">Vazamento</option>
+        <option value="Outros">Outros</option>
+      </select>
+    </div>
+
+    <!-- Status -->
+    <div>
+      <select id="filtro-status" name="filtro-status">
+        <option value="Todos">Todos os Status</option>
+        <option value="Pendente">Pendente</option>
+        <option value="Em andamento">Em andamento</option>
+        <option value="Concluída">Concluída</option>
+      </select>
+    </div>
+
+    <!-- Prioridade -->
+    <div>
+      <select id="filtro-prioridade" name="filtro-prioridade">
+        <option value="Todas">Todas as Prioridades</option>
+        <option value="Alta">Alta</option>
+        <option value="Média">Média</option>
+        <option value="Baixa">Baixa</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== TABELA ==================== -->
+<div id="lista-de-ocorrencias-container" class="ocorrencias-table-container">
+  <p id="loading-message" style="color: var(--color-muted);">Carregando ocorrências...</p>
+</div>
