@@ -1,59 +1,74 @@
 // ==========================================================================
-// DashboardContent.tsx (Versão Atualizada e Interativa)
+// DashboardContent.tsx (VERSÃO FINAL, LIMPA E OTIMIZADA)
 // ==========================================================================
 
 import React, { useState, useEffect } from 'react';
-// Conecta-se ao mesmo arquivo de estilo
-import '../DashboardPage/DashboardPage.css'; 
-// Importa os ícones do React
+import '../DashboardPage/DashboardPage.css';
+// --- Ícones Otimizados (Apenas os estritamente necessários são importados) ---
 import { 
-  FaTriangleExclamation, FaClock, FaCircleCheck, FaChartLine,
-  FaFire, FaCarBurst, FaHeartPulse, FaLifeRing, FaDroplet, FaShapes, FaMapPin, FaBuildingColumns
+  FaMapPin, FaShapes, FaFire, FaCarBurst, FaHeartPulse, FaLifeRing, FaDroplet
 } from 'react-icons/fa6';
+import { 
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
+  PieChart, Pie, Cell, Legend
+} from 'recharts';
 
-// --- Interface para os dados da ocorrência (pode ser movida para um arquivo types.ts) ---
+// --- Cores Refinadas (Pendentes, Em andamento, Concluídas) ---
+// Cores: [VERMELHO VIVO, AMARELO LARANJA, VERDE MUSGO]
+const COLORS = ['#8f7979ff', '#AD131A', '#e77070ff'];
+
+
+// --- Interface para os dados da ocorrência ---
 interface Ocorrencia {
     id: string;
     tipo: string;
     regiao: string;
     titulo: string;
-    status: 'Pendente' | 'Em andamento' | 'Concluída' | 'Encerrado'; // Adicionado 'Encerrado'
+    status: 'Pendente' | 'Em andamento' | 'Concluída' | 'Encerrado';
     prioridade: 'Alta' | 'Média' | 'Baixa';
     data: string;
     hora: string;
     equipe: string;
 }
 
+// --- Interface para os dados do gráfico (Com flexibilidade para Recharts) ---
+interface GraficoData {
+    name: string;
+    value: number;
+    [key: string]: any; // Assinatura de índice para compatibilidade com Recharts (Solução TS2322)
+}
+
+
 // --- Componente do Dashboard ---
 const DashboardContent = () => {
 
-    // --- Estados para armazenar os dados dinâmicos ---
-    // (Substitui os números estáticos)
+    // --- Estados Otimizados (Removidos statusAndamento/Concluidas redundantes) ---
     const [kpiHoje, setKpiHoje] = useState(0);
-    const [kpiAndamento, setKpiAndamento] = useState(0);
-    const [kpiConcluidas, setKpiConcluidas] = useState(0);
+    const [kpiAndamento, setKpiAndamento] = useState(0); 
+    const [kpiConcluidas, setKpiConcluidas] = useState(0); 
     const [statusPendentes, setStatusPendentes] = useState(0);
-    const [statusAndamento, setStatusAndamento] = useState(0);
-    const [statusConcluidas, setStatusConcluidas] = useState(0);
+    
+    // Estados para Cards e Gráficos
     const [porTipo, setPorTipo] = useState<Record<string, number>>({});
     const [porRegiao, setPorRegiao] = useState<Record<string, number>>({});
     const [recentes, setRecentes] = useState<Ocorrencia[]>([]);
+    
+    const [dadosGraficoStatus, setDadosGraficoStatus] = useState<GraficoData[]>([]);
+    const [dadosGraficoTipo, setDadosGraficoTipo] = useState<GraficoData[]>([]);
 
-    // --- Mapeamento de Ícones (para renderização dinâmica) ---
+    // --- Mapeamento de Ícones ---
     const iconMap: Record<string, React.ReactElement> = {
-        'Incêndio': <FaFire className="icon-type icon-fire" />,
-        'Acidente': <FaCarBurst className="icon-type icon-accident" />,
-        'Emergência Médica': <FaHeartPulse className="icon-type icon-medical" />,
-        'Resgate': <FaLifeRing className="icon-type icon-rescue" />,
-        'Vazamento': <FaDroplet className="icon-type icon-leak" />,
-        'Outros': <FaShapes className="icon-type icon-others" />,
-    };
+        'Incêndio': <FaFire className="icon-type icon-fire" />,
+        'Acidente': <FaCarBurst className="icon-type icon-accident" />,
+        'Emergência Médica': <FaHeartPulse className="icon-type icon-medical" />,
+        'Resgate': <FaLifeRing className="icon-type icon-rescue" />,
+        'Vazamento': <FaDroplet className="icon-type icon-leak" />,
+        'Outros': <FaShapes className="icon-type icon-others" />,
+    };
 
-    // --- useEffect: Executa 1 vez quando o componente é montado ---
-    // (Recria a lógica do nosso dashboard.js e lista-ocorrencias.js)
+    // --- Lógica de Carregamento ---
     useEffect(() => {
         
-        // --- 1. Função para criar dados fictícios (igual ao protótipo) ---
         function initializeMockData() {
             const hasData = sessionStorage.getItem('ocorrencias');
             if (!hasData) {
@@ -67,86 +82,134 @@ const DashboardContent = () => {
             }
         }
 
-        // --- 2. Função para carregar e processar os dados ---
         function loadDashboardData() {
             initializeMockData();
             const ocorrencias: Ocorrencia[] = JSON.parse(sessionStorage.getItem('ocorrencias') || '[]');
 
-            // --- Processa KPIs ---
-            setKpiHoje(ocorrencias.length);
-            setKpiAndamento(ocorrencias.filter(o => o.status === 'Em andamento').length);
-            setKpiConcluidas(ocorrencias.filter(o => o.status === 'Concluída' || o.status === 'Encerrado').length);
+            // --- Processamento de Status e KPIs ---
+            const p = ocorrencias.filter(o => o.status === 'Pendente').length;
+            const a = ocorrencias.filter(o => o.status === 'Em andamento').length;
+            const c = ocorrencias.filter(o => o.status === 'Concluída' || o.status === 'Encerrado').length;
 
-            // --- Processa Status Geral ---
-            setStatusPendentes(ocorrencias.filter(o => o.status === 'Pendente').length);
-            setStatusAndamento(ocorrencias.filter(o => o.status === 'Em andamento').length);
-            setStatusConcluidas(ocorrencias.filter(o => o.status === 'Concluída' || o.status === 'Encerrado').length);
+            setKpiHoje(ocorrencias.length);
+            setKpiAndamento(a);
+            setKpiConcluidas(c);
+            setStatusPendentes(p);
             
-            // --- Processa Ocorrências por Tipo ---
+            // --- 1. Dados para o Gráfico de Status (Pizza) ---
+            const statusData: GraficoData[] = [
+                { name: 'Pendentes', value: p },
+                { name: 'Em andamento', value: a },
+                { name: 'Concluídas', value: c },
+            ];
+            setDadosGraficoStatus(statusData);
+
+            // --- 2. Dados para o Gráfico por Tipo (Barra) ---
             const tipoCounts: Record<string, number> = { 'Incêndio': 0, 'Acidente': 0, 'Emergência Médica': 0, 'Resgate': 0, 'Vazamento': 0, 'Outros': 0 };
             ocorrencias.forEach(o => {
                 if (tipoCounts[o.tipo] !== undefined) {
                     tipoCounts[o.tipo]++;
+                } else {
+                    tipoCounts['Outros']++; 
                 }
             });
+            const tipoData = Object.entries(tipoCounts).map(([nome, total]) => ({
+                name: nome,
+                value: total
+            }));
+            setDadosGraficoTipo(tipoData);
+            
+            // --- Processamento para Cards ---
             setPorTipo(tipoCounts);
-
-            // --- Processa Ocorrências por Região ---
+            
             const regiaoCounts: Record<string, number> = {};
             ocorrencias.forEach(o => {
-                const regiaoLimpa = o.regiao.split(' - ')[0]; // Pega só "Recife" de "Recife - Centro"
+                const regiaoLimpa = o.regiao.split(' - ')[0];
                 regiaoCounts[regiaoLimpa] = (regiaoCounts[regiaoLimpa] || 0) + 1;
             });
             setPorRegiao(regiaoCounts);
 
-            // --- Processa Ocorrências Recentes ---
-            setRecentes(ocorrencias.slice(0, 3)); // Pega as 3 mais recentes
+            setRecentes(ocorrencias.slice(0, 3));
         }
 
-        // --- 3. Executa a função ---
         loadDashboardData();
 
-    }, []); // O array vazio [] garante que isso rode apenas uma vez
+    }, []);
 
     // --- Renderização do Componente ---
     return (
     <>
       <div className="dashboard-title">
-        {/* Título (agora em negrito via CSS) */}
-        <h2>Dashboard Operacional</h2>
-        <p>Visão geral das ocorrências do Corpo de Bombeiros Militar de Pernambuco</p>
+        <h2 className="font-bold">Dashboard Operacional</h2>
       </div>
 
-      {/* Seção de KPIs (agora com dados dinâmicos) */}
-      <section className="kpi-grid">
-        <div className="kpi-card kpi-red"><div className="kpi-info"><span className="kpi-title">Ocorrências Hoje</span><span className="kpi-value">{kpiHoje}</span><span className="kpi-details">Registradas nas últimas 24h</span></div><FaTriangleExclamation className="kpi-icon" /></div>
-        <div className="kpi-card kpi-yellow"><div className="kpi-info"><span className="kpi-title">Em andamento</span><span className="kpi-value">{kpiAndamento}</span><span className="kpi-details">Equipes mobilizadas</span></div><FaClock className="kpi-icon" /></div>
-        <div className="kpi-card kpi-green"><div className="kpi-info"><span className="kpi-title">Concluídas</span><span className="kpi-value">{kpiConcluidas}</span><span className="kpi-details">Este mês</span></div><FaCircleCheck className="kpi-icon" /></div>
-        <div className="kpi-card kpi-blue"><div className="kpi-info"><span className="kpi-title">Tempo Médio</span><span className="kpi-value">13.2min</span><span className="kpi-details">Respostas das equipes</span></div><FaChartLine className="kpi-icon" /></div>
+      {/* Seção de Gráficos (Lado a Lado no Topo) */}
+      <section className="chart-grid"> 
+        
+        {/* Gráfico 1: Distribuição de Status (Pizza) - CORES AJUSTADAS */}
+        <div className="info-card chart-card">
+            <h3 className="font-bold">Distribuição de Status</h3>
+            <p>Panorama de Operações Atuais ({kpiHoje} Total)</p>
+            <ResponsiveContainer width="100%" height={280}>
+                <PieChart>
+                    <Pie
+                        data={dadosGraficoStatus}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={100}
+                        labelLine={false}
+                        label={({ name, value, percent }: any) => {
+                             // Usamos 'any' e garantimos a formatação correta
+                            const percentValue = (percent * 100).toFixed(0); 
+                            return `${name}: ${percentValue}%`;
+                        }}
+                    >
+                        {dadosGraficoStatus.map((entry, index) => (
+                            // Mapeia as cores do array COLORS
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                    </Pie>
+                    <Tooltip formatter={(value, name) => ([value, name])}/>
+                    <Legend />
+                </PieChart>
+            </ResponsiveContainer>
+        </div>
+
+        {/* Gráfico 2: Ocorrências por Tipo (Barra) - COR AJUSTADA */}
+        <div className="info-card chart-card"> 
+            <h3 className="font-bold">Ocorrências por Tipo</h3>
+            <p>Distribuição no Mês Atual</p>
+            <ResponsiveContainer width="100%" height={280}>
+                <BarChart data={dadosGraficoTipo} margin={{ top: 10, right: 10, left: 0, bottom: 50 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+                    <XAxis 
+                        dataKey="name" 
+                        fontSize={10} 
+                        stroke="var(--color-muted)" 
+                        interval={0} 
+                        angle={-45} 
+                        textAnchor="end" 
+                        height={50} 
+                    /> 
+                    <YAxis fontSize={12} stroke="var(--color-muted)" />
+                    <Tooltip formatter={(value, name) => ([value, name])}/>
+                    {/* COR AJUSTADA para o vermelho da identidade */}
+                    <Bar dataKey="value" fill="#AD131A" name="Total" /> 
+                </BarChart>
+            </ResponsiveContainer>
+        </div>
       </section>
 
-      {/* Seção de Informações (agora com dados dinâmicos) */}
-      <section className="content-grid">
-        {/* Card Ocorrência por Tipo */}
-        <div className="info-card">
-            <h3 className="font-bold">Ocorrência por tipo</h3>
-            <p>Distribuição no mês atual</p>
-            <ul className="info-list">
-                {/* Mapeia os dados do estado 'porTipo' para criar a lista */}
-                {Object.entries(porTipo).map(([tipo, contagem]) => (
-                    <li key={tipo}>
-                        {iconMap[tipo] || <FaShapes className="icon-type icon-others" />} {tipo} <span className="badge">{contagem}</span>
-                    </li>
-                ))}
-            </ul>
-        </div>
+      {/* Seção de Cards Informativos (AGORA APENAS 2 COLUNAS ABAIXO) */}
+      <section className="content-grid-cards">
         
-        {/* Card Por Região */}
+        {/* Card 1: Por Região */}
         <div className="info-card">
             <h3 className="font-bold">Por Região</h3>
             <p>Atendimento por localidade</p>
             <ul className="info-list">
-                {/* Mapeia os dados do estado 'porRegiao' para criar a lista */}
                 {Object.entries(porRegiao).map(([regiao, contagem]) => (
                     <li key={regiao}>
                         <FaMapPin className="icon-type icon-region" /> {regiao} <span className="badge">{contagem}</span>
@@ -155,15 +218,14 @@ const DashboardContent = () => {
             </ul>
         </div>
         
-        {/* Card Recentes */}
+        {/* Card 2: Recentes */}
         <div className="info-card">
             <h3 className="font-bold">Recentes</h3>
             <p>Últimas ocorrências registradas</p>
             <ul className="info-list-recent">
-                {/* Mapeia os dados do estado 'recentes' para criar a lista */}
                 {recentes.map((ocorrencia) => (
                     <li key={ocorrencia.id}>
-                        {iconMap[ocorrencia.tipo] || <FaShapes className="icon-type icon-others" />}
+                        {iconMap[ocorrencia.tipo] || iconMap['Outros']}
                         <div className="recent-details">
                             <span className="recent-code">{ocorrencia.id}</span>
                             <span className="recent-title">{ocorrencia.titulo}</span>
@@ -172,17 +234,6 @@ const DashboardContent = () => {
                     </li>
                 ))}
             </ul>
-        </div>
-      </section>
-      
-      {/* Seção Status Geral (agora com dados dinâmicos) */}
-      <section className="info-card">
-        <h3 className="font-bold">Status Geral das Operacoes</h3>
-        <p>Panorama atual das atividades</p>
-        <div className="status-grid">
-            <div className="status-card status-pending"><span className="status-value">{statusPendentes}</span><span className="status-label">Pendentes</span></div>
-            <div className="status-card status-ongoing"><span className="status-value">{statusAndamento}</span><span className="status-label">Em andamento</span></div>
-            <div className="status-card status-completed"><span className="status-value">{statusConcluidas}</span><span className="status-label">Concluídas</span></div>
         </div>
       </section>
     </>

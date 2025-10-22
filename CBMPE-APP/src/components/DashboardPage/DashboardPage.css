@@ -203,3 +203,35 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/*==========================================/*
+/* Exemplo de CSS para o novo layout de 2 gráficos lado a lado */
+
+.chart-grid {
+    display: grid;
+    gap: 20px; /* Espaço entre os gráficos */
+    padding-bottom: 20px;
+    grid-template-columns: 1fr; /* Padrão mobile: 1 coluna */
+}
+
+/* Para telas maiores que 768px */
+@media (min-width: 768px) {
+    .chart-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+    }
+}
+
+/* Para a seção de cards abaixo, se você quiser 3 colunas */
+.content-grid-cards {
+    display: grid;
+    gap: 20px;
+    padding-bottom: 20px;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+    .content-grid-cards {
+        grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+    }
+}
