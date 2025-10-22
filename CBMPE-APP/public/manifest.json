@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "SIOB",
+  "name": "SIOB CBMPE",
+  "description": "Sistema Integrado de Ocorrências de Bombeiros",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +21,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#AE1A16",
+  "background_color": "#AE1A16"
 }
