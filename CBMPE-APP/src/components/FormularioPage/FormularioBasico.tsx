@@ -1,21 +1,68 @@
 /**
  * @file FormularioBasico.tsx
- * @description Renderiza a UI completa do formulário básico de ocorrência.
- * Corrigido para compatibilidade com o FormularioPage.tsx e tipagem TSX.
+ * @description Renderiza a UI completa do formulário básico de ocorrência,
+ * Requer: npm install signature_pad
  */
-import React from 'react';
+import React, { useRef, useEffect } from 'react'; 
+import SignaturePad from 'signature_pad'; 
 import './FormularioPage.css';
 
+// Interface do componente
 interface Props {
   formData: any;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  // A tipagem 'any' é usada para acomodar os eventos customizados de GPS e Assinatura
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | any) => void;
   handleSubmit: (e: React.FormEvent) => void;
   handleCancel: () => void;
   submitText: string;
 }
 
 const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmit, handleCancel, submitText }) => {
-  // --- Função de captura de localização GPS ---
+  
+  // REFERÊNCIAS ESSENCIAIS PARA O CANVAS E A BIBLIOTECA
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const signaturePad = useRef<SignaturePad | null>(null);
+
+  // --- 1. Lógica de Inicialização da Assinatura (useEffect) ---
+  useEffect(() => {
+    
+    if (canvasRef.current) {
+      
+      // 1. Inicializa o SignaturePad
+      signaturePad.current = new SignaturePad(canvasRef.current, {
+        penColor: "rgba(0, 0, 0, 0.9)",
+        backgroundColor: "rgba(255,255,255,0)",
+      });
+      
+      // 2. Função para redimensionar o canvas (essencial para PWA responsivo)
+      const resizeCanvas = () => {
+          if (canvasRef.current) {
+              const ratio = Math.max(window.devicePixelRatio || 1, 1);
+              canvasRef.current.width = canvasRef.current.offsetWidth * ratio;
+              canvasRef.current.height = canvasRef.current.offsetHeight * ratio;
+              canvasRef.current.getContext('2d')?.scale(ratio, ratio);
+              
+              // Tenta restaurar a assinatura se houver dados (modo edição)
+              if (formData.assinaturaDigital && signaturePad.current) {
+                  signaturePad.current.fromDataURL(formData.assinaturaDigital);
+              } else {
+                  signaturePad.current?.clear(); 
+              }
+          }
+      };
+      
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas(); 
+      
+      // Cleanup: remove o listener ao desmontar
+      return () => {
+          window.removeEventListener('resize', resizeCanvas);
+          signaturePad.current = null;
+      };
+    }
+  }, [formData.assinaturaDigital]); // Dependência para reajustar ao carregar dados de edição
+
+  // --- 3. Função de captura de localização GPS ---
   const handleGPSCapture = () => {
     if (!navigator.geolocation) {
       alert('Geolocalização não é suportada neste dispositivo.');
@@ -24,19 +71,32 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        handleChange({
-          target: { name: 'endereco.latitude', value: latitude, type: 'text' },
-        } as any);
-        handleChange({
-          target: { name: 'endereco.longitude', value: longitude, type: 'text' },
-        } as any);
+        // Atualiza o estado simulando eventos customizados
+        handleChange({ target: { name: 'endereco.latitude', value: latitude } });
+        handleChange({ target: { name: 'endereco.longitude', value: longitude } });
       },
       (error) => alert('Erro ao capturar localização: ' + error.message)
     );
   };
+  
+  // --- 4. Função para limpar o canvas de assinatura ---
+  const handleClearSignature = () => {
+      signaturePad.current?.clear();
+      handleChange({ target: { name: 'assinaturaDigital', value: '' } });
+  };
+  
+  // --- 5. Handler que captura a assinatura antes de submeter ---
+  const preSubmitHandler = (e: React.FormEvent) => {
+      // Captura a assinatura no formato base64 antes de enviar
+      if (signaturePad.current && !signaturePad.current.isEmpty()) {
+          const dataURL = signaturePad.current.toDataURL(); 
+          handleChange({ target: { name: 'assinaturaDigital', value: dataURL } }); 
+      }
+      handleSubmit(e); // Chama o handler principal (validação e persistência)
+  }
 
   return (
-    <form className="form-card" onSubmit={handleSubmit}>
+    <form className="form-card" onSubmit={preSubmitHandler}> 
       {/* --- SEÇÃO 1: CABEÇALHO --- */}
       <div className="top-header-grid">
         {/* Ponto Base */}
@@ -48,7 +108,7 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
               id="pontoBase"
               name="pontoBase"
               placeholder="Ex: B-2025001234"
-              value={formData.pontoBase}
+              value={formData.pontoBase || ''}
               onChange={handleChange}
             />
             <p className="ome-text">OME ________ / GB / Seção ________</p>
@@ -64,14 +124,14 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
                 type="text"
                 name="viaturaTipo"
                 placeholder="Tipo (Ex: ABT)"
-                value={formData.viaturaTipo}
+                value={formData.viaturaTipo || ''}
                 onChange={handleChange}
               />
               <input
                 type="text"
                 name="viaturaOrdem"
                 placeholder="Nº Ordem"
-                value={formData.viaturaOrdem}
+                value={formData.viaturaOrdem || ''}
                 onChange={handleChange}
               />
             </div>
@@ -89,7 +149,7 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
                 id="numAviso"
                 name="numAviso"
                 placeholder="Informe o tipo e número de ordem"
-                value={formData.numAviso}
+                value={formData.numAviso || ''}
                 onChange={handleChange}
               />
             </div>
@@ -99,7 +159,7 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
                 type="date"
                 id="dataAviso"
                 name="dataAviso"
-                value={formData.dataAviso}
+                value={formData.dataAviso || ''}
                 onChange={handleChange}
               />
             </div>
@@ -115,7 +175,7 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
         <div className="ocorrencia-grid">
           <div className="form-group">
             <label htmlFor="horaRecebimento">Hora do Recebimento</label>
-            <input type="time" id="horaRecebimento" name="horaRecebimento" />
+            <input type="time" id="horaRecebimento" name="horaRecebimento" value={formData.horaRecebimento || ''} onChange={handleChange}/>
           </div>
 
           <div className="form-group">
@@ -124,6 +184,8 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
               type="text"
               id="formaAcionamento"
               name="formaAcionamento"
+              value={formData.formaAcionamento || ''}
+              onChange={handleChange}
               placeholder="Ex: Telefonema, presencial..."
             />
           </div>
@@ -133,34 +195,34 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
         <div className="ocorrencia-mini-grid">
           <div className="form-group">
             <label htmlFor="co">CO</label>
-            <input type="text" id="co" name="co" placeholder="Ex: 123" />
+            <input type="text" id="co" name="co" placeholder="Ex: 123" value={formData.co || ''} onChange={handleChange}/>
           </div>
 
           <div className="form-group">
             <label htmlFor="ciods">CIODS</label>
-            <input type="text" id="ciods" name="ciods" placeholder="Ex: 45" />
+            <input type="text" id="ciods" name="ciods" placeholder="Ex: 45" value={formData.ciods || ''} onChange={handleChange}/>
           </div>
 
           <div className="form-group">
             <label htmlFor="numero193">193</label>
-            <input type="text" id="numero193" name="numero193" placeholder="Ex: 567" />
+            <input type="text" id="numero193" name="numero193" placeholder="Ex: 567" value={formData.numero193 || ''} onChange={handleChange}/>
           </div>
         </div>
 
         {/* Terceira linha: Situação da Ocorrência */}
         <div className="form-group">
           <label htmlFor="situacao">Situação da Ocorrência</label>
-          <select id="situacao" name="situacao">
+          <select id="situacao" name="situacao" value={formData.situacao} onChange={handleChange}>
             <option value="">Selecione</option>
             <option value="em-andamento">Em andamento</option>
-            <option value="finalizada">Finalizada</option>
+            <option value="finalizada">Concluída</option>
             <option value="cancelada">Cancelada</option>
-            <option value="cancelada">Trote</option>
+            <option value="trote">Trote</option>
           </select>
         </div>
       </fieldset>
 
-      {/* --- SEÇÃO 3: LOCALIZAÇÃO --- */}
+      {/* --- SEÇÃO 3: LOCALIZAÇÃO E GPS (PWA) --- */}
       <fieldset>
         <legend>Localização da Ocorrência</legend>
         <div className="form-group">
@@ -177,242 +239,51 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
           <label htmlFor="referencia">Ponto de Referência</label>
           <input type="text" id="referencia" name="endereco.referencia" value={formData.endereco?.referencia || ''} onChange={handleChange} placeholder="Ex: Próximo ao Shopping Recife" />
         </div>
-        {/* Adicionado style inline para garantir o espaçamento superior */}
+        
+        {/* CAPTURA DE GPS */}
         <div className="form-group" style={{ marginTop: '1.5rem' }}>
-
-        </div>
-      </fieldset>
-
-      {/* --- SEÇÃO 4: SOLICITANTE --- */}
-      <fieldset>
-        <legend>Dados do Solicitante</legend>
-        <div className="form-group-grid-4-col">
-          <div className="form-group">
-            <label>Nome</label>
-            <input 
-              type="text" 
-              name="nomeSolicitante" 
-              value={formData.nomeSolicitante} 
-              onChange={handleChange} 
-              placeholder="Ex: João da Silva" 
-            />
-          </div>
-          <div className="form-group">
-            <label>CPF/RG</label>
-            <input 
-              type="text" 
-              name="cpfRg" 
-              value={formData.cpfRg} 
-              onChange={handleChange} 
-              placeholder="000.000.000-00" 
-            />
-          </div>
-          <div className="form-group">
-            <label>Órgão Expedidor</label>
-            <input 
-              type="text" 
-              name="orgaoExpedidor" 
-              value={formData.orgaoExpedidor} 
-              onChange={handleChange} 
-              placeholder="SSD-PE" 
-            />
-          </div>
-          <div className="form-group">
-            <label>Idade</label>
-            <input 
-              type="number" 
-              name="idadeSolicitante"
-              value={formData.idadeSolicitante} 
-              onChange={handleChange} 
-              placeholder="Ex: 35" 
-            />
-          </div>
-          <div className="form-group">
-            <label>Sexo</label>
-            <select 
-              name="sexoSolicitante" 
-              value={formData.sexoSolicitante} 
-              onChange={handleChange}
-            >
-              <option value="">Selecione</option>
-              <option value="M">Masculino</option>
-              <option value="F">Feminino</option>
-              <option value="O">Outro</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label>Telefone</label>
-            <input 
-              type="tel" 
-              name="contatoTelefonico" 
-              value={formData.contatoTelefonico} 
-              onChange={handleChange} 
-              placeholder="(81) 99999-0000" 
-            />
+          <label>Coordenadas GPS</label>
+          <div className="gps-capture-group">
+            <input type="text" id="latitude" name="endereco.latitude" placeholder="Latitude" readOnly value={formData.endereco?.latitude || ''} />
+            <input type="text" id="longitude" name="endereco.longitude" placeholder="Longitude" readOnly value={formData.endereco?.longitude || ''} />
+            <button type="button" id="btnCapturarGps" className="gps-button" onClick={handleGPSCapture}>
+              Capturar GPS
+            </button>
           </div>
         </div>
       </fieldset>
 
-      {/* --- SEÇÃO 5: DESLOCAMENTO --- */}
+      {/* --- SEÇÃO MÍDIA E ASSINATURAS (PWA) --- */}
       <fieldset>
-        <legend>Deslocamento</legend>
-        <div className="form-group-grid-5-col">
-          <div className="form-group">
-            <label>Horário de Saída</label>
-            <input type="time" name="horarioSaida" value={formData.horarioSaida} onChange={handleChange} />
+        <legend>Mídia e Assinaturas (Anexos PWA)</legend>
+        
+        {/* CAPTURA DE FOTO */}
+        <div className="form-group">
+          <label htmlFor="fotoOcorrencia">Fotografia da Ocorrência</label>
+          <input 
+            type="file" 
+            id="fotoOcorrencia" 
+            name="fotoOcorrencia" 
+            accept="image/*" 
+            capture="environment" 
+            onChange={handleChange}
+          />
+          <small>Toque para abrir a câmera traseira e registrar uma foto.</small>
+        </div>
+        
+        {/* CAPTURA DE ASSINATURA */}
+        <div className="form-group" style={{marginTop: '1.5rem'}}>
+          <label>Assinatura Digital (Testemunha / Vítima)</label>
+          <div id="signature-pad-container" className="assinatura-container">
+              <canvas ref={canvasRef} id="signature-canvas" style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%' }}></canvas>
           </div>
-          <div className="form-group">
-            <label>Horário no Local</label>
-            <input type="time" name="horarioNoLocal" value={formData.horarioNoLocal} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Saída do Local</label>
-            <input type="time" name="horarioSaidaLocal" value={formData.horarioSaidaLocal} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Chegada ao Destino</label>
-            <input type="time" name="horarioChegadaDestino" value={formData.horarioChegadaDestino} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Retorno ao Quartel</label>
-            <input type="time" name="horarioRetornoQuartel" value={formData.horarioRetornoQuartel} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Hodômetro Saída</label>
-            <input type="number" name="hodometroSaida" value={formData.hodometroSaida} onChange={handleChange} placeholder="Ex: 12000" />
-          </div>
-          <div className="form-group">
-            <label>Hodômetro Local</label>
-            <input type="number" name="hodometroLocal" value={formData.hodometroLocal} onChange={handleChange} placeholder="Ex: 12015" />
-          </div>
+          <button type="button" id="btnClearSignature" className="button-cancel" style={{ marginTop: '10px', width: 'auto' }} onClick={handleClearSignature}>
+              Limpar Assinatura
+          </button>
         </div>
       </fieldset>
 
-      {/* --- SEÇÃO 6: APOIO E VIATURAS --- */}
-      <fieldset>
-        <legend>Apoio e Viaturas Envolvidas</legend>
-
-        {/* Sub: Apoio de Órgãos */}
-        <div className="sub-section">
-          <legend>Apoio de Órgãos</legend>
-          <div className="apoio-checkbox-grid">
-              {/* Usamos o name com ponto para o handleChange genérico funcionar */}
-              <label><input type="checkbox" name="apoio.celpe" checked={formData.apoio.celpe} onChange={handleChange}/> Celpe</label>
-              <label><input type="checkbox" name="apoio.samu" checked={formData.apoio.samu} onChange={handleChange}/> Samu</label>
-              <label><input type="checkbox" name="apoio.compesa" checked={formData.apoio.compesa} onChange={handleChange}/> Compesa</label>
-              <label><input type="checkbox" name="apoio.defesaCivil" checked={formData.apoio.defesaCivil} onChange={handleChange}/> Defesa Civil</label>
-              <label><input type="checkbox" name="apoio.orgaoAmbiental" checked={formData.apoio.orgaoAmbiental} onChange={handleChange}/> Órgão Ambiental</label>
-              <label><input type="checkbox" name="apoio.pmpe" checked={formData.apoio.pmpe} onChange={handleChange}/> PMPE</label>
-              <label><input type="checkbox" name="apoio.prf" checked={formData.apoio.prf} onChange={handleChange}/> PRF</label>
-              <label><input type="checkbox" name="apoio.guardaMunicipal" checked={formData.apoio.guardaMunicipal} onChange={handleChange}/> Guarda Municipal</label>
-              <label><input type="checkbox" name="apoio.ffaa" checked={formData.apoio.ffaa} onChange={handleChange}/> FFAA</label>
-              <label>
-                <input type="checkbox" name="apoio.outro" checked={formData.apoio.outro} onChange={handleChange}/> Outro:
-                <input type="text" name="apoio.outroDesc" value={formData.apoio.outroDesc} onChange={handleChange} disabled={!formData.apoio.outro}/>
-              </label>
-          </div>
-        </div>
-
-  {/* Sub: Viaturas de Apoio */}
-  <div className="sub-section">
-    <legend>Apoio de Viaturas</legend>
-    <div className="viatura-inputs-grid">
       
-      {/* Par 1 */}
-      <div className="viatura-guarnicao-pair">
-        <div className="form-group">
-          <label>Viatura 1 (Tipo e Número)</label>
-          <input type="text" name="viatura1" value={formData.viatura1} onChange={handleChange} placeholder="Ex: ABS 3106"/>
-        </div>
-        <div className="form-group">
-          <label>Guarnição</label>
-          <input type="text" name="guarnicao1" value={formData.guarnicao1} onChange={handleChange} placeholder="Ex: 05"/>
-        </div>
-      </div>
-
-      {/* Par 2 */}
-      <div className="viatura-guarnicao-pair">
-        <div className="form-group">
-          <label>Viatura 2 (Tipo e Número)</label>
-          <input type="text" name="viatura2" value={formData.viatura2} onChange={handleChange} placeholder="Ex: ABT 111"/>
-        </div>
-        <div className="form-group">
-          <label>Guarnição</label>
-          <input type="text" name="guarnicao2" value={formData.guarnicao2} onChange={handleChange} placeholder="Ex: 04"/>
-        </div>
-      </div>
-
-      {/* Par 3 */}
-      <div className="viatura-guarnicao-pair">
-        <div className="form-group">
-          <label>Viatura 3 (Tipo e Número)</label>
-          <input type="text" name="viatura3" value={formData.viatura3} onChange={handleChange} placeholder="Opcional"/>
-        </div>
-        <div className="form-group">
-          <label>Guarnição</label>
-          <input type="text" name="guarnicao3" value={formData.guarnicao3} onChange={handleChange} placeholder="Opcional"/>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</fieldset>
-
-      {/* --- SEÇÃO 7: DIFICULDADES --- */}
-      <fieldset>
-  <legend>Dificuldades na Atuação e Natureza do Aviso</legend>
-  
-  <div className="dificuldades-grid">
-    <input type="checkbox" id="difTempo" name="dificuldades.tempoDeslocamento" checked={formData.dificuldades.tempoDeslocamento} onChange={handleChange} />
-    <label htmlFor="difTempo">Tempo de deslocamento superior a 15 minutos</label>
-
-    <input type="checkbox" id="difObmSemViatura" name="dificuldades.obmSemViatura" checked={formData.dificuldades.obmSemViatura} onChange={handleChange} />
-    <label htmlFor="difObmSemViatura">OBM mais próxima sem viatura apropriada</label>
-
-    <input type="checkbox" id="difObmEmAtendimento" name="dificuldades.obmProximaAtendimento" checked={formData.dificuldades.obmProximaAtendimento} onChange={handleChange} />
-    <label htmlFor="difObmEmAtendimento">OBM mais próxima em atendimento</label>
-    
-    <input type="checkbox" id="difFaltaSinalizacao" name="dificuldades.faltaSinalizacao" checked={formData.dificuldades.faltaSinalizacao} onChange={handleChange} />
-    <label htmlFor="difFaltaSinalizacao">Falta de sinalização de endereço</label>
-    
-    <input type="checkbox" id="difFaltaDados" name="dificuldades.faltaIncorrecaoDados" checked={formData.dificuldades.faltaIncorrecaoDados} onChange={handleChange} />
-    <label htmlFor="difFaltaDados">Falta ou incorreção nos dados do envio</label>
-    
-    <input type="checkbox" id="difTransito" name="dificuldades.transitoIntenso" checked={formData.dificuldades.transitoIntenso} onChange={handleChange} />
-    <label htmlFor="difTransito">Trânsito intenso</label>
-    
-    <input type="checkbox" id="difAcesso" name="dificuldades.areaDificilAcesso" checked={formData.dificuldades.areaDificilAcesso} onChange={handleChange} />
-    <label htmlFor="difAcesso">Área de difícil acesso</label>
-    
-    <input type="checkbox" id="difPaneEquip" name="dificuldades.paneEquipamento" checked={formData.dificuldades.paneEquipamento} onChange={handleChange} />
-    <label htmlFor="difPaneEquip">Pane em equipamento</label>
-    
-    <input type="checkbox" id="difPaneViatura" name="dificuldades.paneViatura" checked={formData.dificuldades.paneViatura} onChange={handleChange} />
-    <label htmlFor="difPaneViatura">Pane em viatura</label>
-    
-    <input type="checkbox" id="difFaltaMaterial" name="dificuldades.faltaMaterial" checked={formData.dificuldades.faltaMaterial} onChange={handleChange} />
-    <label htmlFor="difFaltaMaterial">Falta de material</label>
-    
-    <input type="checkbox" id="difNaoHouve" name="dificuldades.naoHouve" checked={formData.dificuldades.naoHouve} onChange={handleChange} />
-    <label htmlFor="difNaoHouve">Não houve</label>
-    
-    <input type="checkbox" id="difOutro" name="dificuldades.outro" checked={formData.dificuldades.outro} onChange={handleChange} />
-    <label htmlFor="difOutro">Outro</label>
-  </div>
-
-  <div className="form-group" style={{ marginTop: '1.5rem' }}>
-    <label htmlFor="eventoNaturezaInicial">Evento - Natureza Inicial do Aviso</label>
-    <input 
-      type="text" 
-      id="eventoNaturezaInicial"
-      name="eventoNaturezaInicial" 
-      value={formData.eventoNaturezaInicial} 
-      onChange={handleChange} 
-      placeholder="Ex: Fogo no lixo; Desabamento do Atacadão"
-    />
-  </div>
-</fieldset>
-
       {/* --- SEÇÃO 8: FORMULÁRIOS PREENCHIDOS --- */}
       <fieldset>
       <legend>Formulários Preenchidos (decorrentes da natureza do atendimento)</legend>
@@ -422,37 +293,37 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
 
         {/* Cada par (input + label) é agrupado em um "form-check-item" */}
         <div className="form-check-item">
-          <input type="checkbox" id="formAph" name="formulariosPreenchidos.atdPreHospitalar" checked={formData.formulariosPreenchidos.atdPreHospitalar} onChange={handleChange} />
+          <input type="checkbox" id="formAph" name="formulariosPreenchidos.atdPreHospitalar" checked={formData.formulariosPreenchidos?.atdPreHospitalar || false} onChange={handleChange} />
           <label htmlFor="formAph">Atendimento pré-hospitalar</label>
         </div>
         
         <div className="form-check-item">
-          <input type="checkbox" id="formGerenciamento" name="formulariosPreenchidos.formularioGerenciamento" checked={formData.formulariosPreenchidos.formularioGerenciamento} onChange={handleChange} />
+          <input type="checkbox" id="formGerenciamento" name="formulariosPreenchidos.formularioGerenciamento" checked={formData.formulariosPreenchidos?.formularioGerenciamento || false} onChange={handleChange} />
           <label htmlFor="formGerenciamento">Formulário de Gerenciamento</label>
         </div>
 
         <div className="form-check-item">
-          <input type="checkbox" id="formComunitaria" name="formulariosPreenchidos.atividadeComunitaria" checked={formData.formulariosPreenchidos.atividadeComunitaria} onChange={handleChange} />
+          <input type="checkbox" id="formComunitaria" name="formulariosPreenchidos.atividadeComunitaria" checked={formData.formulariosPreenchidos?.atividadeComunitaria || false} onChange={handleChange} />
           <label htmlFor="formComunitaria">Atividade Comunitária</label>
         </div>
 
         <div className="form-check-item">
-          <input type="checkbox" id="formProdutoPerigoso" name="formulariosPreenchidos.produtoPerigoso" checked={formData.formulariosPreenchidos.produtoPerigoso} onChange={handleChange} />
+          <input type="checkbox" id="formProdutoPerigoso" name="formulariosPreenchidos.produtoPerigoso" checked={formData.formulariosPreenchidos?.produtoPerigoso || false} onChange={handleChange} />
           <label htmlFor="formProdutoPerigoso">Produto perigoso</label>
         </div>
 
         <div className="form-check-item">
-          <input type="checkbox" id="formIncendio" name="formulariosPreenchidos.incendio" checked={formData.formulariosPreenchidos.incendio} onChange={handleChange} />
+          <input type="checkbox" id="formIncendio" name="formulariosPreenchidos.incendio" checked={formData.formulariosPreenchidos?.incendio || false} onChange={handleChange} />
           <label htmlFor="formIncendio">Incêndio</label>
         </div>
 
         <div className="form-check-item">
-          <input type="checkbox" id="formSalvamento" name="formulariosPreenchidos.salvamento" checked={formData.formulariosPreenchidos.salvamento} onChange={handleChange} />
+          <input type="checkbox" id="formSalvamento" name="formulariosPreenchidos.salvamento" checked={formData.formulariosPreenchidos?.salvamento || false} onChange={handleChange} />
           <label htmlFor="formSalvamento">Salvamento</label>
         </div>
 
         <div className="form-check-item">
-          <input type="checkbox" id="formPrevencao" name="formulariosPreenchidos.prevencao" checked={formData.formulariosPreenchidos.prevencao} onChange={handleChange} />
+          <input type="checkbox" id="formPrevencao" name="formulariosPreenchidos.prevencao" checked={formData.formulariosPreenchidos?.prevencao || false} onChange={handleChange} />
           <label htmlFor="formPrevencao">Prevenção</label>
         </div>
       </div>
@@ -463,16 +334,16 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
         type="checkbox" 
         id="outroRelatorio" 
         name="formulariosPreenchidos.outroRelatorio" 
-        checked={formData.formulariosPreenchidos.outroRelatorio} 
+        checked={formData.formulariosPreenchidos?.outroRelatorio || false} 
         onChange={handleChange} 
       />
       <label htmlFor="outroRelatorio">Outro relatório específico:</label>
       <input 
         type="text" 
         name="formulariosPreenchidos.outroRelatorioEspec" 
-        value={formData.formulariosPreenchidos.outroRelatorioEspec} 
+        value={formData.formulariosPreenchidos?.outroRelatorioEspec || ''} 
         onChange={handleChange} 
-        disabled={!formData.formulariosPreenchidos.outroRelatorio}
+        disabled={!formData.formulariosPreenchidos?.outroRelatorio}
       />
     </div>
     </fieldset>
@@ -481,15 +352,15 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
       <fieldset>
         <legend>Tipo de Vítima</legend>
         <div className="form-group-grid-5-col">
-          <div className="form-group"><label>Total</label><input type="number" name="qtdTotalVitimas" value={formData.qtdTotalVitimas} onChange={handleChange}/></div>
-          <div className="form-group"><label>Feridas</label><input type="number" name="feridas" value={formData.feridas} onChange={handleChange}/></div>
-          <div className="form-group"><label>Fatais</label><input type="number" name="fatais" value={formData.fatais} onChange={handleChange}/></div>
-          <div className="form-group"><label>Ilesas</label><input type="number" name="ilesas" value={formData.ilesas} onChange={handleChange}/></div>
-          <div className="form-group"><label>Desaparecidas</label><input type="number" name="desaparecidas" value={formData.desaparecidas} onChange={handleChange}/></div>
+          <div className="form-group"><label>Total</label><input type="number" name="qtdTotalVitimas" value={formData.qtdTotalVitimas || ''} onChange={handleChange}/></div>
+          <div className="form-group"><label>Feridas</label><input type="number" name="feridas" value={formData.feridas || ''} onChange={handleChange}/></div>
+          <div className="form-group"><label>Fatais</label><input type="number" name="fatais" value={formData.fatais || ''} onChange={handleChange}/></div>
+          <div className="form-group"><label>Ilesas</label><input type="number" name="ilesas" value={formData.ilesas || ''} onChange={handleChange}/></div>
+          <div className="form-group"><label>Desaparecidas</label><input type="number" name="desaparecidas" value={formData.desaparecidas || ''} onChange={handleChange}/></div>
         </div>
       </fieldset>
 
-     {/* --- SEÇÃO 10: VEÍCULOS ENVOLVIDOS --- */}
+      {/* --- SEÇÃO 10: VEÍCULOS ENVOLVIDOS --- */}
       <fieldset>
         <legend>Veículos Envolvidos</legend>
         <div className="radio-columns">
@@ -504,63 +375,63 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
             {/* Veículo 1 */}
             <h4>Veículo 1</h4>
             <div className="form-group">
-              <input type="text" name="veiculo1.modelo" value={formData.veiculo1.modelo} onChange={handleChange} placeholder="Modelo" />
+              <input type="text" name="veiculo1.modelo" value={formData.veiculo1?.modelo || ''} onChange={handleChange} placeholder="Modelo" />
             </div>
             <div className="form-group">
-              <input type="text" name="veiculo1.cor" value={formData.veiculo1.cor} onChange={handleChange} placeholder="Cor" />
+              <input type="text" name="veiculo1.cor" value={formData.veiculo1?.cor || ''} onChange={handleChange} placeholder="Cor" />
             </div>
             <div className="form-group">
-              <input type="text" name="veiculo1.placa" value={formData.veiculo1.placa} onChange={handleChange} placeholder="Placa" />
+              <input type="text" name="veiculo1.placa" value={formData.veiculo1?.placa || ''} onChange={handleChange} placeholder="Placa" />
             </div>
             <div className="form-group">
-              <input type="text" name="veiculo1.estado" value={formData.veiculo1.estado} onChange={handleChange} placeholder="Estado" />
+              <input type="text" name="veiculo1.estado" value={formData.veiculo1?.estado || ''} onChange={handleChange} placeholder="Estado" />
             </div>
             <div className="form-group">
-              <input type="text" name="veiculo1.nomeCondutor" value={formData.veiculo1.nomeCondutor} onChange={handleChange} placeholder="Nome do Condutor" />
+              <input type="text" name="veiculo1.nomeCondutor" value={formData.veiculo1?.nomeCondutor || ''} onChange={handleChange} placeholder="Nome do Condutor" />
             </div>
             <div className="form-group">
-              <input type="text" name="veiculo1.rgCpfCondutor" value={formData.veiculo1.rgCpfCondutor} onChange={handleChange} placeholder="RG/CPF" />
+              <input type="text" name="veiculo1.rgCpfCondutor" value={formData.veiculo1?.rgCpfCondutor || ''} onChange={handleChange} placeholder="RG/CPF" />
             </div>
             <div className="form-group">
-              <input type="text" name="veiculo1.orgaoExpCondutor" value={formData.veiculo1.orgaoExpCondutor} onChange={handleChange} placeholder="Órgão Expedidor" />
+              <input type="text" name="veiculo1.orgaoExpCondutor" value={formData.veiculo1?.orgaoExpCondutor || ''} onChange={handleChange} placeholder="Órgão Expedidor" />
             </div>
 
             {/* Veículo 2 */}
             <h4>Veículo 2</h4>
             <div className="form-group">
-              <input type="text" name="veiculo2.modelo" value={formData.veiculo2.modelo} onChange={handleChange} placeholder="Modelo" />
+              <input type="text" name="veiculo2.modelo" value={formData.veiculo2?.modelo || ''} onChange={handleChange} placeholder="Modelo" />
             </div>
             <div className="form-group">
-              <input type="text" name="veiculo2.cor" value={formData.veiculo2.cor} onChange={handleChange} placeholder="Cor" />
+              <input type="text" name="veiculo2.cor" value={formData.veiculo2?.cor || ''} onChange={handleChange} placeholder="Cor" />
             </div>
             <div className="form-group">
-              <input type="text" name="veiculo2.placa" value={formData.veiculo2.placa} onChange={handleChange} placeholder="Placa" />
+              <input type="text" name="veiculo2.placa" value={formData.veiculo2?.placa || ''} onChange={handleChange} placeholder="Placa" />
             </div>
             <div className="form-group">
-              <input type="text" name="veiculo2.estado" value={formData.veiculo2.estado} onChange={handleChange} placeholder="Estado" />
+              <input type="text" name="veiculo2.estado" value={formData.veiculo2?.estado || ''} onChange={handleChange} placeholder="Estado" />
             </div>
             <div className="form-group">
-              <input type="text" name="veiculo2.nomeCondutor" value={formData.veiculo2.nomeCondutor} onChange={handleChange} placeholder="Nome do Condutor" />
+              <input type="text" name="veiculo2.nomeCondutor" value={formData.veiculo2?.nomeCondutor || ''} onChange={handleChange} placeholder="Nome do Condutor" />
             </div>
             <div className="form-group">
-              <input type="text" name="veiculo2.rgCpfCondutor" value={formData.veiculo2.rgCpfCondutor} onChange={handleChange} placeholder="RG/CPF" />
+              <input type="text" name="veiculo2.rgCpfCondutor" value={formData.veiculo2?.rgCpfCondutor || ''} onChange={handleChange} placeholder="RG/CPF" />
             </div>
             <div className="form-group">
-              <input type="text" name="veiculo2.orgaoExpCondutor" value={formData.veiculo2.orgaoExpCondutor} onChange={handleChange} placeholder="Órgão Expedidor" />
+              <input type="text" name="veiculo2.orgaoExpCondutor" value={formData.veiculo2?.orgaoExpCondutor || ''} onChange={handleChange} placeholder="Órgão Expedidor" />
             </div>
 
           </div>
         )}
       </fieldset>
 
-            {/* --- SEÇÃO 11: HISTÓRICO --- */}
-            <fieldset>
-              <legend>Histórico</legend>
-              <div className="form-group">
+      {/* --- SEÇÃO 11: HISTÓRICO --- */}
+      <fieldset>
+        <legend>Histórico</legend>
+        <div className="form-group">
           <textarea 
             name="historico" 
             rows={8} 
-            value={formData.historico} 
+            value={formData.historico || ''} 
             onChange={handleChange} 
             placeholder="Descreva a ocorrência..."
           ></textarea>
@@ -571,14 +442,15 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
       <fieldset>
         <legend>Guarnição Empenhada</legend>
         <div className="form-group-grid-4-col">
-          <input type="text" name="guarnicaoEmpenhada.postoGrad" value={formData.guarnicaoEmpenhada.postoGrad} onChange={handleChange} placeholder="Posto/Grad."/>
-          <input type="text" name="guarnicaoEmpenhada.matriculaCmt" value={formData.guarnicaoEmpenhada.matriculaCmt} onChange={handleChange} placeholder="Matrícula CMT"/>
-          <input type="text" name="guarnicaoEmpenhada.nomeGuerraCmt" value={formData.guarnicaoEmpenhada.nomeGuerraCmt} onChange={handleChange} placeholder="Nome de Guerra"/>
-          <input type="date" name="guarnicaoEmpenhada.vistoDivisao" value={formData.guarnicaoEmpenhada.vistoDivisao} onChange={handleChange}/>
+          <input type="text" name="guarnicaoEmpenhada.postoGrad" value={formData.guarnicaoEmpenhada?.postoGrad || ''} onChange={handleChange} placeholder="Posto/Grad."/>
+          <input type="text" name="guarnicaoEmpenhada.matriculaCmt" value={formData.guarnicaoEmpenhada?.matriculaCmt || ''} onChange={handleChange} placeholder="Matrícula CMT"/>
+          <input type="text" name="guarnicaoEmpenhada.nomeGuerraCmt" value={formData.guarnicaoEmpenhada?.nomeGuerraCmt || ''} onChange={handleChange} placeholder="Nome de Guerra"/>
+          <input type="date" name="guarnicaoEmpenhada.vistoDivisao" value={formData.guarnicaoEmpenhada?.vistoDivisao || ''} onChange={handleChange}/>
         </div>
         <div className="guarnicao-grid">
-          {formData.guarnicaoEmpenhada.componentes.map((comp:any, idx:number)=>(
-            <input key={idx} type="text" name={`guarnicaoEmpenhada.componentes.${idx}`} value={comp} onChange={handleChange} placeholder={`Matrícula componente ${idx+1}`}/>
+          {/* Inicializa 6 campos para matrícula dos componentes */}
+          {Array(6).fill('').map((_, idx) => (
+            <input key={idx} type="text" name={`guarnicaoEmpenhada.componentes.${idx}`} value={formData.guarnicaoEmpenhada?.componentes?.[idx] || ''} onChange={handleChange} placeholder={`Matrícula componente ${idx+1}`}/>
           ))}
         </div>
         <div className="assinatura"><p>Assinatura do CMT</p></div>

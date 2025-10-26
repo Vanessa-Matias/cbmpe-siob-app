@@ -1,237 +1,399 @@
 /* ==========================================================================
-   Estilos do Layout Principal e Conteúdo do Dashboard (DashboardPage.css)
+    Layout Principal e Estrutura Geral
    ========================================================================== */
 
-/* --- Container que envolve o layout principal (cabeçalho + conteúdo) --- */
 .dashboard-container {
-    background-color: var(--color-bg);
-    min-height: 100vh;
-    transition: background-color 0.3s;
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  transition: background-color 0.3s;
 }
 
-/* --- Área principal onde o conteúdo (Outlet) é renderizado --- */
 .dashboard-main {
-    padding: 32px;
+  padding: 32px;
 }
 
-/* --- Cabeçalho superior --- */
 .dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 32px;
-    background-color: var(--color-card);
-    border-bottom: 1px solid var(--color-border);
-    transition: background-color 0.3s, border-color 0.3s;
-    position: sticky; /* Garante que o cabeçalho fique fixo no topo ao rolar */
-    top: 0;
-    z-index: 900; /* Garante que fique abaixo do sidebar (que tem z-index 1000) */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background-color: var(--color-card);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 900;
 }
 
 .header-left {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .header-icon {
-    font-size: 24px;
-    cursor: pointer;
-    color: var(--color-text);
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--color-text);
 }
 
 .dashboard-header h1 {
-    font-size: 20px;
-    margin: 0;
-    color: var(--color-text);
-    /* --- AJUSTE: Título do cabeçalho em negrito --- */
-    font-weight: bold; 
+  font-size: 20px;
+  margin: 0;
+  color: var(--color-text);
+  font-weight: bold;
 }
 
-/* --- Título e subtítulo DENTRO das páginas --- */
+/* --- Título Principal --- */
 .dashboard-title {
-    margin-bottom: 24px;
+  margin-bottom: 24px;
+  text-align: left;
 }
 .dashboard-title h2 {
-    margin: 0 0 8px 0;
-    font-size: 28px;
-    color: var(--color-text);
-    /* --- AJUSTE: Título da página (Dashboard Operacional) em negrito --- */
-    font-weight: bold; 
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  color: var(--color-text);
+  font-weight: bold;
 }
 .dashboard-title p {
-    margin: 0;
-    color: var(--color-muted);
-    font-size: 16px;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 16px;
 }
 
 /* ==========================================================================
-   Estilos dos Componentes do Dashboard (KPIs, Cards, etc.)
+    GRID PRINCIPAL — KPI CARDS + GRÁFICOS
    ========================================================================== */
 
-/* --- Cards de KPI (Coloridos) --- */
+/* --- Cards de KPI --- */
 .kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 24px;
-    margin-bottom: 24px;
+  display: grid;
+  gap: 24px;
+  margin-bottom: 24px;
+  /* CORREÇÃO APLICADA: Largura fluida para aparência retangular */
+  grid-template-columns: repeat(4, 1fr); 
+  max-width: 1280px;
+  margin: 32px auto;
+  justify-content: center;
 }
+
 .kpi-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start; /* Alinha ícone e texto no topo */
-    padding: 24px;
-    border-radius: 12px;
-    color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px; /* AJUSTADO: Achatamento vertical */
+  border-radius: 12px;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
-.kpi-red { background-color: #d23035; }
-.kpi-yellow { background-color: #f1b442; color: #ffffff; }
-.kpi-green { background-color: #27ab55; }
-.kpi-blue { background-color: #16488d; }
 
+.kpi-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* AJUSTADO: Menor gap para economizar altura */
+  margin-right: 16px;
+  min-width: 0;
+}
+
+.kpi-title {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.kpi-value {
+  font-size: 32px; /* AJUSTADO: Fonte um pouco menor */
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.kpi-details {
+  font-size: 13px;
+  opacity: 0.9;
+  line-height: 1.3;
+}
+
+/* Ícones nos Cards */
 .kpi-icon {
-    /* --- AJUSTE: Estilo do ícone de KPI (baseado no protótipo PWA) --- */
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
-    font-size: 24px;
-    flex-shrink: 0; /* Impede que o ícone encolha */
+  width: 40px; /* AJUSTADO */
+  height: 40px; /* AJUSTADO */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  font-size: 20px; /* AJUSTADO */
+  flex-shrink: 0;
 }
 
-.kpi-info { display: flex; flex-direction: column; }
-.kpi-title { font-weight: bold; font-size: 16px; margin-bottom: 4px; }
-.kpi-value { font-size: 36px; font-weight: bold; margin: 8px 0; line-height: 1.1; }
-.kpi-details, .kpi-comparison { font-size: 13px; opacity: 0.9; line-height: 1.3; }
-.kpi-comparison { margin-top: 4px; }
-
-/* --- Cards de Informação (Brancos/Escuros) --- */
-.content-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
-    margin-bottom: 24px;
+/* Cores Personalizadas dos Cards */
+.kpi-azul {
+  background-color: #0d47a1; /* Ocorrências */
 }
+.kpi-vermelho {
+  background-color: #c62828; /* Em andamento */
+}
+.kpi-verde {
+  background-color: #4b6f44; /* Concluídas */
+}
+.kpi-amarelo {
+  background-color: #fbc02d; /* Pendentes */
+  color: #fff; /* Cor do texto forçada para branco (melhor contraste) */
+}
+
+/* ==========================================================================
+    GRÁFICOS — GRID DE 6 (2x3)
+   ========================================================================== */
+
+.chart-grid-6 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  margin-top: 28px;
+  margin-bottom: 24px;
+}
+
+.chart-card {
+  padding: 24px;
+}
+
+.chart-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.chart-graph {
+  flex: 2;
+}
+
+/* Legendas dos Gráficos */
+.chart-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text);
+}
+
+.legend-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+/* ==========================================================================
+    INFO CARDS e LISTAS DE DETALHES
+   ========================================================================== */
+
 .info-card {
-    background-color: var(--color-card);
-    padding: 24px;
-    border-radius: 12px;
-    border: 1px solid var(--color-border);
+  background-color: var(--color-card);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
 }
-.info-card h3 {
-    margin: 0 0 8px 0; /* Adicionado espaço abaixo */
-    font-size: 18px;
-    color: var(--color-text);
-    /* --- AJUSTE: Títulos dos cards de info (Ocorrência por tipo, etc.) em negrito --- */
-    font-weight: bold;
-}
-.info-card p { margin: 0 0 20px 0; color: var(--color-muted); font-size: 14px; }
-.info-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 16px; }
-.info-list li { display: flex; align-items: center; font-weight: 500; color: var(--color-text); }
-.badge { margin-left: auto; background-color: var(--color-background); color: var(--color-muted); border-radius: 50px; padding: 4px 10px; font-size: 12px; font-weight: bold; }
-.icon-type { margin-right: 12px; font-size: 16px; width: 1.2em; text-align: center; }
-.icon-fire { color: #e53935; }
-.icon-accident { color: #1e88e5; }
-.icon-medical { color: #d81b60; }
-.icon-rescue { color: #fdd835; }
-.icon-leak { color: #00897b; }
-.icon-others { color: #546e7a; }
-.icon-region { color: #3b5998; }
-.info-list-recent { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px; }
-.info-list-recent li { display: flex; align-items: flex-start; }
-.recent-details { display: flex; flex-direction: column; gap: 4px; }
-.recent-code { font-size: 0.8em; color: var(--color-muted); }
-.recent-location { font-size: 0.9em; color: var(--color-muted); display: flex; align-items: center; gap: 4px; }
-.recent-title { font-weight: bold; color: var(--color-text); }
 
-/* --- Card de Status Geral --- */
-.status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-top: 20px; }
-.status-card { padding: 20px; border-radius: 12px; text-align: center; }
-.status-pending { background-color: #eebbc3; color: #d23035; }
-.status-ongoing { background-color: #fdeec9; color: #9a680c; }
-.status-completed { background-color: #c8e6c9; color: #2e7d32; }
+.info-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: var(--color-text);
+  font-weight: bold;
+}
+
+.info-card p {
+  margin: 0 0 20px 0;
+  color: var(--color-muted);
+  font-size: 14px;
+}
+
+.info-list,
+.info-list-recent {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-list li {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.info-list-recent li {
+  display: flex;
+  align-items: flex-start;
+}
+
+.recent-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.recent-code {
+  font-size: 0.8em;
+  color: var(--color-muted);
+}
+
+.recent-title {
+  font-weight: bold;
+  color: var(--color-text);
+}
+
+.recent-location {
+  font-size: 0.9em;
+  color: var(--color-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge {
+  margin-left: auto;
+  background-color: var(--color-background);
+  color: var(--color-muted);
+  border-radius: 50px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* ==========================================================================
+    ÍCONES
+   ========================================================================== */
+
+.icon-type {
+  margin-right: 12px;
+  font-size: 16px;
+  width: 1.2em;
+  text-align: center;
+}
+
+.icon-fire {
+  color: #e53935;
+}
+.icon-accident {
+  color: #1e88e5;
+}
+.icon-medical {
+  color: #d81b60;
+}
+.icon-rescue {
+  color: #fdd835;
+}
+.icon-leak {
+  color: #00897b;
+}
+.icon-others {
+  color: #546e7a;
+}
+.icon-region {
+  color: #3b5998;
+}
+
+/* ==========================================================================
+    STATUS CARDS
+   ========================================================================== */
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.status-card {
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.status-pending {
+  background-color: #ffe082;
+  color: #b76e00;
+}
+
+.status-ongoing {
+  background-color: #ffcdd2;
+  color: #b71c1c;
+}
+
+.status-completed {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+}
 
 .status-value {
-    font-size: 32px;
-    font-weight: bold;
-    display: block; 
+  font-size: 32px;
+  font-weight: bold;
+  display: block;
 }
+
 .status-label {
-    font-size: 14px;
-    margin-top: 8px; 
+  font-size: 14px;
+  margin-top: 8px;
 }
 
 /* ==========================================================================
-   Estilos Responsivos (Mantidos, pois já estavam corretos)
+    RESPONSIVIDADE
    ========================================================================== */
 
-/* Regras aplicadas quando a largura da tela é 768px ou menor */
-@media (max-width: 768px) {
- 
-    /* Diminui o espaçamento geral da página em telas menores */
-    .dashboard-main {
-        padding: 16px;
-    }
-
-    /* Ajusta o cabeçalho para telas menores */
-    .dashboard-header {
-        padding: 12px 16px;
-    }
-
-    .dashboard-header h1 {
-        font-size: 1rem; /* Ajustado para 1rem (16px) */
-    }
-
-    /* Faz os cards de KPI ficarem em 2 colunas */
-    .kpi-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    /* Faz os cards de informação ficarem em 1 coluna (empilhados) */
-    .content-grid {
-        grid-template-columns: 1fr;
-    }
+@media (max-width: 1250px) {
+  .kpi-grid {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 100%;
+    margin-left: 32px;
+    margin-right: 32px;
+  }
 }
 
-/* Regras para telas ainda menores (celulares em modo retrato) */
-@media (max-width: 480px) {
-    /* Agora os cards de KPI também ficam em 1 coluna */
-    .kpi-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-/*==========================================/*
-/* Exemplo de CSS para o novo layout de 2 gráficos lado a lado */
-
-.chart-grid {
-    display: grid;
-    gap: 20px; /* Espaço entre os gráficos */
-    padding-bottom: 20px;
-    grid-template-columns: 1fr; /* Padrão mobile: 1 coluna */
-}
-
-/* Para telas maiores que 768px */
-@media (min-width: 768px) {
-    .chart-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 colunas */
-    }
-}
-
-/* Para a seção de cards abaixo, se você quiser 3 colunas */
-.content-grid-cards {
-    display: grid;
-    gap: 20px;
-    padding-bottom: 20px;
+@media (max-width: 1000px) {
+  .chart-grid-6 {
     grid-template-columns: 1fr;
+  }
+  .chart-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .chart-legend {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 
-@media (min-width: 768px) {
-    .content-grid-cards {
-        grid-template-columns: repeat(3, 1fr); /* 3 colunas */
-    }
+@media (max-width: 900px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-main {
+    padding: 16px;
+  }
+  .kpi-grid,
+  .content-grid,
+  .status-grid {
+    grid-template-columns: 1fr;
+  }
+  .chart-grid-6 {
+    grid-template-columns: 1fr;
+  }
+  .chart-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
