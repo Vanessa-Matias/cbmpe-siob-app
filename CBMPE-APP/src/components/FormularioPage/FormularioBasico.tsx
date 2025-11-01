@@ -3,14 +3,14 @@
  * @description Renderiza a UI completa do formulário básico de ocorrência,
  * Requer: npm install signature_pad
  */
-import React, { useRef, useEffect } from 'react'; 
-import SignaturePad from 'signature_pad'; 
+import React, { useRef, useEffect } from 'react'; // <<-- IMPORTAÇÕES RESTAURADAS
+import SignaturePad from 'signature_pad'; // <<-- BIBLIOTECA DE ASSINATURA
 import './FormularioPage.css';
+import { MapPin, Camera, Signature } from 'lucide-react'; // Ícones para PWA
 
 // Interface do componente
 interface Props {
   formData: any;
-  // A tipagem 'any' é usada para acomodar os eventos customizados de GPS e Assinatura
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | any) => void;
   handleSubmit: (e: React.FormEvent) => void;
   handleCancel: () => void;
@@ -19,34 +19,36 @@ interface Props {
 
 const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmit, handleCancel, submitText }) => {
   
-  // REFERÊNCIAS ESSENCIAIS PARA O CANVAS E A BIBLIOTECA
+  // REFERÊNCIAS ESSENCIAIS (RESTAURADAS)
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const signaturePad = useRef<SignaturePad | null>(null);
+  const signaturePadInstance = useRef<SignaturePad | null>(null);
 
-  // --- 1. Lógica de Inicialização da Assinatura (useEffect) ---
+  // --- LÓGICA DE INICIALIZAÇÃO DA ASSINATURA (useEffect) ---
   useEffect(() => {
     
     if (canvasRef.current) {
       
       // 1. Inicializa o SignaturePad
-      signaturePad.current = new SignaturePad(canvasRef.current, {
-        penColor: "rgba(0, 0, 0, 0.9)",
+      signaturePadInstance.current = new SignaturePad(canvasRef.current, {
+        penColor: "rgb(0, 0, 0)",
         backgroundColor: "rgba(255,255,255,0)",
+        minWidth: 1,
+        maxWidth: 2,
       });
       
-      // 2. Função para redimensionar o canvas (essencial para PWA responsivo)
+      // 2. Função para redimensionar o canvas (corrigido o problema do cursor)
       const resizeCanvas = () => {
-          if (canvasRef.current) {
+          if (canvasRef.current && signaturePadInstance.current) {
               const ratio = Math.max(window.devicePixelRatio || 1, 1);
               canvasRef.current.width = canvasRef.current.offsetWidth * ratio;
               canvasRef.current.height = canvasRef.current.offsetHeight * ratio;
               canvasRef.current.getContext('2d')?.scale(ratio, ratio);
               
               // Tenta restaurar a assinatura se houver dados (modo edição)
-              if (formData.assinaturaDigital && signaturePad.current) {
-                  signaturePad.current.fromDataURL(formData.assinaturaDigital);
+              if (formData.assinaturaDigital) {
+                  signaturePadInstance.current.fromDataURL(formData.assinaturaDigital);
               } else {
-                  signaturePad.current?.clear(); 
+                  signaturePadInstance.current?.clear(); 
               }
           }
       };
@@ -57,10 +59,11 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
       // Cleanup: remove o listener ao desmontar
       return () => {
           window.removeEventListener('resize', resizeCanvas);
-          signaturePad.current = null;
+          signaturePadInstance.current?.off(); 
+          signaturePadInstance.current = null;
       };
     }
-  }, [formData.assinaturaDigital]); // Dependência para reajustar ao carregar dados de edição
+  }, [formData.assinaturaDigital]); 
 
   // --- 3. Função de captura de localização GPS ---
   const handleGPSCapture = () => {
@@ -71,7 +74,6 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        // Atualiza o estado simulando eventos customizados
         handleChange({ target: { name: 'endereco.latitude', value: latitude } });
         handleChange({ target: { name: 'endereco.longitude', value: longitude } });
       },
@@ -81,15 +83,15 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
   
   // --- 4. Função para limpar o canvas de assinatura ---
   const handleClearSignature = () => {
-      signaturePad.current?.clear();
+      signaturePadInstance.current?.clear();
       handleChange({ target: { name: 'assinaturaDigital', value: '' } });
   };
   
   // --- 5. Handler que captura a assinatura antes de submeter ---
   const preSubmitHandler = (e: React.FormEvent) => {
       // Captura a assinatura no formato base64 antes de enviar
-      if (signaturePad.current && !signaturePad.current.isEmpty()) {
-          const dataURL = signaturePad.current.toDataURL(); 
+      if (signaturePadInstance.current && !signaturePadInstance.current.isEmpty()) {
+          const dataURL = signaturePadInstance.current.toDataURL(); 
           handleChange({ target: { name: 'assinaturaDigital', value: dataURL } }); 
       }
       handleSubmit(e); // Chama o handler principal (validação e persistência)
@@ -168,60 +170,54 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
       </div>
 
       {/* --- SEÇÃO 2: DADOS DA OCORRÊNCIA --- */}
-      <fieldset>
-        <legend>Dados da Ocorrência</legend>
+<fieldset>
+    <legend>Dados da Ocorrência</legend>
 
-        {/* Primeira linha: Hora e Forma de Acionamento */}
-        <div className="ocorrencia-grid">
-          <div className="form-group">
-            <label htmlFor="horaRecebimento">Hora do Recebimento</label>
-            <input type="time" id="horaRecebimento" name="horaRecebimento" value={formData.horaRecebimento || ''} onChange={handleChange}/>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="formaAcionamento">Forma de Acionamento</label>
-            <input
-              type="text"
-              id="formaAcionamento"
-              name="formaAcionamento"
-              value={formData.formaAcionamento || ''}
-              onChange={handleChange}
-              placeholder="Ex: Telefonema, presencial..."
-            />
-          </div>
-        </div>
-
-        {/* Segunda linha: CO, CIOPS e 193 */}
-        <div className="ocorrencia-mini-grid">
-          <div className="form-group">
+    {/* Segunda linha: CO, CIOPS, 193, Situação E PRIORIDADE (5 colunas) */}
+    <div className="ocorrencia-mini-grid">
+        {/* COLUNA 1: CO */}
+        <div className="form-group">
             <label htmlFor="co">CO</label>
             <input type="text" id="co" name="co" placeholder="Ex: 123" value={formData.co || ''} onChange={handleChange}/>
-          </div>
+        </div>
 
-          <div className="form-group">
+        {/* COLUNA 2: CIODS */}
+        <div className="form-group">
             <label htmlFor="ciods">CIODS</label>
             <input type="text" id="ciods" name="ciods" placeholder="Ex: 45" value={formData.ciods || ''} onChange={handleChange}/>
-          </div>
+        </div>
 
-          <div className="form-group">
+        {/* COLUNA 3: 193 */}
+        <div className="form-group">
             <label htmlFor="numero193">193</label>
             <input type="text" id="numero193" name="numero193" placeholder="Ex: 567" value={formData.numero193 || ''} onChange={handleChange}/>
-          </div>
         </div>
 
-        {/* Terceira linha: Situação da Ocorrência */}
+        {/* COLUNA 4: Situação */}
+        <div className="form-group"> 
+            <label htmlFor="situacao">Situação</label>
+            <select id="situacao" name="situacao" value={formData.situacao || ''} onChange={handleChange}>
+                <option value="">Selecione</option>
+                <option value="em-andamento">Em andamento</option>
+                <option value="finalizada">Concluída</option>
+                <option value="cancelada">Cancelada</option>
+                <option value="trote">Trote</option>
+            </select>
+        </div>
+        
+        {/* CORREÇÃO: COLUNA 5: Prioridade da Ocorrência */}
         <div className="form-group">
-          <label htmlFor="situacao">Situação da Ocorrência</label>
-          <select id="situacao" name="situacao" value={formData.situacao} onChange={handleChange}>
-            <option value="">Selecione</option>
-            <option value="em-andamento">Em andamento</option>
-            <option value="finalizada">Concluída</option>
-            <option value="cancelada">Cancelada</option>
-            <option value="trote">Trote</option>
-          </select>
+            <label htmlFor="prioridade">Prioridade</label>
+            <select id="prioridade" name="prioridade" value={formData.prioridade || 'Média'} onChange={handleChange}>
+                <option value="Baixa">Baixa</option>
+                <option value="Média">Média</option>
+                <option value="Alta">Alta</option>
+            </select>
         </div>
-      </fieldset>
+    </div>
+</fieldset>
 
+       
       {/* --- SEÇÃO 3: LOCALIZAÇÃO E GPS (PWA) --- */}
       <fieldset>
         <legend>Localização da Ocorrência</legend>
@@ -255,7 +251,7 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
 
       {/* --- SEÇÃO MÍDIA E ASSINATURAS (PWA) --- */}
       <fieldset>
-        <legend>Mídia e Assinaturas (Anexos PWA)</legend>
+        <legend>Mídia e Assinaturas</legend>
         
         {/* CAPTURA DE FOTO */}
         <div className="form-group">

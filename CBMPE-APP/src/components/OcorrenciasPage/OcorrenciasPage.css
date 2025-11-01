@@ -1,5 +1,5 @@
 /* ==========================================================================
-                          Estilos da Página de Ocorrências
+            Estilos da Página de Ocorrências
    ========================================================================== */
 
 
@@ -8,61 +8,61 @@
 ============================= */
 
 .page-container {
-  padding: 48px;
+    padding: 48px;
 }
 
 /*==========================
-     CABEÇALHO E AÇÕES
+      CABEÇALHO E AÇÕES
 ============================*/
 
 .page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  /* No modo escuro, o texto do cabeçalho deve ser claro */
-  color: var(--text-color); 
-  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    /* No modo escuro, o texto do cabeçalho deve ser claro */
+    color: var(--text-color); 
+    
 }
 
 .page-title h2 {
-  margin: 0 0 4px 0;
-  font-size: 28px;
-  color: var(--color-text);
-  text-align: left; /* Deixa o nome ocorrências no canto*/
+    margin: 0 0 4px 0;
+    font-size: 28px;
+    color: var(--color-text);
+    text-align: left; /* Deixa o nome ocorrências no canto*/
 }
 
 .page-title p {
-  margin: 0;
-  color: var(--color-muted);
-  font-size: 16px;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 16px;
 }
 
 .page-actions {
-  display: flex;
-  gap: 12px;
+    display: flex;
+    gap: 12px;
 }
 
 /*=================================
-              BOTÕES 
+             BOTÕES 
 ================================= */
 
 .button-primary, .button-secondary {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .button-primary {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
-  color: rgb(255, 255, 255);
-   border: 2px solid var(--color-primary);
-  padding: 9px 15px;
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: rgb(255, 255, 255);
+    border: 2px solid var(--color-primary);
+    padding: 9px 15px;
 }
 .button-primary:hover {
     background-color: var(--color-primary-hover);
@@ -70,20 +70,22 @@
 }
 
 .button-secondary {
-  background-color: var(--color-card);
-  color: var(--color-text);
-  padding: 9px 15px; 
-  transition: all 0.2s ease-in-out;
-  border-radius: 8px; /* Adicionado para garantir o arredondamento */
-  font-weight: bold; /* Adicionado para garantir a consistência */
-  cursor: pointer; /* Adicionado para garantir a consistência */
-  border: 2px solid var(--color-border); /*borda agora começa com 2px e a cor cinza padrão */
+    background-color: var(--color-card);
+    color: var(--color-text);
+    padding: 9px 15px; 
+    transition: all 0.2s ease-in-out;
+    border-radius: 8px; /* Adicionado para garantir o arredondamento */
+    font-weight: bold; /* Adicionado para garantir a consistência */
+    cursor: pointer; /* Adicionado para garantir a consistência */
+    border: 2px solid var(--color-border); /*borda agora começa com 2px e a cor cinza padrão */
 }
 
 .button-secondary:hover {
-  border-color: var(--color-primary); /* Revela a borda vermelha */
-  color: var(--color-primary);       /* Deixa o texto vermelho para combinar */
-  background-color: #fdecea;       /* Opcional: Adiciona um fundo sutil para preencher */
+    border-color: var(--color-primary); /* Revela a borda vermelha */
+    color: var(--color-primary);          /* Deixa o texto vermelho para combinar */
+    background-color: var(--color-primary-light); /* Opcional: Adiciona um fundo sutil (Usando variável se possível) */
+    /* Fallback para a cor original: */
+    background-color: #fdecea;
 }
 
 
@@ -92,201 +94,255 @@
 ====================================== */
 
 .filter-card, .list-card {
-  background-color: var(--color-card);
-  padding: 32px;
-  border-radius: 12px;
-  border: 1px solid var(--color-border);
-  margin-bottom: 32px;
+    background-color: var(--color-card);
+    padding: 32px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    margin-bottom: 32px;
 }
 
 .filter-card h3, .list-card h3 {
-  margin: 0 0 8px 0;
-  font-size: 20px;
-  color: var(--color-text);
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    color: var(--color-text);
 }
 
 .filter-card p {
-  margin: 0 0 24px 0;
-  color: var(--color-muted);
-  font-size: 14px;
+    margin: 0 0 24px 0;
+    color: var(--color-muted);
+    font-size: 14px;
 }
 
 
 /* =======================================
               FILTROS DE BUSCA 
- ========================================= */
+   ========================================= */
 
 .filter-inputs {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 16px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 16px;
 }
 
 .search-input-wrapper {
-  position: relative;
+    position: relative;
 }
 
 .search-icon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--color-muted);
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-muted);
 }
 
 .filter-inputs input, .filter-inputs select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid var(--color-border);
-  background-color: var(--color-input-bg);
-  color: var(--color-text);
-  box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-input-bg);
+    color: var(--color-text);
+    box-sizing: border-box;
 }
 
 .filter-inputs input {
-  padding-left: 36px;
+    padding-left: 36px;
 }
 
 
-/*===============================               
+/*=============================== 
         TABELA DE OCORRÊNCIAS
 ================================= */
 
 .ocorrencias-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
 .ocorrencias-table th, .ocorrencias-table td {
-  padding: 16px 12px;
-  text-align: left;
-  border-bottom: 1px solid var(--color-border);
+    padding: 16px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: middle; /* Alinha o conteúdo verticalmente no centro */
 }
 
 .ocorrencias-table th {
-  font-size: 12px;
-  text-transform: uppercase;
-  color: var(--color-muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--color-muted);
 }
 
 .titulo-descricao span {
-  font-weight: 500;
-  color: var(--color-text);
-  display: block;
+    font-weight: 500;
+    color: var(--color-text);
+    display: block;
 }
 .titulo-descricao small {
-  color: var(--color-muted);
+    color: var(--color-muted);
 }
 
 .data-hora-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
 }
 .data-hora-container small {
-  color: var(--color-muted);
+    color: var(--color-muted);
 }
 
 /*==========================================================
 Badges de Status e Prioridade (cores fixas para destaque). 
+ATUALIZADO com todos os status do componente React.
 ============================================================*/
 .status-badge, .prioridade-badge {
-  padding: 4px 10px;
-  border-radius: 50px;
-  font-size: 12px;
-  font-weight: bold;
-  white-space: nowrap;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
 }
-.status-pendente { background-color: #f7d7d7; color: #8c2a2a; }
-.status-em-andamento { background-color: #fcf3d9; color: #8c6d2a; }
-.status-encerrado { background-color: #d7f7e0; color: #2a8c4a; }
 
+
+/* ========================================
+    Cores de Situação (Status)
+
+==================================================== */
+
+/* CONCLUÍDA (Verde) */
+.status-concluída {
+    /* Borda verde grossa na esquerda */
+    border: 3px solid #07a82c; 
+    /* Fundo levemente esverdeado (combina bem com a borda) */
+    background-color: #b5f1b5;
+    color: #2a8c4a; /* Texto em verde escuro */
+    border-radius: 4px; /* Adiciona um leve arredondamento para estética */
+}
+
+/* CANCELADA (Vermelho) */
+.status-cancelada {
+    /* Borda sólida vermelha (o seu primeiro bloco usava 3px, vamos manter) */
+    border: 3px solid #dc3545;
+    /* Fundo levemente avermelhado/transparente */
+    background-color: #f6b8be;
+    color: #6f0712; /* Texto em vermelho forte */
+    border-radius: 4px;
+}
+
+/* EM ANDAMENTO (Amarelo) */
+.status-em-andamento {
+    /* Borda sólida amarela */
+    border: 3px solid #ffc107;
+    /* Fundo levemente amarelado/transparente */
+    background-color: #f9eb83;
+    color: #775b1f; /* Texto em tom marrom/amarelado escuro */
+    border-radius: 4px;
+}
+
+/* TROTE (Cinza) */
+.status-trote {
+    /* Borda sólida cinza */
+    border: 3px solid #6c757d;
+    /* Fundo levemente acinzentado/transparente */
+    background-color: #bab4b4;
+    color: #3d3d3d; /* Texto em cinza escuro */
+    border-radius: 4px;
+}
+
+/* Cores das Prioridades */
 .prioridade-alta { background-color: #d32f2f; color: white; }
-.prioridade-média { background-color: #f59e0b; color: white; }
-.prioridade-baixa { background-color: #2e7d32; color: white; }
+.prioridade-média { background-color: #f98404; color: white; }
+.prioridade-baixa { background-color: #0a74e6; color: white; }
+
+/* Mensagem de Nenhuma Ocorrência */
+.no-results {
+    text-align: center !important;
+    padding: 30px !important;
+    color: var(--color-muted);
+    font-style: italic;
+}
 
 
 /* ================================================================
-          ESTILOS RESPONSIVOS (PARA CELULAR)
+        ESTILOS RESPONSIVOS (PARA CELULAR)
 =================================================================== */
 
 @media (max-width: 768px) {
-  .page-container { padding: 16px; }
-  .page-header { flex-direction: column; align-items: flex-start; gap: 16px; }
-  .filter-inputs { grid-template-columns: 1fr; }
-  
-  /* Transforma a tabela em uma lista de "cards". */
-  .ocorrencias-table thead { display: none; }
-  .ocorrencias-table tr {
-    display: block;
-    margin-bottom: 24px;
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 12px;
-  }
-  .ocorrencias-table td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 8px;
-    border-bottom: none; 
-  }
-  .ocorrencias-table td:not(:last-child) {
-    border-bottom: 1px solid var(--color-border);
-  }
+    .page-container { padding: 16px; }
+    .page-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .filter-inputs { grid-template-columns: 1fr; }
+    
+    /* Transforma a tabela em uma lista de "cards". */
+    .ocorrencias-table thead { display: none; }
+    .ocorrencias-table tr {
+        display: block;
+        margin-bottom: 24px;
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        padding: 12px;
+    }
+    .ocorrencias-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 8px;
+        border-bottom: none; 
+    }
+    .ocorrencias-table td:not(:last-child) {
+        border-bottom: 1px solid var(--color-border);
+    }
 
-  /*==========================================================
-  Atributo 'data-label' do HTML para criar o rótulo da coluna.
-  ============================================================ */
-  .ocorrencias-table td::before {
-    content: attr(data-label);
-    font-weight: bold;
-    color: var(--color-text);
-    text-align: left;
-  }
-  .ocorrencias-table td.titulo-descricao {
-    flex-direction: column;
-    align-items: flex-end;
-  }
-  .data-hora-container {
-    align-items: flex-end;
-  }
+    /*==========================================================
+    Atributo 'data-label' do HTML para criar o rótulo da coluna.
+    ============================================================ */
+    .ocorrencias-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: var(--color-text);
+        text-align: left;
+    }
+    .ocorrencias-table td.titulo-descricao {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+    .data-hora-container {
+        align-items: flex-end;
+    }
 }
 
 /* =====================================================
-      Estilo para o novo botão de ação dentro da tabela 
+        Estilo para o novo botão de ação dentro da tabela 
 ========================================================*/
 .button-action {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  font-size: 13px;
-  font-weight: 500;
-  border-radius: 6px;
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background-color 0.2s, border-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s, border-color 0.2s;
 }
 
 .button-action:hover {
-  background-color: var(--color-border);
+    background-color: var(--color-border);
 }
 
 /* =========================================
-    Ajuste para o botão no modo responsivo 
+        Ajuste para o botão no modo responsivo 
 ==============================================*/
 @media (max-width: 768px) {
-  .ocorrencias-table td .button-action {
-    /* No modo card, o botão fica alinhado à direita junto com os outros dados */
-    margin-left: auto; 
-  }
+    .ocorrencias-table td .button-action {
+        /* No modo card, o botão fica alinhado à direita junto com os outros dados */
+        margin-left: auto; 
+    }
 }
 
 /*===========================================
@@ -294,7 +350,7 @@ Badges de Status e Prioridade (cores fixas para destaque).
 ==============================================*/
 .table-footer {
     display: flex;
-    /* A CORREÇÃO PRINCIPAL: Alinha tudo (texto e botões) para a direita */
+    /* CORREÇÃO: Alinha tudo para a direita para paginação. */
     justify-content: flex-end; 
     align-items: center;
     padding: 20px 16px;
@@ -306,35 +362,17 @@ Badges de Status e Prioridade (cores fixas para destaque).
     color: var(--color-muted);
 }
 
-.pagination-controls {
-    display: flex;
-    align-items: center;
-    gap: 1rem; /* Espaço entre os botões e o texto da página */
+/* Novo estilo para a célula quando não há resultados */
+.ocorrencias-table tr:has(.no-results) {
+    border: none;
+    margin-bottom: 0;
+    display: table-row; /* Retorna ao comportamento de linha da tabela */
 }
-
-.pagination-controls button {
-    background-color: transparent; /* Fundo transparente para um look mais limpo */
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    color: var(--color-text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s, border-color 0.2s;
+/* Garante que o span de "Exibindo..." não se quebre em telas pequenas */
+@media (max-width: 768px) {
+    .table-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
 }
-
-/* Efeito de hover mais moderno */
-.pagination-controls button:hover {
-    background-color: #f0f0f0; 
-    border-color: #ccc;
-}
-
-/* Deixa o texto do contador de páginas com mais destaque */
-.pagination-controls span {
-    font-weight: 500;
-    color: var(--color-text);
-}
-

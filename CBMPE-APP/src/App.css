@@ -1,3 +1,7 @@
+/* Importeação do Leaflet (mapa) */
+@import 'leaflet/dist/leaflet.css';
+
+
 .App {
   text-align: center;
 }

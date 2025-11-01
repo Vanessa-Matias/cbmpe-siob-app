@@ -54,8 +54,8 @@ function AppRoutes() {
         <Route path="usuarios" element={<UsuariosPage />} />
         <Route path="auditoria" element={<AuditoriaPage />} />
         <Route path="configuracoes" element={<ConfiguracoesPage />} />
-        <Route path="formulario" element={<FormularioPage />} />
-        <Route path="ocorrencia/:id/formulario" element={<FormularioPage />} />
+      <Route path="formulario" element={<FormularioPage />} />
+      <Route path="ocorrencia/:id/formulario" element={<FormularioPage />} />
       </Route>
 
       {/* --- Redirecionamento Padrão --- */}

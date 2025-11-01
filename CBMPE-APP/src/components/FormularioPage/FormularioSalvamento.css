@@ -1,0 +1,60 @@
+/* ================================================================
+   FORMULÁRIO DE SALVAMENTO 
+=================================================================== */
+
+
+.form-section-header-salvamento {
+    /* CORREÇÃO: Aplicando a cor LARANJA (Natureza 3) no background */
+    background-color: #cc5f0b; /* Laranja da paleta, conforme o manual  */
+    color: white; /* Garante que o texto seja legível (branco) */
+    padding: 12px 24px;
+    margin-bottom: 20px; /* Aumentado o margin-bottom para 20px para melhor separação */
+    border-radius: 8px 8px 0 0; /* Arredonda os cantos superiores do cabeçalho */
+    border-bottom: none; /* Remove a borda inferior que se torna redundante com o background sólido */
+}
+
+.form-section-header-salvamento h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    /* Resetando a cor do h3 se ele for sobrescrito, mas 'color: white' no pai já resolve */
+    color: inherit; 
+}
+
+/* Reutiliza o mesmo layout de grids */
+.checkbox-grid-4-col {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem 1.5rem;
+}
+
+.form-check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.form-check-item label {
+    font-weight: 500;
+}
+
+.form-group-grid-4-col {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem 1.5rem;
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+    .form-group-grid-4-col,
+    .checkbox-grid-4-col {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .form-group-grid-4-col,
+    .checkbox-grid-4-col {
+        grid-template-columns: 1fr;
+    }
+}
