@@ -1,0 +1,90 @@
+/*===================================================
+    ESTILOS ESPECÍFICOS - ATENDIMENTO PRÉ-HOSPITALAR (APH)
+===================================================*/
+
+/* Cabeçalho específico para Natureza 1: APH */
+.form-section-header-aph {
+  background-color: #d81b60;
+  color: white;
+  padding: 12px 24px;
+  margin-bottom: 20px;
+  border-radius: 10px 10px 0 0;
+}
+
+.form-section-header-aph h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Sublegendas dentro das seções */
+.sub-legend {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  color: #343a40;
+  margin-top: 10px;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #ced4da;
+}
+
+/* =========================================================
+   GRID DE CHECKBOXES (AÇÕES REALIZADAS)
+   ========================================================= */
+.checkbox-grid-3-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem 1.5rem; /* mesmo espaçamento usado em incêndio */
+}
+
+/* Cada item de checkbox ou radio (mesmo padrão usado no incêndio) */
+.form-check-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+
+.form-check-item input[type="checkbox"],
+.form-check-item input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #d81b60; /* cor do tema APH */
+  cursor: pointer;
+}
+
+.form-check-item label {
+  cursor: pointer;
+  user-select: none;
+  font-weight: 500;
+  color: #092643;
+}
+
+/* =========================================================
+   OUTROS GRIDS USADOS NO FORMULÁRIO
+   ========================================================= */
+.form-group-grid-2-col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 24px;
+  
+}
+
+.form-group-grid-4-col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px 24px;
+}
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+@media (max-width: 768px) {
+  .checkbox-grid-3-col,
+  .form-group-grid-2-col,
+  .form-group-grid-4-col {
+    grid-template-columns: 1fr; /* empilha em telas pequenas */
+  }
+}

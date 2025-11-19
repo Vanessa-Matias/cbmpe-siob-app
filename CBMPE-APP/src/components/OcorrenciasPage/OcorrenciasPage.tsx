@@ -58,6 +58,22 @@ const OcorrenciasPage = () => {
     const navigate = useNavigate();
     const [ocorrencias, setOcorrencias] = useState<Ocorrencia[]>([]);
     
+    // NOVA FUNÇÃO (Adicionar em OcorrenciasPage.tsx)
+// Esta função "lê" o objeto 'formulariosPreenchidos' e retorna o nome da natureza
+const interpretarNatureza = (formularios: any): string => {
+    if (!formularios) return 'Ocorrência Básica';
+
+    if (formularios.incendio) return 'Incêndio';
+    if (formularios.salvamento) return 'Salvamento';
+    if (formularios.atdPreHospitalar) return 'APH';
+    if (formularios.prevencao) return 'Prevenção';
+    if (formularios.atividadeComunitaria) return 'Atividade Comunitária';
+    if (formularios.formularioGerenciamento) return 'Gerenciamento';
+    if (formularios.produtoPerigoso) return 'Produto Perigoso';
+    
+    return 'Ocorrência Básica'; // Caso nenhum esteja marcado
+};
+
     // --- LÓGICA DE CARREGAMENTO E SINCRONIZAÇÃO PWA ---
 
     const carregarOcorrencias = () => {
@@ -70,25 +86,34 @@ const OcorrenciasPage = () => {
                 
                 const finalData = parsedData.length > 0 ? parsedData : DADOS_ESTATICOS;
                 
-                const mappedData: Ocorrencia[] = finalData.map((o: any) => {
-                    // CORREÇÃO DE TIPO (NOME LIMPO): Se o tipo for específico, limpa para o nome da Natureza
-                    let tipoExibicao = o.tipo;
-                    if (tipoExibicao && tipoExibicao.includes("Incêndio em")) {
-                        tipoExibicao = "Incêndio"; // Simplifica a nomenclatura na lista de alto nível
-                    } else if (tipoExibicao && tipoExibicao.includes("Atd. Pré-Hospitalar")) {
-                        tipoExibicao = "APH"; 
-                    }
-                    
-                    return ({
-                        id: o.id || 'sim-' + Math.random().toString(36).substring(2, 9), 
-                        tipo: tipoExibicao || 'Ocorrência Básica',
-                        status: normalizarStatusParaBadge(o.status || 'Pendente') as Ocorrencia['status'],
-                        regiao: o.regiao || 'Recife',
-                        data: o.data || new Date().toISOString(),
-                        prioridade: o.prioridade || 'Média', 
-                        numAviso: o.numAviso || `OCR-${currentYear}-${o.id?.slice(-4).toUpperCase() || 'XXX'}` 
-                    });
-                });
+                // CORRIGIDO: O .map() agora lê os campos corretos salvos pelo formulário
+                        const mappedData: Ocorrencia[] = finalData.map((o: any) => {
+
+                            // 1. Interpreta a natureza (Bug da Natureza)
+                            const tipoCalculado = interpretarNatureza(o.formulariosPreenchidos);
+
+                            // 2. Lê o status (Bug do Status)
+                            // Tenta ler 'o.situacao' (do form) ou 'o.status' (dos dados estáticos)
+                            const statusLido = o.situacao || o.status || 'Pendente';
+
+                            return ({
+                                id: o.id || 'sim-' + Math.random().toString(36).substring(2, 9),
+
+                                // CORRIGIDO:
+                                tipo: tipoCalculado,
+
+                                // CORRIGIDO:
+                                status: normalizarStatusParaBadge(statusLido) as Ocorrencia['status'],
+
+                                regiao: o.regiao || 'Recife',
+                                data: o.data || new Date().toISOString(),
+
+                                // Prioridade (já estava correta)
+                                prioridade: o.prioridade || 'Média',
+
+                                numAviso: o.numAviso || `OCR-${currentYear}-${o.id?.slice(-4).toUpperCase() || 'XXX'}`
+                            });
+                        });
 
                 setOcorrencias(mappedData);
             } catch (e) {
@@ -124,7 +149,16 @@ const OcorrenciasPage = () => {
         return new Date(b.data).getTime() - new Date(a.data).getTime();
     });
 
-    const tiposDeOcorrencia = [ "Todos os Tipos", "Incêndio", "Emergência Médica", "Resgate", "Ocorrência Básica" ];
+    const tiposDeOcorrencia = [ "Todos os Tipos",
+    "Incêndio",
+    "APH",
+    "Salvamento",
+    "Gerenciamento",
+    "Atividade Comunitária",
+    "Produto Perigoso",
+    "Prevenção",
+    "Ocorrência Básica"
+    ];
     const statusDeOcorrencia = ["Todos os Status", "Pendente", "Em andamento", "Concluída", "Cancelada", "Trote", "Ocorrência Básica"];
     const prioridadesDeOcorrencia = ["Todas as Prioridades", "Alta", "Média", "Baixa"];
 

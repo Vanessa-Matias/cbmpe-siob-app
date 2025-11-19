@@ -6,23 +6,35 @@
   background-color: var(--color-bg);
   min-height: 100vh;
   transition: background-color 0.3s;
+  display: flex; /* Ativa o layout flexível */
+  flex-direction: column;  /* Coloca o Header em cima e o Main embaixo */
+  width: 100%;             /* Força ocupar 100% da largura */
+  flex: 1;                 /* Se estiver ao lado da Sidebar, ocupa todo o espaço restante */
+  overflow-x: hidden;      /* Previne barra de rolagem horizontal indesejada */
 }
 
 .dashboard-main {
   padding: 32px;
 }
 
+/* barra do site */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 16px 32px;
-  background-color: var(--color-card);
+  background-color: #AD131A;
   border-bottom: 1px solid var(--color-border);
+  width: 100%;             /* Força a largura total */
+  box-sizing: border-box;  /* Garante que o padding (32px) não estoure a largura */
+  margin: 0;               /* Remove margens externas indesejadas */
+  left: 0;                 /* Garante que comece do canto esquerdo */
   position: sticky;
   top: 0;
   z-index: 900;
+  
 }
+
 
 .header-left {
   display: flex;
@@ -41,6 +53,15 @@
   margin: 0;
   color: var(--color-text);
   font-weight: bold;
+  color: #ffffff;
+}
+
+/* cor do botão do meu(as 3 listras) */
+.dashboard-header .header-icon {
+  color: #ffffff; /* Força o ícone do menu para branco */
+  font-size: 20px; /* Ajusta o tamanho (opcional) */
+  margin-right: 16px; /* Adiciona um espaço entre o ícone e o título */
+  cursor: pointer;
 }
 
 /* --- Título Principal --- */
@@ -124,18 +145,18 @@
   flex-shrink: 0;
 }
 
-/* Cores Personalizadas dos Cards */
+/* ============ Cores Personalizadas dos Cards DO DASHBOARD TESTANDP============== */
 .kpi-azul {
-  background-color: #0d47a1; /* Ocorrências */
+  background-color: #FF6D2D ; /* Ocorrências */
 }
 .kpi-vermelho {
-  background-color: #c62828; /* Em andamento */
+  background-color: #FF6D2D ; /* Em andamento */
 }
 .kpi-verde {
-  background-color: #4b6f44; /* Concluídas */
+  background-color: #FF6D2D ; /* Concluídas */
 }
 .kpi-amarelo {
-  background-color: #fbc02d; /* Pendentes */
+  background-color: #FF6D2D ; /* Pendentes */
   color: #fff; /* Cor do texto forçada para branco (melhor contraste) */
 }
 

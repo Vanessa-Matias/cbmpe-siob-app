@@ -159,7 +159,7 @@ const FormularioIncendio: React.FC<Props> = ({ formData, handleChange, handleSub
       {/* --- BOTÕES DE AÇÃO --- */}
       <div className="form-actions">
         <button type="button" className="button-cancel" onClick={handleCancel}>
-          Cancelar
+            Voltar ao Básico
         </button>
         <button type="submit" className="submit-button">
           {submitText}

@@ -4,7 +4,7 @@
 
 
 .form-section-header-salvamento {
-    /* CORREÇÃO: Aplicando a cor LARANJA (Natureza 3) no background */
+    /* Aplicando a cor LARANJA (Natureza 3) no background */
     background-color: #cc5f0b; /* Laranja da paleta, conforme o manual  */
     color: white; /* Garante que o texto seja legível (branco) */
     padding: 12px 24px;
@@ -21,28 +21,55 @@
     color: inherit; 
 }
 
-/* Reutiliza o mesmo layout de grids */
-.checkbox-grid-4-col {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem 1.5rem;
+/* ==========================================================
+   GRID DE CHECKBOXES - GRUPO DE OCORRÊNCIA
+========================================================== */
+
+/* Cria um layout responsivo e proporcional em 3 colunas */
+.checkbox-grid-3-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem 1.5rem; /* espaçamento entre colunas e linhas */
+  margin-top: 0.5rem;
 }
 
+/* Cada checkbox-item alinhado corretamente */
 .form-check-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+/* Efeito hover sutil */
+.form-check-item:hover {
+  background-color: #f8f9fa;
+}
+
+/* Checkbox e rótulo padronizados */
+.form-check-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #d81b60; /* Rosa do dashboard */
+  cursor: pointer;
 }
 
 .form-check-item label {
-    font-weight: 500;
+  font-weight: 500;
+  color: #212529;
+  cursor: pointer;
 }
 
-.form-group-grid-4-col {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem 1.5rem;
+/* Responsividade - empilha em telas pequenas */
+@media (max-width: 768px) {
+  .checkbox-grid-3-col {
+    grid-template-columns: 1fr; /* uma coluna no mobile */
+  }
 }
+
 
 /* Responsivo */
 @media (max-width: 900px) {

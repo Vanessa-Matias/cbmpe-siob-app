@@ -1,186 +1,228 @@
 /* ==========================================================================
-   Estilos da Página de Login (LoginPage.css) - Cores do Figma
-   ========================================================================== */
+   LoginPage.css - Interface refinada para o SIOB
+   --------------------------------------------------------------------------
+   Ajustes:
+   - Card posicionado à direita
+   - Fundo cinza translúcido
+   - Inputs com borda simples e elegante
+   ========================================================================= */
 
-.login-page {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #AD131A; /* COR: Fundo da tela */
-  color: white;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.login-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.login-logo-container {
-  width: 90px;
-  height: 90px;
-  padding: 15px;
-  background-color: white;
-  border-radius: 22px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.login-logo-image {
-  width: 160%;
-  height: auto;
-}
-
-.login-header h1 { font-size: 32px; margin: 0; }
-.login-header h2 { font-size: 18px; font-weight: 400; margin: 4px 0; }
-.login-header p { font-size: 15px; font-weight: 300; margin: 0; }
-
-.login-box {
-  padding: 30px 40px;
-  background-color: #F2F6F9; /* COR: Caixa de acesso (branco com opacidade) */
-  color: #333;
-  border-radius: 16px;
-  text-align: center;
+/* RESET GLOBAL */
+html, body {
+  margin: 0;
+  padding: 0;
   width: 100%;
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+}
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* BASE */
+.login-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  color: #fff;
+}
+
+/* IMAGEM DE FUNDO */
+.hero-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* ========================================================================== */
+/* TELA DE BOAS-VINDAS                                                       */
+/* ========================================================================== */
+.intro-content {
+  padding: 20px 100px;
+  text-align: left;
+}
+
+.intro-logo.large {
+  width: 480px;
+  height: auto;
+  margin-bottom: -150px;
+  margin-left: -78px;
+}
+
+.intro-subtitle.large {
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: pre-line;
+  color: #fff;
+  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* BOTÃO */
+.bottom-left-access {
+  position: absolute;
+  bottom: 100px;
+  left: 100px;
+}
+
+.intro-access-button {
+  background-color: #AE1A16;
+  border: none;
+  border-radius: 10px;
+  padding: 16px 42px;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+.intro-access-button:hover {
+  background-color: #8E0F14;
+  transform: scale(1.03);
+}
+
+/* ========================================================================== */
+/* TELA DE LOGIN                                                             */
+/* ========================================================================== */
+.login-form-screen {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* CARD DE LOGIN */
+.login-box {
+  background-color: rgba(230, 230, 230, 0.666); /* tom cinza translúcido */
+  color: #636262;
+  border-radius: 18px;
+  padding: 55px;
   max-width: 420px;
+  text-align: center;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+
+  /* deslocado à direita */
+  position: absolute;
+  top: 50%;
+  right: 35%;
+  transform: translateY(-60%);
 }
 
-.login-box h3 { font-size: 24px; margin: 0 0 8px 0; }
-.login-subtitle { color: #8B7D7D; margin: 0 0 24px 0; 
-font-weight: bold; /* Adicionado para deixar o texto em negrito */}
+/* LOGO E TÍTULO */
+.login-logo-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
 
-.input-group { margin-bottom: 20px; text-align: left; }
+/* Deixa a logo para fora do card */
+.login-logo-image {
+  width: 90px;
+  height: auto;
+  position: absolute;
+  top: -50px; /* move a logo para fora do card */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+/* Ajusta o topo do card para compensar a logo flutuante */
+.login-box {
+  margin-top: 40px; /* dá espaço visual para a logo */
+}
+
+
+.login-subtitle.center {
+  color: #1a1919;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+/* INPUTS */
+.input-group {
+  text-align: left;
+  margin-bottom: 18px;
+}
+
 .input-group label {
-  display: block;
+  font-weight: 600;
+  font-size: 15px;
   margin-bottom: 8px;
-  color: #000; /* COR: Texto "E-mail" e "Senha" */
-  font-weight: 500;
+  display: block;
+  color: #111;
 }
+
 .input-group input {
   width: 100%;
   padding: 12px;
-  border: 1px solid #ccc;   /* Cinza suave no estado normal */
+  border: 1px solid #bbb;
   border-radius: 8px;
   background-color: #f9f9f9;
-  box-sizing: border-box;
-  outline: none; /* Remove o contorno azul padrão */
+  outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-/* Quando o campo estiver em foco (clicado) */
+
+/* borda simples ao focar */
 .input-group input:focus {
-  border: 2px solid #AE1A16;  /* Vermelho institucional */
+  border: 1.8px solid #AE1A16;
+  box-shadow: 0 0 4px rgba(174, 26, 22, 0.3);
 }
 
+/* ÍCONE DE SENHA */
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
 
-.password-input-wrapper { position: relative; display: flex; align-items: center; }
-.password-toggle-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #888; }
+.password-toggle-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+}
 
+/* BOTÃO DE LOGIN */
 .login-button {
   width: 100%;
   padding: 14px;
   border: none;
   border-radius: 8px;
-  background-color: #ae1a16; /* COR: Botão Entrar */
+  background-color: #AE1A16;
   color: white;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 .login-button:hover {
-  /* MUDANÇA: mudamos para um vermelho mais escuro */
-  background-color: #8e0f14;
+  background-color: #8E0F14;
 }
 
-.login-footer {
-  text-align: center;
-  margin-top: 30px;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 14px;
+/* ERRO */
+.login-error {
+  color: #AE1A16;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
-.login-footer p { margin: 4px 0; }
 
-/* ==========================================================================
-   Estilos Responsivos (para telas de celular)
-   ========================================================================== */
-
-/* Aplica estes estilos quando a tela for de 500px de largura ou menor. */
-@media (max-width: 500px) {
-  
-  /* Alinha o conteúdo no topo em telas pequenas. */
-  .login-page {
-    justify-content: flex-start;
-    padding: 32px 12px; /* Adiciona um padding lateral menor */
-  }
-
-  /* Diminui a margem do cabeçalho. */
-  .login-header {
-    margin-bottom: 24px;
-  }
-  
-  /* Deixa a caixa da logo um pouco menor. */
-  .login-logo-container {
-    width: 70px;
-    height: 70px;
-    padding: 10;
-  }
-  
-  /* Diminui o tamanho dos títulos. */
-  .login-header h1 {
-    font-size: 22px;
-  }
-  .login-header h2 {
-    font-size: 15px;
-  }
-  .login-header p {
-    font-size: 14px;
-  }
-
-  /* Deixa a caixa de login com menos espaçamento interno. */
+/* ========================================================================== */
+/* RESPONSIVIDADE                                                            */
+/* ========================================================================== */
+@media (max-width: 768px) {
   .login-box {
-    padding: 20px 16px;
-    max-width: 340px;  /* Reduz largura */
-    border-radius: 12px; /* Cantos menos exagerados */
-  }
-
-  /* Diminui o tamanho da fonte do título da caixa. */
-  .login-box h3 {
-    font-size: 18px;
-    margin-bottom: 6px;
-  }
-  .login-subtitle {
-    font-size: 13px;
-    margin-bottom: 18px;
-  }
-
-  /* Inputs mais delicados */
-  .input-group input {
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 6px;
-  }
-
-  /* Botão de login menor e mais refinado */
-  .login-button {
-  width: 80%;          /* ocupa só 80% da caixa */
-  margin: 0 auto;      /* centraliza */
-  padding: 12px;
-  font-size: 15px;
-  border-radius: 6px;
-}
-  /* Rodapé mais discreto */
-  .login-footer {
-    font-size: 12px;
-    margin-top: 20px;
+    right: 50%;
+    transform: translate(50%, -50%);
+    width: 85%;
   }
 }

@@ -29,82 +29,91 @@ const FormularioSalvamento: React.FC<Props> = ({
       </div>
 
 
-    {/* --- NOVO: SEÇÃO DE GRUPOS DE OCORRÊNCIA (Campo 04 do Manual) --- */}
+    {/* ---  SEÇÃO DE GRUPOS DE OCORRÊNCIA (Campo 04 do Manual) --- */}
     <fieldset>
-        <legend>Grupo da Ocorrência (O que está envolvido no evento?)</legend>
-        <div className="checkbox-grid-2-col"> {/* Reutilizando classe do Incêndio */}
-          <div className="form-check-item">
-            <input
-              type="checkbox"
-              id="grupoPessoa"
-              name="salvamento.grupos.pessoa"
-              checked={formData.salvamento?.grupos?.pessoa || false}
-              onChange={handleChange}
-            />
-            <label htmlFor="grupoPessoa">Evento com Pessoa</label> {/*  */}
-          </div>
-          <div className="form-check-item">
-            <input
-              type="checkbox"
-              id="grupoAnimal"
-              name="salvamento.grupos.animal"
-              checked={formData.salvamento?.grupos?.animal || false}
-              onChange={handleChange}
-            />
-            <label htmlFor="grupoAnimal">Evento com Animal</label> {/*  */}
-          </div>
-          <div className="form-check-item">
-            <input
-              type="checkbox"
-              id="grupoObjeto"
-              name="salvamento.grupos.objeto"
-              checked={formData.salvamento?.grupos?.objeto || false}
-              onChange={handleChange}
-            />
-            <label htmlFor="grupoObjeto">Evento com Objeto</label> {/*  */}
-          </div>
-          <div className="form-check-item">
-            <input
-              type="checkbox"
-              id="grupoCadaver"
-              name="salvamento.grupos.cadaver"
-              checked={formData.salvamento?.grupos?.cadaver || false}
-              onChange={handleChange}
-            />
-            <label htmlFor="grupoCadaver">Evento com Cadáver</label> {/*  */}
-          </div>
-          <div className="form-check-item">
-            <input
-              type="checkbox"
-              id="grupoTransporte"
-              name="salvamento.grupos.meioTransporte"
-              checked={formData.salvamento?.grupos?.meioTransporte || false}
-              onChange={handleChange}
-            />
-            <label htmlFor="grupoTransporte">Evento com Meio de Transporte</label> {/*  */}
-          </div>
-          <div className="form-check-item">
-            <input
-              type="checkbox"
-              id="grupoArvore"
-              name="salvamento.grupos.arvore"
-              checked={formData.salvamento?.grupos?.arvore || false}
-              onChange={handleChange}
-            />
-            <label htmlFor="grupoArvore">Evento com Árvore</label> {/*  */}
-          </div>
-          <div className="form-check-item">
-            <input
-              type="checkbox"
-              id="grupoOutro"
-              name="salvamento.grupos.outro"
-              checked={formData.salvamento?.grupos?.outro || false}
-              onChange={handleChange}
-            />
-            <label htmlFor="grupoOutro">Outro</label> {/*  */}
-          </div>
-        </div>
-      </fieldset>
+  <legend>Grupo da Ocorrência (O que está envolvido no evento?)</legend>
+  
+  {/* Agora com layout consistente em 3 colunas */}
+  <div className="checkbox-grid-3-col"> 
+    <div className="form-check-item">
+      <input
+        type="checkbox"
+        id="grupoPessoa"
+        name="salvamento.grupos.pessoa"
+        checked={formData.salvamento?.grupos?.pessoa || false}
+        onChange={handleChange}
+      />
+      <label htmlFor="grupoPessoa">Evento com Pessoa</label>
+    </div>
+
+    <div className="form-check-item">
+      <input
+        type="checkbox"
+        id="grupoAnimal"
+        name="salvamento.grupos.animal"
+        checked={formData.salvamento?.grupos?.animal || false}
+        onChange={handleChange}
+      />
+      <label htmlFor="grupoAnimal">Evento com Animal</label>
+    </div>
+
+    <div className="form-check-item">
+      <input
+        type="checkbox"
+        id="grupoObjeto"
+        name="salvamento.grupos.objeto"
+        checked={formData.salvamento?.grupos?.objeto || false}
+        onChange={handleChange}
+      />
+      <label htmlFor="grupoObjeto">Evento com Objeto</label>
+    </div>
+
+    <div className="form-check-item">
+      <input
+        type="checkbox"
+        id="grupoCadaver"
+        name="salvamento.grupos.cadaver"
+        checked={formData.salvamento?.grupos?.cadaver || false}
+        onChange={handleChange}
+      />
+      <label htmlFor="grupoCadaver">Evento com Cadáver</label>
+    </div>
+
+    <div className="form-check-item">
+      <input
+        type="checkbox"
+        id="grupoTransporte"
+        name="salvamento.grupos.meioTransporte"
+        checked={formData.salvamento?.grupos?.meioTransporte || false}
+        onChange={handleChange}
+      />
+      <label htmlFor="grupoTransporte">Evento com Meio de Transporte</label>
+    </div>
+
+    <div className="form-check-item">
+      <input
+        type="checkbox"
+        id="grupoArvore"
+        name="salvamento.grupos.arvore"
+        checked={formData.salvamento?.grupos?.arvore || false}
+        onChange={handleChange}
+      />
+      <label htmlFor="grupoArvore">Evento com Árvore</label>
+    </div>
+
+    <div className="form-check-item">
+      <input
+        type="checkbox"
+        id="grupoOutro"
+        name="salvamento.grupos.outro"
+        checked={formData.salvamento?.grupos?.outro || false}
+        onChange={handleChange}
+      />
+      <label htmlFor="grupoOutro">Outro</label>
+    </div>
+  </div>
+</fieldset>
+
 
       {/* --- SEÇÃO: Tipo de Salvamento --- */}
       <fieldset>
@@ -251,7 +260,7 @@ const FormularioSalvamento: React.FC<Props> = ({
       {/* --- BOTÕES --- */}
       <div className="form-actions">
         <button type="button" className="button-cancel" onClick={handleCancel}>
-          Cancelar
+          Voltar ao Básico
         </button>
         <button type="submit" className="submit-button">
           {submitText}

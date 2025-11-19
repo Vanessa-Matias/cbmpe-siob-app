@@ -206,55 +206,131 @@ ATUALIZADO com todos os status do componente React.
 }
 
 
-/* ========================================
-    Cores de Situação (Status)
-
+/* ====================================================
+   ESTILO BASE UNIFICADO PARA BADGES
+   Isso padroniza todos os badges (status e prioridade) 
+   para o formato "pill" (arredondado e consistente).
 ==================================================== */
-
-/* CONCLUÍDA (Verde) */
-.status-concluída {
-    /* Borda verde grossa na esquerda */
-    border: 3px solid #07a82c; 
-    /* Fundo levemente esverdeado (combina bem com a borda) */
-    background-color: #b5f1b5;
-    color: #2a8c4a; /* Texto em verde escuro */
-    border-radius: 4px; /* Adiciona um leve arredondamento para estética */
+.status-badge,
+.prioridade-badge {
+    display: inline-block;
+    padding: 0.4em 0.75em;  /* Padding para um visual mais "cheio" */
+    font-size: 0.8em;       /* Tamanho de fonte levemente ajustado */
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 50em;    /* Isso cria o formato "pill" arredondado */
+    color: #fff;           /* Texto branco por padrão */
 }
 
-/* CANCELADA (Vermelho) */
-.status-cancelada {
-    /* Borda sólida vermelha (o seu primeiro bloco usava 3px, vamos manter) */
-    border: 3px solid #dc3545;
-    /* Fundo levemente avermelhado/transparente */
-    background-color: #f6b8be;
-    color: #6f0712; /* Texto em vermelho forte */
-    border-radius: 4px;
+/* ====================================================
+   ESTILO BASE UNIFICADO PARA BADGES
+   Isso padroniza todos os badges (status e prioridade) 
+   para o formato "pill" (arredondado e consistente).
+==================================================== */
+.status-badge,
+.prioridade-badge {
+    display: inline-block;
+    padding: 0.4em 0.75em;  /* Padding para um visual mais "cheio" */
+    font-size: 0.8em;       /* Tamanho de fonte levemente ajustado */
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 50em;    /* Isso cria o formato "pill" arredondado */
+    color: #fff;           /* Texto branco por padrão */
 }
 
-/* EM ANDAMENTO (Amarelo) */
+/* ====================================================
+   BASE: FORMATO "PILL" (ARREDONDADO)
+   Define o formato base para ambos os tipos de badge.
+==================================================== */
+.status-badge,
+.prioridade-badge {
+    display: inline-block;
+    padding: 0.4em 0.75em;
+    font-size: 0.8em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 50em; /* Isso cria o formato "pill" */
+}
+
+/* ========================================
+   TIPO 1: PRIORIDADE (COR SÓLIDA)
+   Usado para urgência (Alta, Média, Baixa)
+==================================================== */
+.prioridade-badge {
+    color: #fff; /* Texto branco */
+}
+
+.prioridade-alta { 
+    background-color: #d32f2f; /* Vermelho Sólido */
+}
+.prioridade-média { 
+    background-color: #ec8516; /* Laranja Sólido */
+}
+.prioridade-baixa { 
+    background-color: #045dbc; /* Azul Sólido */
+}
+
+/* ========================================
+   TIPO 2: STATUS (TRANSLÚCIDO / LEVE)
+   Usado para informação (Pendente, Andamento, etc.)
+==================================================== */
+.status-badge {
+    border: 2px solid transparent; /* Borda sutil */
+}
+
+/* PENDENTE (Cinza Leve) */
+.status-pendente {
+    background-color: #d7d8d9; /* Fundo cinza bem claro */
+    color: #495057;            /* Texto cinza escuro */
+    border-color: #495057;     /* Borda cinza */
+}
+
+/* EM ANDAMENTO (Amarelo Leve) */
 .status-em-andamento {
-    /* Borda sólida amarela */
-    border: 3px solid #ffc107;
-    /* Fundo levemente amarelado/transparente */
-    background-color: #f9eb83;
-    color: #775b1f; /* Texto em tom marrom/amarelado escuro */
-    border-radius: 4px;
+    background-color: #f7e8c3; /* Fundo amarelo claro */
+    color: #c08f14;            /* Texto escuro */
+    border-color: #fbc02d;     /* Borda amarela */
 }
 
-/* TROTE (Cinza) */
+/* CONCLUÍDA (Verde Leve) */
+.status-concluída {
+    background-color: #ceeec7; /* Fundo verde claro */
+    color: #4b6f44;            /* Texto verde escuro */
+    border-color: #4b6f44;     /* Borda verde */
+}
+
+/* CANCELADA (Vermelho Leve) */
+.status-cancelada {
+    background-color: #fad4d4; /* Fundo vermelho claro */
+    color: #ad131a;            /* Texto vermelho escuro */
+    border-color: #ad131a;     /* Borda vermelha */
+}
+
+/* TROTE (Novo Estilo - Marrom/Bege Leve) */
 .status-trote {
-    /* Borda sólida cinza */
-    border: 3px solid #6c757d;
-    /* Fundo levemente acinzentado/transparente */
-    background-color: #bab4b4;
-    color: #3d3d3d; /* Texto em cinza escuro */
-    border-radius: 4px;
+    background-color: #e9dace; /* Fundo bege/marrom claro */
+    color: #876b55;            /* Texto marrom escuro */
+    border-color: #876b55;     /* Borda marrom */
 }
 
-/* Cores das Prioridades */
-.prioridade-alta { background-color: #d32f2f; color: white; }
-.prioridade-média { background-color: #f98404; color: white; }
-.prioridade-baixa { background-color: #0a74e6; color: white; }
+/* ========================================
+   Outros Estilos (Mantidos)
+==================================================== */
+.no-results {
+    text-align: center !important;
+    padding: 30px !important;
+    color: var(--color-muted);
+    font-style: italic;
+}
 
 /* Mensagem de Nenhuma Ocorrência */
 .no-results {

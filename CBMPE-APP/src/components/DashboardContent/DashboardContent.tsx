@@ -31,6 +31,7 @@ import OccurrenceMap from './OccurrenceMap'; // IMPORTAÇÃO DO MAPA
 // 1- Estrutura de Tipos de Dados
 // ======================================================================
 interface Ocorrencia {
+    // Campos "limpos" que o dashboard vai USAR
     tipo: string;
     status: string;
     regiao: string;
@@ -40,7 +41,12 @@ interface Ocorrencia {
         latitude: string | number;
         longitude: string | number;
         bairro: string;
-    }
+    };
+
+    // Campos "brutos" que vêm do localStorage
+    situacao?: string; 
+    formulariosPreenchidos?: any; 
+    dataAviso?: string;
 }
 
 // Tipo corrigido para compatibilidade com o Recharts
@@ -75,6 +81,8 @@ const NATUREZA_COLOR_MAP: Record<string, string> = {
   'Produtos Perigosos': COLORS_TIPO_PALETTE[3], 
   'Prevenção': COLORS_TIPO_PALETTE[4],
   'Comunitária': COLORS_TIPO_PALETTE[5],
+  'Atividade Comunitária': COLORS_TIPO_PALETTE[5], // Alias
+  'Gerenciamento': COLORS_TIPO_PALETTE[7], // Alias
 };
 // Cores dos Status (para KPIs e Badges da Tabela)
 const COLORS_STATUS = ["#c62828", "#fdd835", "#43a047"]; // Em Andamento, Pendente, Concluída
@@ -103,30 +111,63 @@ const DADOS_INICIAIS_FICTICIOS: Ocorrencia[] = [
 
 
 // ======================================================================
-// FUNÇÃO AUXILIAR: Normalizar Status (Para KPIs)
+// 3️- FUNÇÕES AUXILIARES GLOBAIS
 // ======================================================================
-const normalizarStatus = (ocorrencia: Ocorrencia) => {
-    // Normaliza status que podem vir do FormularioBasico como 'finalizada', 'pendente', etc.
-    const statusLower = ocorrencia.status.toLowerCase();
-    
-    let statusNormalizado: string;
-    if (statusLower.includes('finalizada') || statusLower.includes('concluída')) {
-        statusNormalizado = "Concluída";
-    } else if (statusLower.includes('em-andamento') || statusLower.includes('andamento')) {
-        statusNormalizado = "Em andamento";
-    } else if (statusLower.includes('pendente')) {
-        statusNormalizado = "Pendente";
-    } else {
-        statusNormalizado = ocorrencia.status;
-    }
 
-    return { ...ocorrencia, status: statusNormalizado };
+/**
+ * Interpreta o objeto 'formulariosPreenchidos' (do Form) e retorna uma string
+ */
+const interpretarNatureza = (formularios: any): string => {
+    if (!formularios) return 'Ocorrência Básica';
+
+    if (formularios.incendio) return 'Incêndio';
+    if (formularios.salvamento) return 'Salvamento';
+    if (formularios.atdPreHospitalar) return 'APH';
+    if (formularios.prevencao) return 'Prevenção';
+    if (formularios.atividadeComunitaria) return 'Atividade Comunitária';
+    if (formularios.formularioGerenciamento) return 'Gerenciamento';
+    if (formularios.produtoPerigoso) return 'Produto Perigoso';
+    
+    return 'Ocorrência Básica'; // Caso nenhum esteja marcado
 };
 
+/**
+ * Normaliza o objeto "bruto" do localStorage para o formato "limpo" do Dashboard
+ */
+    const normalizarOcorrencia = (o: Ocorrencia): Ocorrencia => {
+        // 1. Normaliza Status
+        const statusLido = o.situacao || o.status || 'Pendente';
+        const statusLower = statusLido.toLowerCase();
+        let statusNormalizado: string;
 
-// ======================================================================
-// FUNÇÃO AUXILIAR: Abreviar rótulos longos no eixo X
-// ======================================================================
+        if (statusLower.includes('finalizada') || statusLower.includes('concluída')) {
+            statusNormalizado = "Concluída";
+        } else if (statusLower.includes('em-andamento') || statusLower.includes('andamento')) {
+            statusNormalizado = "Em andamento";
+        } else if (statusLower.includes('pendente')) {
+            statusNormalizado = "Pendente";
+        } else {
+            statusNormalizado = statusLido;
+        }
+
+        // 2. Normaliza Tipo
+        const tipoNormalizado = o.formulariosPreenchidos ? interpretarNatureza(o.formulariosPreenchidos) : (o.tipo || 'Ocorrência Básica');
+
+        // 3. CORREÇÃO: Normaliza Data
+        // O formulário salva 'dataAviso', mas o dashboard usa 'data'
+        const dataNormalizada = o.dataAviso || o.data || new Date().toISOString().split('T')[0];
+
+        // 4. Retorna o objeto "limpo"
+        return { 
+            ...o, 
+            status: statusNormalizado,
+            tipo: tipoNormalizado,
+            data: dataNormalizada // <-- CAMPO DE DATA NORMALIZADO
+        };
+    };
+/**
+ * Abrevia rótulos longos no eixo X dos gráficos
+ */
 const abreviarRotulo = (nome: string): string => {
     // ABREVIAÇÕES DE RASCUNHO/INCÊNDIO
     if (nome.includes("em Edificação")) return "Inc. Edif."; 
@@ -140,14 +181,17 @@ const abreviarRotulo = (nome: string): string => {
     if (nome.includes("Resgate em Altura")) return "Resg. Altura";
     if (nome.includes("Salvamento Aquático")) return "Salv. Aquát.";
     if (nome.includes("Atividade Comunitária")) return "Ativ. Com.";
-    // CORREÇÃO: Adicionando regra para Prevenção Aquática
     if (nome.includes("Prevenção Aquática")) return "Prev. Aquát."; 
     
+    // Novas abreviações baseadas na função 'interpretarNatureza'
+    if (nome === "Produto Perigoso") return "Prod. Perig.";
+    if (nome === "Gerenciamento") return "Gerenc.";
+
     return nome;
 };
 
 // ======================================================================
-// 3️- Componente Principal do Dashboard
+// 4️- Componente Principal do Dashboard
 // ======================================================================
 const DashboardContent: React.FC = () => {
     
@@ -159,12 +203,14 @@ const DashboardContent: React.FC = () => {
             const parsedData = JSON.parse(data);
             const finalData = (parsedData.length > 0 ? parsedData : DADOS_INICIAIS_FICTICIOS) as Ocorrencia[];
             // CORREÇÃO: Normaliza os dados carregados na inicialização
-            return finalData.map(normalizarStatus); 
+            return finalData.map(normalizarOcorrencia); 
           } catch (e) {
-            return DADOS_INICIAIS_FICTICIOS as Ocorrencia[];
+            // Se houver erro no JSON, usa os dados fictícios normalizados
+            return DADOS_INICIAIS_FICTICIOS.map(normalizarOcorrencia);
           }
         }
-        return DADOS_INICIAIS_FICTICIOS as Ocorrencia[];
+        // Se não houver nada no localStorage, usa os dados fictícios normalizados
+        return DADOS_INICIAIS_FICTICIOS.map(normalizarOcorrencia);
     });
 
     // Lógica de carregamento e atualização (PWA)
@@ -174,33 +220,33 @@ const DashboardContent: React.FC = () => {
             try {
                 const parsedData = JSON.parse(data);
                 // CORREÇÃO: Normaliza os dados na atualização PWA
-                setOcorrencias(parsedData.map(normalizarStatus)); 
+                setOcorrencias(parsedData.map(normalizarOcorrencia)); 
             } catch (e) {
-                setOcorrencias([]);
+                setOcorrencias([]); // Em caso de erro, limpa os dados
             }
         } else {
-            setOcorrencias([]);
+            // Se o localStorage for limpo, volta para os dados fictícios
+            setOcorrencias(DADOS_INICIAIS_FICTICIOS.map(normalizarOcorrencia));
         }
     };
 
     useEffect(() => {
         const atualizar = () => carregarDados();
+        // Carrega os dados na primeira vez (caso o localStorage mude enquanto o componente não está montado)
+        carregarDados(); 
+        
         window.addEventListener("ocorrencias:updated", atualizar);
 
         return () => window.removeEventListener("ocorrencias:updated", atualizar);
-    }, []);
+    }, []); // Dependência vazia, executa apenas ao montar/desmontar
 
     // Função helper para agregação (CORRIGIDA)
+    // (Precisa ficar DENTRO do componente pois depende do state 'ocorrencias')
     const aggregateData = (key: keyof Ocorrencia): DadosGrafico[] => {
         return Object.entries(
             ocorrencias.reduce((acc, o) => {
-                let itemKey = o[key] as string;
-                
-                // CORREÇÃO: Limpa nomes genéricos de status/fluxo nos gráficos
-                if (key === 'tipo' && itemKey.includes("Rascunho de Atendimento")) {
-                    // Substitui pelo nome de fluxo mais limpo
-                    itemKey = "Ocorrência Básica"; 
-                }
+                // Usa o campo 'tipo' ou 'status' (já normalizados)
+                let itemKey = o[key] as string; 
                 
                 acc[itemKey] = (acc[itemKey] || 0) + 1;
                 return acc;
@@ -208,13 +254,24 @@ const DashboardContent: React.FC = () => {
         ).map(([name, value]) => ({ name, value }));
     };
 
-    // ==================================================================
-    // 5- Cálculos dos dados para os gráficos
-    // ==================================================================
+// ==================================================================
+// 5- Cálculos dos dados para os gráficos
+// ==================================================================
 
-    const totalHoje = ocorrencias.length;
+// KPIs (Lendo status já normalizados)
 
-    // KPIs (Lendo status já normalizados)
+// Filtra pelo "DIA ATUAL" comparando as strings de data (YYYY-MM-DD)
+// 'hojeString' pega a data de hoje formatada, ex: "2025-11-15"
+    const hojeString = new Date().toISOString().split('T')[0]; 
+
+    const ocorrenciasHoje = ocorrencias.filter(o => {
+        // 'o.data' foi normalizado e contém a string "YYYY-MM-DD"
+        return o.data === hojeString; 
+    });
+
+    const totalHoje = ocorrenciasHoje.length;
+
+    // O restante dos KPIs conta o TOTAL de ocorrências no sistema
     const emAndamento = ocorrencias.filter(o => o.status === "Em andamento").length;
     const pendentes = ocorrencias.filter(o => o.status === "Pendente").length;
     const concluidas = ocorrencias.filter(o => o.status === "Concluída").length;
@@ -258,7 +315,7 @@ const DashboardContent: React.FC = () => {
                     <div className="kpi-info">
                         <span className="kpi-title">Em Andamento</span>
                         <span className="kpi-value">{emAndamento}</span>
-                        <span className="kpi-details">Equipes mobilizadas</span>
+                        <span className="kpi-details">Equipes mobilizadas (Total)</span>
                     </div>
                     <div className="kpi-icon"><Clock /></div>
                 </div>
@@ -267,7 +324,7 @@ const DashboardContent: React.FC = () => {
                     <div className="kpi-info">
                         <span className="kpi-title">Pendentes</span>
                         <span className="kpi-value">{pendentes}</span>
-                        <span className="kpi-details">Aguardando despacho</span>
+                        <span className="kpi-details">Aguardando despacho (Total)</span>
                     </div>
                     <div className="kpi-icon"><BarChart3 /></div>
                 </div>
@@ -276,7 +333,7 @@ const DashboardContent: React.FC = () => {
                     <div className="kpi-info">
                         <span className="kpi-title">Concluídas</span>
                         <span className="kpi-value">{concluidas}</span>
-                        <span className="kpi-details">Ocorrências encerradas</span>
+                        <span className="kpi-details">Ocorrências encerradas (Total)</span>
                     </div>
                     <div className="kpi-icon"><CheckCircle /></div>
                 </div>
@@ -296,16 +353,14 @@ const DashboardContent: React.FC = () => {
                                 cy="50%"
                                 innerRadius={60} 
                                 outerRadius={120}
-                                label={({ name, percent }: any) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                                label={({ name, percent }: any) => `${abreviarRotulo(name)} (${(percent * 100).toFixed(0)}%)`}
                                 dataKey="value"
                             >
                                 {dadosGraficoTipo.map((d, i) => {
-                                    const naturezaChave = Object.keys(NATUREZA_COLOR_MAP).find(key => 
-                                        d.name.includes(key)
-                                    );
-                                    const corFatia = naturezaChave 
-                                        ? NATUREZA_COLOR_MAP[naturezaChave]
-                                        : COLORS_TIPO_PALETTE[i % COLORS_TIPO_PALETTE.length]; 
+                                    // Tenta encontrar uma cor específica (ex: 'Incêndio', 'APH')
+                                    const corFatia = NATUREZA_COLOR_MAP[d.name] 
+                                        // Se não achar, usa a paleta genérica
+                                        || COLORS_TIPO_PALETTE[i % COLORS_TIPO_PALETTE.length]; 
 
                                     return <Cell key={i} fill={corFatia} />;
                                 })}
@@ -348,16 +403,15 @@ const DashboardContent: React.FC = () => {
                     <ResponsiveContainer width="100%" height={300}>
                         <BarChart 
                             data={dadosGraficoTop5}
-                            // Adicionar margem é crucial para o texto girado não ser cortado pelo contêiner do cartão
                             margin={{ top: 5, right: 5, left: 20, bottom: 5 }}
                         >
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis 
                                 dataKey="name" 
-                                interval={0} 			/* Garante que NENHUM rótulo seja omitido */
-                                angle={-35} 			/* Rotação na diagonal */
-                                textAnchor="end" 		/* Âncora no final do texto */
-                                height={80} 			/* Altura extra para acomodar o texto inclinado */
+                                interval={0}           /* Garante que NENHUM rótulo seja omitido */
+                                angle={-35}            /* Rotação na diagonal */
+                                textAnchor="end"       /* Âncora no final do texto */
+                                height={80}            /* Altura extra para acomodar o texto inclinado */
                                 tickFormatter={abreviarRotulo} /* <--- ABREVIAÇÃO APLICADA AQUI */
                             />
                             <YAxis />

@@ -1,5 +1,4 @@
 // ==========================================================================
-// App.tsx (Versão Correta com AuthContext)
 // Este arquivo gerencia as rotas e protege o dashboard com o "PrivateRoute".
 // ==========================================================================
 
