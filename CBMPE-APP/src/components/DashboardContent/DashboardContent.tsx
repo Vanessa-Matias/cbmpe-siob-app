@@ -294,7 +294,7 @@ const DashboardContent: React.FC = () => {
     // 6- Renderização da Interface
     // ==================================================================
     return (
-        <div className="dashboard-main">
+         <div className="dashboard-main dashboard-operacional">
             <div className="dashboard-title">
                 <h2>Dashboard Operacional</h2>
                 <p>Resumo dinâmico das Ocorrências</p>

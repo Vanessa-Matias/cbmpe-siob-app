@@ -44,9 +44,9 @@
 
 /* GRIDS DE CHECKBOXES (Ações e Tipos) - Essencial para o design PWA */
 .checkbox-grid-3-col {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem 1rem; /* Espaçamento compacto */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem 1rem;
 }
 
 /* Alinhamento perfeito do checkbox/radio com o texto */
@@ -61,9 +61,8 @@
 .form-check-item input[type="radio"] {
     width: 18px;
     height: 18px;
-    /* Usando a cor do tema Prevenção (Verde) para o foco/marcador */
-    accent-color: #43a047; 
     cursor: pointer;
+    
 }
 
 /* RESPONSIVIDADE (Padrão PWA) */

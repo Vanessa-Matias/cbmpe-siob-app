@@ -1,8 +1,9 @@
 // ==========================================================================
-// Este arquivo gerencia as rotas e protege o dashboard com o "PrivateRoute".
+// App.tsx
+// Gerenciamento de rotas, autenticação e tema global.
 // ==========================================================================
 
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 // --- Páginas / Componentes ---
@@ -20,32 +21,39 @@ import FormularioPage from './components/FormularioPage/FormularioPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 // --- Componente de Rota Privada (O "Porteiro") ---
-// Verifica se o usuário está autenticado antes de mostrar as rotas filhas.
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
-  // Se estiver autenticado, mostra o conteúdo. Senão, redireciona para /login.
   return (isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />);
 };
 
 // --- Componente de Rotas da Aplicação ---
 function AppRoutes() {
+  
+  // --- LÓGICA DO TEMA (DARK MODE) ---
+  const [theme, setTheme] = useState('light');
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    // Atualiza o atributo no HTML para o CSS reagir
+    document.documentElement.setAttribute('data-theme', newTheme);
+  };
+
   return (
     <Routes>
       {/* --- Rota Pública: Login --- */}
-      {/* O LoginPage agora terá a lógica do "login falso". */}
       <Route path="/login" element={<LoginPage />} />
 
-      {/* --- Rotas Protegidas (Envolvidas pelo PrivateRoute) --- */}
+      {/* --- Rotas Protegidas --- */}
       <Route
         path="/"
         element={
           <PrivateRoute>
-            {/* O DashboardLayout só é renderizado se o PrivateRoute permitir */}
-            <DashboardLayout toggleTheme={() => { /* Lógica de tema pode ser movida para um Contexto depois */ }} />
+            {/* Passamos a função real de alternar tema aqui */}
+            <DashboardLayout toggleTheme={toggleTheme} />
           </PrivateRoute>
         }
       >
-        {/* Rotas filhas (Dashboard, Ocorrências, etc.) */}
         <Route index element={<Navigate to="/dashboard" />} />
         <Route path="dashboard" element={<DashboardContent />} />
         <Route path="ocorrencias" element={<OcorrenciasPage />} />
@@ -53,19 +61,19 @@ function AppRoutes() {
         <Route path="usuarios" element={<UsuariosPage />} />
         <Route path="auditoria" element={<AuditoriaPage />} />
         <Route path="configuracoes" element={<ConfiguracoesPage />} />
-      <Route path="formulario" element={<FormularioPage />} />
-      <Route path="ocorrencia/:id/formulario" element={<FormularioPage />} />
+        
+        {/* Rotas de Formulário */}
+        <Route path="formulario" element={<FormularioPage />} />
+        <Route path="ocorrencia/:id/formulario" element={<FormularioPage />} />
       </Route>
 
       {/* --- Redirecionamento Padrão --- */}
-      {/* Se qualquer outra rota for acessada, redireciona para o login (se deslogado) ou dashboard (se logado) */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
 
 // --- Componente Raiz ---
-// Envolve toda a aplicação com o Provedor de Autenticação (AuthProvider)
 const App: React.FC = () => {
   return (
     <AuthProvider>
@@ -77,4 +85,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-

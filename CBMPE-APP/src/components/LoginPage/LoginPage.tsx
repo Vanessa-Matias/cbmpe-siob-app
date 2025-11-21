@@ -1,11 +1,7 @@
-// ==========================================================================
-// LoginPage.tsx
-// Sistema Integrado de Ocorrências dos Bombeiros (SIOB)
-// --------------------------------------------------------------------------
-// Este componente contém duas telas:
-// (1) Tela de Boas-Vindas com imagem de fundo e botão de acesso
-// (2) Tela de Login com campos de credenciais
-// ==========================================================================
+/**
+ * @file LoginPage.tsx
+ * @description Componente de Login e Boas-vindas do SIOB.
+ */
 
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -13,16 +9,19 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './LoginPage.css';
 
-// Imagens principais de fundo
+// Imagens principais
 import loginImage1 from '../../assets/login01.jpg';
-import loginImage2 from '../../assets/login03.jpg';
-import siobLogo from '../../assets/siob-logo01.png'; // Logo principal do sistema
+import loginImage2 from '../../assets/login02.jpg';
+import siobLogo from '../../assets/siob-logo.png';
+import logoFormulario from '../../assets/siob-logo1.png';
+
+// --- Importação logo govpe ---
+import logoGov from '../../assets/logos.gov.png'; 
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  // Estados principais da página
   const [isIntro, setIsIntro] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,9 +29,6 @@ const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // --------------------------------------------------------------------------
-  // Validação básica dos campos de login
-  // --------------------------------------------------------------------------
   const validate = () => {
     if (!email) return 'Informe o e-mail institucional.';
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -41,7 +37,6 @@ const LoginPage: React.FC = () => {
     return null;
   };
 
-  // Armazenamento seguro (localStorage > sessionStorage)
   const safeStore = (key: string, value: string) => {
     try {
       localStorage.setItem(key, value);
@@ -56,15 +51,12 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  // --------------------------------------------------------------------------
-  // Ação de login (simulação de autenticação)
-  // --------------------------------------------------------------------------
   const handleLogin = async () => {
     setError(null);
     const v = validate();
     if (v) return setError(v);
     setLoading(true);
-    await new Promise(r => setTimeout(r, 600)); // Simula delay de requisição
+    await new Promise(r => setTimeout(r, 600));
 
     try {
       const mockUser = {
@@ -87,23 +79,47 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  // Alternar visibilidade da senha
   const togglePassword = () => setShowPassword(s => !s);
   const onKeyDown = (e: React.KeyboardEvent) => { if (e.key === 'Enter') handleLogin(); };
   const handleIntroClick = () => setIsIntro(false);
 
-  // --------------------------------------------------------------------------
-  // Tela 1 — Boas-vindas
-  // --------------------------------------------------------------------------
+  // --- FUNÇÃO DE FORMATAÇÃO DE SENHA (MÁSCARA 0000.000-00) ---
+  const formatarSenha = (valor: string) => {
+    // 1. Remove tudo que não é número
+    let v = valor.replace(/\D/g, '');
+
+    // 2. Limita a 9 dígitos (4 + 3 + 2)
+    if (v.length > 9) v = v.slice(0, 9);
+
+    // 3. Aplica a máscara
+    // Coloca o ponto depois do 4º dígito
+    v = v.replace(/^(\d{4})(\d)/, '$1.$2');
+    // Coloca o traço depois do 3º dígito do segundo bloco
+    v = v.replace(/\.(\d{3})(\d)/, '.$1-$2');
+
+    return v;
+  };
+
+  // Handler específico para a mudança da senha com formatação
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const valorFormatado = formatarSenha(e.target.value);
+    setPassword(valorFormatado);
+  };
+
+
+  // --- Tela 1: Boas-Vindas ---
   const renderIntroScreen = () => (
     <div className="login-container intro-screen">
       <img src={loginImage1} alt="Bombeiro em ação" className="hero-image" />
 
       <div className="intro-content">
-        <img src={siobLogo} alt="Logo SIOB" className="intro-logo large" />
+        {/* Container Flex para Logo + SIOB */}
+        <div className="logo-siob-container">
+            <img src={siobLogo} alt="Logo SIOB" className="intro-logo large" />
+        </div>
+        
         <h2 className="intro-subtitle large">
           Sistema Integrado de{'\n'}Ocorrências dos Bombeiros
-          
         </h2>
 
         <div className="bottom-left-access">
@@ -115,9 +131,7 @@ const LoginPage: React.FC = () => {
     </div>
   );
 
-  // --------------------------------------------------------------------------
-  // Tela 2 — Login
-  // --------------------------------------------------------------------------
+  // --- Tela 2: Login ---
   const renderLoginScreen = () => (
     <div className="login-container login-form-screen">
       <img src={loginImage2} alt="Bombeiro com máscara" className="hero-image" />
@@ -125,7 +139,7 @@ const LoginPage: React.FC = () => {
       <main className="login-box">
         <header className="login-header minimal">
           <div className="login-logo-container">
-            <img src={siobLogo} alt="Logo SIOB" className="login-logo-image" />
+            <img src={logoFormulario} alt="Logo SIOB" className="login-logo-image" />
           </div>
         </header>
 
@@ -151,10 +165,19 @@ const LoginPage: React.FC = () => {
             <input
               id="password"
               type={showPassword ? 'text' : 'password'}
-              placeholder="senha123"
+              
+              /* Placeholder com o exemplo do formato */
+              placeholder="0000.000-00"
+              
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              
+              /* CHAMA A FUNÇÃO DE FORMATAÇÃO */
+              onChange={handlePasswordChange}
+              
               onKeyDown={onKeyDown}
+              
+              /* Limita o tamanho total (9 números + 2 pontuações = 11 caracteres) */
+              maxLength={11} 
             />
             <button
               type="button"
@@ -173,12 +196,21 @@ const LoginPage: React.FC = () => {
           {loading ? 'Entrando...' : 'Entrar no Sistema'}
         </button>
       </main>
+
+      {/* === RODAPÉ COM A SUA LOGO DO GOVERNO === */}
+      <footer className="login-footer-logos">
+        <div className="logos-wrapper">
+           {/* Imagem única que você importou */}
+           <img src={logoGov} alt="Logos Institucionais" className="footer-logo" />
+        </div>
+        <p className="footer-copyright">
+          © 2025 Sistema Integrado de Ocorrências dos Bombeiros 
+        </p>
+      </footer>
+
     </div>
   );
 
-  // --------------------------------------------------------------------------
-  // Renderização condicional entre as duas telas
-  // --------------------------------------------------------------------------
   return (
     <div className="login-page">
       {isIntro ? renderIntroScreen() : renderLoginScreen()}

@@ -1,78 +1,157 @@
 /**
  * @file UserModal.css
  * @description Folha de estilos para o componente UserModal.
- * Define a aparência da janela pop-up para criação e edição de usuários.
  */
 
 /* Define o fundo semi-transparente que cobre toda a tela. */
 .modal-overlay {
-  position: fixed; /* Posicionamento relativo à janela do navegador. */
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6); /* Cor preta com 60% de opacidade. */
-  display: flex; /* Utiliza flexbox para centralizar o conteúdo. */
+  background-color: rgba(0, 0, 0, 0.6); /* Escurece o fundo */
+  backdrop-filter: blur(3px); /* Um leve desfoque no fundo (fica lindo!) */
+  display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000; /* Garante que o modal fique acima de outros conteúdos. */
+  z-index: 1000;
 }
 
-/* Define o container principal do modal (a "janela" branca). */
+/* Define o container principal do modal */
 .modal-content {
-  background-color: var(--card-bg);
-  padding: 0; /* O padding será controlado pelas seções internas. */
+  /* CORRIGIDO: Usando a variável certa do seu index.css */
+  background-color: var(--color-card); 
+  padding: 0;
   border-radius: 12px;
-  width: 100%;
-  max-width: 500px; /* Limita a largura máxima em telas grandes. */
+  width: 90%; /* Melhor para mobile (não ocupa 100% colado na borda) */
+  max-width: 500px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--color-border); /* Adicionei borda para definição */
 }
 
-/* Estiliza o cabeçalho do modal, contendo o título e o botão de fechar. */
+/* Estiliza o cabeçalho do modal */
 .modal-header {
-  padding: 24px 32px;
-  border-bottom: 1px solid var(--border-color);
+  padding: 20px 32px;
+  
+  /* Fundo Vermelho */
+  background-color: #AD131A; 
+  
+  /* Removemos a borda inferior para ficar liso */
+  border-bottom: none; 
+  
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
+  /* Arredondamento apenas no topo */
+  border-radius: 12px 12px 0 0;
 }
 
+/* Título do Modal */
 .modal-header h3 {
   margin: 0;
-  color: var(--label-color);
+  
+  /* Força a cor branca */
+  color: #ffffff !important; 
+  
+  font-size: 20px;
 }
 
-/* Estiliza o botão '×' para fechar. */
+/* Estiliza o botão '×' para fechar */
 .close-button {
   background: none;
   border: none;
   font-size: 2rem;
   line-height: 1;
-  color: var(--text-muted-color);
+  color: #ffffff; 
   cursor: pointer;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Estiliza a área principal com os campos do formulário. */
+/* Estiliza a área principal */
 .modal-body {
   padding: 32px;
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Espaçamento entre os campos do formulário. */
+  gap: 20px;
 }
 
-/* Cria um grid para alinhar campos lado a lado (ex: Cargo e Status). */
+/* --- ADICIONADO: Estilo para os Inputs e Labels (Faltava isso) --- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-input-bg);
+  color: var(--color-text);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(173, 19, 26, 0.1); /* Um brilho vermelho suave */
+}
+
+/* Cria um grid para alinhar campos lado a lado */
 .form-group-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
-/* Estiliza o rodapé do modal com os botões de ação (Salvar, Cancelar). */
+/* Estiliza o rodapé do modal */
 .modal-footer {
-  padding: 24px 32px;
-  border-top: 1px solid var(--border-color);
+  padding: 20px 32px;
+  /* CORRIGIDO: Variável correta */
+  border-top: 1px solid var(--color-border); 
   display: flex;
-  justify-content: flex-end; /* Alinha os botões à direita. */
+  justify-content: flex-end;
   gap: 12px;
+  background-color: var(--color-bg); /* Mesmo fundo do header */
+  border-radius: 0 0 12px 12px;
 }
 
+/* --- Botões (Reutilizando estilo padrão se não houver global) --- */
+.button-secondary {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: white;
+  color: var(--color-text);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.button-primary {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--color-primary);
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.button-primary:hover {
+  background-color: var(--color-primary-hover);
+}

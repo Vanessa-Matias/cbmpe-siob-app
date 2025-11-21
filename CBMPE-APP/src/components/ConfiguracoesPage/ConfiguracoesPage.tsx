@@ -1,7 +1,7 @@
 /**
  * @file ConfiguracoesPage.tsx
  * @description Página de configurações aprimorada, baseada no protótipo do Figma.
- * Inclui modo de edição para o perfil e modal para alteração de senha com botão de exibição de senha.
+ * Inclui modo de edição para o perfil e modal para alteração de senha com validação.
  */
 
 import React, { useState } from 'react';
@@ -48,15 +48,25 @@ const EyeIcon = ({ visible }: { visible: boolean }) => (
 
 // --- Componente Principal ---
 const ConfiguracoesPage = () => {
+  // Estados de UI
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Estado para visibilidade das senhas (olhinho)
   const [showPassword, setShowPassword] = useState({
     current: false,
     new: false,
     confirm: false
   });
 
+  // CORREÇÃO 1: Estado para armazenar o que é digitado nas senhas
+  const [passwords, setPasswords] = useState({
+    current: '',
+    new: '',
+    confirm: ''
+  });
+
+  // Dados do Usuário (Perfil)
   const [userData, setUserData] = useState({
     nome: 'Sargento Vanessa Matias',
     matricula: '20240001',
@@ -66,9 +76,42 @@ const ConfiguracoesPage = () => {
     avatarUrl: profileImage,
   });
 
+  // Handler para edição de perfil
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserData(prev => ({ ...prev, [name]: value }));
+  };
+
+  // CORREÇÃO 2: Handler para digitar nas senhas
+  const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setPasswords(prev => ({ ...prev, [name]: value }));
+  };
+
+  // CORREÇÃO 3: Handler para Salvar Senha com Validação
+  const handleSavePassword = () => {
+    // Validação simples
+    if (!passwords.current || !passwords.new || !passwords.confirm) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    if (passwords.new !== passwords.confirm) {
+      alert("A nova senha e a confirmação não conferem!");
+      return;
+    }
+
+    // Sucesso (Simulação)
+    alert("Senha alterada com sucesso!");
+    handleCloseModal();
+  };
+
+  // CORREÇÃO 4: Função para fechar e limpar o modal
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    // Limpa os campos para a próxima vez
+    setPasswords({ current: '', new: '', confirm: '' });
+    setShowPassword({ current: false, new: false, confirm: false });
   };
 
   return (
@@ -90,7 +133,7 @@ const ConfiguracoesPage = () => {
             <p>{userData.email}</p>
           </div>
           {!isEditing && (
-            <button className="button-edit" onClick={() => setIsEditing(true)}>
+            <button type="button" className="button-edit" onClick={() => setIsEditing(true)}>
               <EditIcon />
               <span>Editar</span>
             </button>
@@ -119,7 +162,7 @@ const ConfiguracoesPage = () => {
         {isEditing && (
           <div className="settings-card-footer">
             <button className="button-secondary" onClick={() => setIsEditing(false)}>Cancelar</button>
-            <button className="button-primary" onClick={() => setIsEditing(false)}>Salvar Alterações</button>
+            <button className="button-primary" onClick={() => { setIsEditing(false); alert('Perfil atualizado!'); }}>Salvar Alterações</button>
           </div>
         )}
       </div>
@@ -134,7 +177,9 @@ const ConfiguracoesPage = () => {
             <h4>Alterar Senha</h4>
             <p>Recomendamos que você altere sua senha periodicamente.</p>
           </div>
-          <button className="button-secondary" onClick={() => setIsModalOpen(true)}>Alterar</button>
+          <button className="button-edit" onClick={() => setIsModalOpen(true)}>
+          Alterar
+        </button>
         </div>
       </div>
 
@@ -144,16 +189,20 @@ const ConfiguracoesPage = () => {
           <div className="modal-content">
             <div className="modal-header">
               <h3>Alterar Senha</h3>
-              <button className="modal-close" onClick={() => setIsModalOpen(false)}>&times;</button>
+              <button className="modal-close" onClick={handleCloseModal}>&times;</button>
             </div>
+            
             <div className="modal-body">
-              {/* Campo 1 */}
+              {/* Campo 1: Senha Atual */}
               <div className="form-group password-field">
-                <label htmlFor="currentPassword">Senha Atual</label>
+                <label htmlFor="current">Senha Atual</label>
                 <div className="input-wrapper">
                   <input
                     type={showPassword.current ? "text" : "password"}
-                    id="currentPassword"
+                    id="current"
+                    name="current" // Importante: 'name' deve bater com o estado 'passwords'
+                    value={passwords.current} // CONECTADO
+                    onChange={handlePasswordInput} // CONECTADO
                     placeholder="Digite sua senha atual"
                   />
                   <button
@@ -166,13 +215,16 @@ const ConfiguracoesPage = () => {
                 </div>
               </div>
 
-              {/* Campo 2 */}
+              {/* Campo 2: Nova Senha */}
               <div className="form-group password-field">
-                <label htmlFor="newPassword">Nova Senha</label>
+                <label htmlFor="new">Nova Senha</label>
                 <div className="input-wrapper">
                   <input
                     type={showPassword.new ? "text" : "password"}
-                    id="newPassword"
+                    id="new"
+                    name="new"
+                    value={passwords.new} // CONECTADO
+                    onChange={handlePasswordInput} // CONECTADO
                     placeholder="Digite a nova senha"
                   />
                   <button
@@ -185,13 +237,16 @@ const ConfiguracoesPage = () => {
                 </div>
               </div>
 
-              {/* Campo 3 */}
+              {/* Campo 3: Confirmar Senha */}
               <div className="form-group password-field">
-                <label htmlFor="confirmPassword">Confirmar Nova Senha</label>
+                <label htmlFor="confirm">Confirmar Nova Senha</label>
                 <div className="input-wrapper">
                   <input
                     type={showPassword.confirm ? "text" : "password"}
-                    id="confirmPassword"
+                    id="confirm"
+                    name="confirm"
+                    value={passwords.confirm} // CONECTADO
+                    onChange={handlePasswordInput} // CONECTADO
                     placeholder="Confirme a nova senha"
                   />
                   <button
@@ -204,9 +259,11 @@ const ConfiguracoesPage = () => {
                 </div>
               </div>
             </div>
+
             <div className="modal-footer">
-              <button className="button-secondary" onClick={() => setIsModalOpen(false)}>Cancelar</button>
-              <button className="button-primary" onClick={() => setIsModalOpen(false)}>Salvar Nova Senha</button>
+              <button className="button-secondary" onClick={handleCloseModal}>Cancelar</button>
+              {/* Botão chama a validação agora */}
+              <button className="button-primary" onClick={handleSavePassword}>Salvar Nova Senha</button>
             </div>
           </div>
         </div>

@@ -49,19 +49,20 @@ html, body {
 }
 
 .intro-logo.large {
-  width: 480px;
+  width: 155px;
   height: auto;
-  margin-bottom: -150px;
-  margin-left: -78px;
+  margin-bottom: -140px;
+  margin-left: -79px;
 }
 
 .intro-subtitle.large {
-  font-size: 35px;
+  font-size: 33px;
   font-weight: 700;
   line-height: 1.2;
   white-space: pre-line;
   color: #fff;
   text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+  margin-left: 40px;
 }
 
 /* BOTÃO */
@@ -100,7 +101,7 @@ html, body {
 
 /* CARD DE LOGIN */
 .login-box {
-  background-color: rgba(230, 230, 230, 0.666); /* tom cinza translúcido */
+  background-color: rgba(230, 230, 230, 0.905); /* tom cinza translúcido */
   color: #636262;
   border-radius: 18px;
   padding: 55px;
@@ -111,8 +112,9 @@ html, body {
   /* deslocado à direita */
   position: absolute;
   top: 50%;
-  right: 35%;
+  right: 37%;
   transform: translateY(-60%);
+  z-index: 20; 
 }
 
 /* LOGO E TÍTULO */
@@ -125,12 +127,12 @@ html, body {
 
 /* Deixa a logo para fora do card */
 .login-logo-image {
-  width: 90px;
+  width: 280px;
   height: auto;
   position: absolute;
-  top: -50px; /* move a logo para fora do card */
-  left: 50%;
-  transform: translateX(-50%);
+  top: -60px; /* move a logo para fora do card */
+  left: 40%;
+  transform: translateX(-37%);
   z-index: 5;
 }
 
@@ -141,9 +143,9 @@ html, body {
 
 
 .login-subtitle.center {
-  color: #1a1919;
+  color: #2b2a2a;
   font-weight: 600;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 /* INPUTS */
@@ -154,10 +156,10 @@ html, body {
 
 .input-group label {
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
   margin-bottom: 8px;
   display: block;
-  color: #111;
+  color: #494848;
 }
 
 .input-group input {
@@ -176,11 +178,57 @@ html, body {
   box-shadow: 0 0 4px rgba(174, 26, 22, 0.3);
 }
 
-/* ÍCONE DE SENHA */
+/* ==========================================================================
+   INPUT DE SENHA COM ÍCONE MODERNO
+   ========================================================================== */
+
+/* Container relativo para posicionar o ícone dentro */
 .password-input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
+}
+
+/* O Input precisa de espaço na direita para o ícone não cobrir o texto */
+.password-input-wrapper input {
+  width: 100%;
+  padding-right: 45px; /* Espaço reservado para o olho */
+}
+
+/* O Botão do Ícone (Olho) */
+.password-toggle-icon {
+  position: absolute;
+  right: 12px; /* Distância da borda direita */
+  
+  /* Centralização Vertical Perfeita (Técnica Padrão de UI) */
+  top: 50%;
+  transform: translateY(-50%);
+  
+  /* Remove estilos feios de botão padrão */
+  background: none;
+  border: none;
+  cursor: pointer;
+  
+  /* Cor inicial: Cinza discreto/moderno */
+  color: #9ca3af; 
+  
+  /* Área de clique confortável */
+  padding: 6px; 
+  border-radius: 50%; /* Deixa o hover redondo */
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Suavidade na mudança de cor */
+  transition: all 0.2s ease;
+}
+
+/* Garante que o SVG tenha um tamanho fixo e nítido */
+.password-toggle-icon svg {
+  width: 20px;
+  height: 20px;
 }
 
 .password-toggle-icon {
@@ -224,5 +272,155 @@ html, body {
     right: 50%;
     transform: translate(50%, -50%);
     width: 85%;
+  }
+}
+
+/* ==========================================================================
+   RODAPÉ INSTITUCIONAL (Logos do Governo)
+   ========================================================================== */
+
+.login-footer-logos {
+  /* Fixa no rodapé do container de login */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 20px 30px 20px; /* Um pouco mais de espaço embaixo */
+  
+  /* Centraliza o conteúdo */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  /* Gradiente preto transparente para garantir leitura sobre a imagem de fundo */
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+  
+  /* Garante que fique acima da imagem de fundo */
+  z-index: 10;
+}
+
+.logos-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-logo {
+  /* Define a altura da logo (ajuste conforme a proporção da sua imagem) */
+  height: 500px; 
+  width: auto;
+  object-fit: contain;
+  margin-left: -0px;
+  margin-bottom: -280px;
+  /* Sombra suave para destacar */
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.footer-logo:hover {
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+.footer-copyright {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6); /* Branco transparente */
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: .5px;
+  text-align: center;
+}
+
+/* --- Ajuste para Telas Pequenas (Mobile) --- */
+@media (max-width: 480px) {
+  .footer-logo {
+    height: 40px; /* Logo um pouco menor no celular */
+  }
+  .login-footer-logos {
+    padding-bottom: 40px; /* Mais segurança contra a borda inferior do celular */
+  }
+}
+
+/* ==========================================================================
+   📱 AJUSTES PARA CELULARES PEQUENOS (Telas < 380px)
+   Ex: iPhone SE, Galaxy Fold (fechado)
+   ========================================================================== */
+@media (max-width: 380px) {
+
+  /* --- 1. Ajuste da Tela de Boas-Vindas --- */
+  .intro-content {
+    padding: 20px; /* Menos borda para ganhar espaço */
+  }
+
+  .logo-siob-container {
+    margin-left: 0;    /* Remove a margem negativa */
+    margin-bottom: -20px; /* Menos sobreposição */
+    justify-content: center; /* Centraliza */
+  }
+
+  .intro-logo.large {
+    width: 80px; /* Logo menor */
+    margin-right: 10px;
+  }
+
+  .siob-text {
+    font-size: 24px; /* Texto SIOB menor */
+  }
+
+  .intro-subtitle.large {
+    font-size: 24px; /* Título principal menor */
+    text-align: center;
+  }
+  
+  .bottom-left-access {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    margin-top: 30px;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .intro-access-button {
+    width: 100%;
+    padding: 12px;
+  }
+
+  /* --- 2. Ajuste da Tela de Login (Card) --- */
+  .login-box {
+    width: 90%;      /* Ocupa quase toda a largura */
+    padding: 30px 20px; /* Menos padding interno */
+    margin-top: 20px;
+  }
+
+  /* Logo flutuante do Login */
+  .login-logo-image {
+    width: 100px; /* Um pouco menor */
+    top: -50px;   /* Ajusta a altura */
+  }
+
+  /* --- 3. Rodapé (Logos do Governo) --- */
+  .login-footer-logos {
+    position: relative; /* Deixa de ser absoluto para não ficar em cima do card */
+    margin-top: auto;   /* Empurra para o final do fluxo normal */
+    padding: 20px;
+    background: #1a1a1a; /* Fundo sólido escuro para garantir leitura */
+  }
+
+  .footer-logo {
+    height: 35px; /* Logos menores */
+    margin: 0 !important; /* Remove margens negativas que empurravam para fora */
+    transform: none !important; /* Remove deslocamentos manuais */
+  }
+  
+  /* Garante que a tela tenha scroll se ficar muito pequena */
+  .login-form-screen {
+    height: auto; 
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-y: auto; /* Permite rolar a tela */
   }
 }

@@ -2,6 +2,7 @@
  * @file FormularioGerenciamento.tsx
  * @description Formulário de Gerenciamento (SCI-1 Briefing da Emergência).
  * Usado pelo Comandante da Operação para registrar situação e recursos (Item 818).
+ * Autora: Vanessa Matias 💻.
  */
 import React from 'react';
 import './FormularioGerenciamento.css';
@@ -15,6 +16,11 @@ type Props = {
 };
 
 const FormularioGerenciamento: React.FC<Props> = ({ formData, handleChange, handleSubmit, handleCancel, submitText }) => {
+  
+  // --- BLINDAGEM DE DADOS ---
+  // Garante que o objeto de gerenciamento exista antes de acessar suas propriedades
+  const gerenciamentoData = formData.gerenciamento || {};
+
   return (
     <form className="form-card" onSubmit={handleSubmit}>
       
@@ -34,7 +40,7 @@ const FormularioGerenciamento: React.FC<Props> = ({ formData, handleChange, hand
             id="situacaoAtual" 
             name="gerenciamento.situacaoAtual" 
             rows={4} 
-            value={formData.gerenciamento?.situacaoAtual || ''} 
+            value={gerenciamentoData.situacaoAtual || ''} 
             onChange={handleChange} 
             placeholder="Descreva a emergência, forças e fraquezas."
           ></textarea>
@@ -47,7 +53,7 @@ const FormularioGerenciamento: React.FC<Props> = ({ formData, handleChange, hand
             id="objetivos" 
             name="gerenciamento.objetivos" 
             rows={4} 
-            value={formData.gerenciamento?.objetivos || ''} 
+            value={gerenciamentoData.objetivos || ''} 
             onChange={handleChange} 
             placeholder="Defina os objetivos (e.g., Confine, Resgate) e as próximas ações."
           ></textarea>
@@ -62,31 +68,66 @@ const FormularioGerenciamento: React.FC<Props> = ({ formData, handleChange, hand
           {/* Nº de Bombeiros Empregados */}
           <div className="form-group">
             <label htmlFor="bmEmpregados">Nº BM Empregados</label>
-            <input type="number" id="bmEmpregados" name="gerenciamento.bmEmpregados" value={formData.gerenciamento?.bmEmpregados || ''} onChange={handleChange} placeholder="Efetivo Total" />
+            <input 
+              type="number" 
+              id="bmEmpregados" 
+              name="gerenciamento.bmEmpregados" 
+              value={gerenciamentoData.bmEmpregados || ''} 
+              onChange={handleChange} 
+              placeholder="Efetivo Total" 
+            />
           </div>
           
           {/* Nº de Viaturas Empregadas */}
           <div className="form-group">
             <label htmlFor="viaturasEmpregadas">Nº Viaturas Empregadas</label>
-            <input type="number" id="viaturasEmpregadas" name="gerenciamento.viaturasEmpregadas" value={formData.gerenciamento?.viaturasEmpregadas || ''} onChange={handleChange} placeholder="Total de VTRs" />
+            <input 
+              type="number" 
+              id="viaturasEmpregadas" 
+              name="gerenciamento.viaturasEmpregadas" 
+              value={gerenciamentoData.viaturasEmpregadas || ''} 
+              onChange={handleChange} 
+              placeholder="Total de VTRs" 
+            />
           </div>
           
           {/* Nº de Embarcações Empregadas */}
           <div className="form-group">
             <label htmlFor="embarcacoesEmpregadas">Nº Embarcações</label>
-            <input type="number" id="embarcacoesEmpregadas" name="gerenciamento.embarcacoesEmpregadas" value={formData.gerenciamento?.embarcacoesEmpregadas || ''} onChange={handleChange} placeholder="Se aplicável" />
+            <input 
+              type="number" 
+              id="embarcacoesEmpregadas" 
+              name="gerenciamento.embarcacoesEmpregadas" 
+              value={gerenciamentoData.embarcacoesEmpregadas || ''} 
+              onChange={handleChange} 
+              placeholder="Se aplicável" 
+            />
           </div>
 
           {/* Orgãos Envolvidos (Simplificado) */}
           <div className="form-group">
             <label htmlFor="orgaosEnvolvidos">Órgãos Envolvidos</label>
-            <input type="text" id="orgaosEnvolvidos" name="gerenciamento.orgaosEnvolvidos" value={formData.gerenciamento?.orgaosEnvolvidos || ''} onChange={handleChange} placeholder="Ex: SAMU, PMPE, Defesa Civil" />
+            <input 
+              type="text" 
+              id="orgaosEnvolvidos" 
+              name="gerenciamento.orgaosEnvolvidos" 
+              value={gerenciamentoData.orgaosEnvolvidos || ''} 
+              onChange={handleChange} 
+              placeholder="Ex: SAMU, PMPE, Defesa Civil" 
+            />
           </div>
         </div>
         
         <div className="form-group" style={{ marginTop: '1rem' }}>
           <label htmlFor="recursosSolicitados">Recursos Adicionais Solicitados</label>
-          <input type="text" id="recursosSolicitados" name="gerenciamento.recursosSolicitados" value={formData.gerenciamento?.recursosSolicitados || ''} onChange={handleChange} placeholder="Descreva os recursos que ainda faltam ou foram pedidos" />
+          <input 
+            type="text" 
+            id="recursosSolicitados" 
+            name="gerenciamento.recursosSolicitados" 
+            value={gerenciamentoData.recursosSolicitados || ''} 
+            onChange={handleChange} 
+            placeholder="Descreva os recursos que ainda faltam ou foram pedidos" 
+          />
         </div>
       </fieldset>
 

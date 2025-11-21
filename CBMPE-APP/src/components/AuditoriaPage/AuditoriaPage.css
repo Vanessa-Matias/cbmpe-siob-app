@@ -179,12 +179,34 @@
   font-weight: bold;
   white-space: nowrap;
 }
-.action-login     { background-color: #e0f2fe; color: #0c549c; }
-.action-create    { background-color: #dcfce7; color: #15803d; }
-.action-update    { background-color: #fef9c3; color: #854d0e; }
-.action-delete    { background-color: #fee2e2; color: #991b1b; }
-.action-export    { background-color: #eef2ff; color: #3730a3; }
+/* Login e Create = Sucesso (Verde) */
+.action-login, 
+.action-create { 
+  background-color: #e6f7ec; 
+  color: #198754; 
+  border: 2px solid #a1d1b2; /* Opcional: Borda sutil */
+}
 
+/* Update = Atenção (Amarelo) */
+.action-update { 
+  background-color: #f7e8c3; 
+  color: #c49216; 
+  border: 2px solid #fbc02d;
+}
+
+/* Delete = Perigo (Vermelho) */
+.action-delete { 
+  background-color: #fdeded; 
+  color: #db1125; 
+  border: 2px solid #f5c6cb;
+}
+
+/* Export = Neutro (Cinza ou Azul) */
+.action-export { 
+  background-color: #dfe0e2; 
+  color: #495057; 
+  border: 2px solid #c2c5c8;
+}
 
 /* ================================================================
         Estilos Responsivos (para celular)
@@ -199,6 +221,11 @@
 @media (max-width: 768px) {
   .auditoria-page-container {
     padding: 16px;
+    /* Garante que o flex funcione bem no mobile */
+  .table-user-info {
+     width: 100%;
+     justify-content: flex-end; /* Alinha o nome à direita no card mobile */
+  }
   }
 
   .auditoria-page-container .filter-grid {

@@ -1,314 +1,259 @@
 /* ==========================================================================
-        Estilos da Página de Configurações (com Correção Final de Tema)
-========================================================================== */
+   Estilos da Página de Configurações (Versão Final Otimizada)
+   ========================================================================== */
 
 /* --- Container Principal --- */
 .configuracoes-page-container {
-    padding: 32px;
-    max-width: 1200px;
-    margin: 0 auto;
+  padding: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* --- Cabeçalho da Página (Padrão) --- */
-.configuracoes-page-container .page-header {
-    margin-bottom: 24px;
-}
-.configuracoes-page-container .page-title h2 {
-    margin: 0 0 4px 0;
-    font-size: 28px;
-    color: var(--color-text);
-}
-.configuracoes-page-container .page-title p {
-    margin: 0;
-    color: var(--color-muted);
-    font-size: 16px;
-}
+/* --- Títulos e Textos Gerais --- */
+.configuracoes-page-container .page-header { margin-bottom: 24px; }
+.configuracoes-page-container .page-title h2 { margin: 0 0 4px 0; font-size: 28px; color: var(--color-text); }
+.configuracoes-page-container .page-title p { margin: 0; color: var(--color-muted); font-size: 16px; }
 
-/* --- Card de Configuração (Padrão) --- */
+/* --- Card Base --- */
 .configuracoes-page-container .settings-card {
-    background-color: var(--color-card);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    margin-bottom: 24px;
-    overflow: hidden;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  margin-bottom: 24px;
+  overflow: hidden;
 }
 
-/* --- Cabeçalho do Card de Perfil --- */
-.configuracoes-page-container .profile-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 24px;
-    background-color: var(--color-bg);
-    border-bottom: 1px solid var(--color-border);
-}
-.configuracoes-page-container .profile-avatar {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--color-primary);
-}
-.configuracoes-page-container .profile-header-info h3 {
-    margin: 0 0 4px 0;
-    font-size: 20px;
-    font-weight: bold;
-    color: var(--color-text);
-}
-.configuracoes-page-container .profile-header-info p {
-    margin: 0;
-    color: var(--color-muted);
-}
-.configuracoes-page-container .profile-header .button-edit {
-    margin-left: auto;
-}
-
-/* --- Cabeçalho Genérico dos Cards --- */
+/* --- Cabeçalhos dos Cards (Perfil e Genérico) --- */
+.configuracoes-page-container .profile-header,
 .configuracoes-page-container .settings-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-    border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid var(--color-border);
 }
+
+.configuracoes-page-container .profile-header {
+  background-color: var(--color-bg);
+  gap: 20px;
+}
+
+.configuracoes-page-container .settings-card-header {
+  justify-content: space-between;
+  padding: 20px 24px;
+}
+
+/* Foto de Perfil */
+.configuracoes-page-container .profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-primary);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Textos do Header */
+.configuracoes-page-container .profile-header-info h3,
 .configuracoes-page-container .settings-card-header h3 {
-    margin: 0;
-    font-size: 18px;
-    color: var(--color-text);
+  margin: 0 0 4px 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--color-text);
 }
-.configuracoes-page-container .header-with-icon {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-.configuracoes-page-container .header-with-icon svg {
-    width: 20px;
-    height: 20px;
-    color: var(--color-muted);
-}
+.configuracoes-page-container .settings-card-header h3 { font-size: 18px; margin: 0; }
+.configuracoes-page-container .profile-header-info p { margin: 0; color: var(--color-muted); }
 
-/* --- Estilos do Formulário --- */
+.configuracoes-page-container .header-with-icon { display: flex; align-items: center; gap: 12px; }
+.configuracoes-page-container .header-with-icon svg { width: 20px; height: 20px; color: var(--color-muted); }
+
+/* Botão Editar no Header */
+.configuracoes-page-container .profile-header .button-edit { margin-left: auto; }
+
+/* --- Formulários e Grids --- */
 .configuracoes-page-container .profile-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px 24px;
-    padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+  padding: 24px;
 }
-.configuracoes-page-container .form-group {
-    display: flex;
-    flex-direction: column;
-}
+.configuracoes-page-container .form-group { display: flex; flex-direction: column; }
+
+/* --- ESTILOS COMPARTILHADOS: Labels e Inputs --- */
+/* Aplica tanto para o formulário de perfil quanto para o modal de senha */
+
+/* Labels (Geral - Forçando Preto) */
 .configuracoes-page-container .form-group label,
-.configuracoes-page-container .modal-body .form-group label {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--color-muted); /* USA VARIÁVEL */
-    margin-bottom: 8px;
+.modal-body .form-group label {
+  font-size: 14px;
+  font-weight: 600; /* Um pouco mais de negrito ajuda na leitura */
+  
+  /* AQUI: Usei !important para garantir que nada sobrescreva o preto */
+  color: #000000 !important; 
+  
+  margin-bottom: 8px;
 }
+
 .configuracoes-page-container .form-group input,
-.configuracoes-page-container .modal-body .form-group input {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 8px;
-    border: 1px solid var(--color-border);
-    background-color: var(--color-input-bg);
-    color: var(--color-text); /* USA VARIÁVEL */
-    box-sizing: border-box;
-    font-size: 16px;
+.input-wrapper input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-input-bg);
+  color: var(--color-text);
+  box-sizing: border-box;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-shadow: none; /* Sem sombra conforme solicitado */
 }
+
+/* Ajuste específico para input de senha (espaço para o ícone) */
+.input-wrapper input { padding-right: 40px; }
+
+/* Efeito de Foco (Borda Vermelha) */
+.configuracoes-page-container .form-group input:focus,
+.input-wrapper input:focus {
+  border-color: #AD131A !important;
+}
+
+/* Estado Desabilitado */
 .configuracoes-page-container .form-group input:disabled {
-    background-color: var(--color-bg);
-    color: var(--color-muted); /* USA VARIÁVEL */
-    cursor: not-allowed;
-    opacity: 0.8;
+  background-color: var(--color-bg);
+  color: var(--color-muted);
+  cursor: not-allowed;
+  opacity: 0.8;
+  border-color: var(--color-border);
 }
 
-/* --- Rodapé do Card --- */
-.configuracoes-page-container .settings-card-footer {
-    padding: 16px 24px;
-    border-top: 1px solid var(--color-border);
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    background-color: var(--color-bg);
+/* --- Elementos de Senha --- */
+.input-wrapper { position: relative; display: flex; align-items: center; }
+.toggle-password {
+  position: absolute; right: 10px; background: none; border: none;
+  cursor: pointer; color: var(--color-muted);
+  display: flex; align-items: center; justify-content: center;
+  padding: 4px; transition: color 0.2s;
 }
+.toggle-password:hover { color: var(--color-primary); }
 
-/* --- Botões (Padrão do Projeto) --- */
+/* --- Botões (Base e Variações) --- */
 .configuracoes-page-container .button-primary,
 .configuracoes-page-container .button-secondary,
 .configuracoes-page-container .button-edit {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    font-size: 14px;
-    padding: 9px 15px;
-}
-.configuracoes-page-container .button-primary {
-    background-color: var(--color-primary);
-    border: 2px solid var(--color-primary);
-    color: white;
-}
-.configuracoes-page-container .button-primary:hover {
-    background-color: var(--color-primary-hover);
-    border-color: var(--color-primary-hover);
-}
-.configuracoes-page-container .button-secondary {
-    background-color: var(--color-card);
-    color: var(--color-text);
-    border: 2px solid var(--color-border);
-}
-.configuracoes-page-container .button-secondary:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-    background-color: #fdecea; /* Mantive uma cor fixa aqui para o hover sutil */
-}
-.configuracoes-page-container .button-edit {
-    background-color: var(--color-card);
-    color: var(--color-text);
-    border: 2px solid var(--color-border);
-}
-.configuracoes-page-container .button-edit:hover {
-    background-color: var(--color-bg);
-}
-
-/* --- Seção de Segurança --- */
-.configuracoes-page-container .security-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-}
-.configuracoes-page-container .security-item h4 {
-    margin: 0 0 4px 0;
-    font-size: 16px;
-    color: var(--color-text);
-}
-.configuracoes-page-container .security-item p {
-    margin: 0;
-    font-size: 14px;
-    color: var(--color-muted);
-}
-
-/* configurações para senha*/
-.input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.input-wrapper input {
-  width: 100%;
-  padding-right: 38px; /* espaço pro ícone */
-}
-
-.toggle-password {
-  position: absolute;
-  right: 10px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--color-muted);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px;
-  transition: color 0.2s;
+  gap: 6px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 6px 12px;
+  font-size: 13px;
+  background-color: transparent;
+  color: var(--color-muted);
+  
+  /* --- MUDANÇA AQUI --- */
+  /* Mudei de 1px para 2px para ficar mais visível */
+  border: 2px solid var(--color-border);
+  
 }
 
-.toggle-password:hover {
+/* Primário (Vermelho) */
+.configuracoes-page-container .button-primary {
+  background-color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  color: white;
+}
+.configuracoes-page-container .button-primary:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+/* Secundário (Borda) */
+.configuracoes-page-container .button-secondary {
+  background-color: var(--color-card);
+  color: var(--color-text);
+  border: 2px solid var(--color-border);
+}
+.configuracoes-page-container .button-secondary:hover {
+  border-color: var(--color-primary);
   color: var(--color-primary);
+  background-color: #fdecea;
 }
 
-/* --- Modal --- */
+/* Editar (Discreto) */
+.configuracoes-page-container .button-edit {
+  padding: 6px 12px; font-size: 13px; gap: 6px;
+  background-color: transparent;
+  color: var(--color-muted);
+  border: 2px solid var(--color-border);
+  border-radius: 6px;
+}
+.configuracoes-page-container .button-edit:hover {
+  color: #AD131A; border-color: #AD131A;
+  background-color: rgba(173, 19, 26, 0.05);
+}
+.configuracoes-page-container .button-edit svg { width: 16px; height: 16px; }
+
+/* --- Footer e Segurança --- */
+.configuracoes-page-container .settings-card-footer {
+  padding: 16px 24px; border-top: 1px solid var(--color-border);
+  display: flex; justify-content: flex-end; gap: 12px;
+  background-color: var(--color-bg);
+}
+.configuracoes-page-container .security-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 24px;
+}
+.configuracoes-page-container .security-item h4 { margin: 0 0 4px 0; font-size: 16px; color: var(--color-text); }
+.configuracoes-page-container .security-item p { margin: 0; font-size: 14px; color: var(--color-muted); }
+
+/* --- MODAL (Estilos Corrigidos) --- */
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex; align-items: center; justify-content: center; z-index: 1000;
 }
 .modal-content {
-    background-color: var(--color-card);
-    border-radius: 12px;
-    width: 90%;
-    max-width: 450px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-card); border-radius: 12px;
+  width: 90%; max-width: 450px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-    border-bottom: 1px solid var(--color-border);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 32px;
+  background-color: #AD131A; /* Vermelho Padrão */
+  border-radius: 12px 12px 0 0;
+  border-bottom: none;
 }
-.modal-header h3 {
-    margin: 0;
-    color: var(--color-text);
-}
+.modal-header h3 { margin: 0; color: #ffffff !important; font-size: 20px; }
 .modal-close {
-    background: none;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
-    color: var(--color-muted);
+  background: none; border: none; font-size: 28px;
+  cursor: pointer; color: #ffffff; /* X Branco */
+  display: flex; align-items: center; justify-content: center;
 }
-.modal-body {
-    padding: 24px;
-}
+.modal-body { padding: 24px; }
 .modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    padding: 20px 24px;
-    border-top: 1px solid var(--color-border);
+  display: flex; justify-content: flex-end; gap: 12px;
+  padding: 20px 24px; border-top: 1px solid var(--color-border);
 }
 
 /* --- Responsividade --- */
 @media (max-width: 768px) {
-    .configuracoes-page-container {
-        padding: 16px;
-    }
-    .configuracoes-page-container .profile-header {
-        flex-direction: column;
-        text-align: center;
-    }
-    .configuracoes-page-container .profile-header .button-edit {
-        margin-left: 0;
-        width: 100%;
-        margin-top: 16px;
-    }
-    .configuracoes-page-container .profile-form {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-    .configuracoes-page-container .security-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-    }
-    .configuracoes-page-container .security-item .button-secondary {
-        width: 100%;
-    }
+  .configuracoes-page-container { padding: 16px; }
+  .configuracoes-page-container .profile-header { flex-direction: column; text-align: center; }
+  .configuracoes-page-container .profile-header .button-edit { margin-left: 0; width: 100%; margin-top: 16px; }
+  .configuracoes-page-container .profile-form { grid-template-columns: 1fr; gap: 16px; }
+  .configuracoes-page-container .security-item { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .configuracoes-page-container .security-item .button-secondary { width: 100%; }
 }
 
-/* === Correção de contraste para campos no tema escuro === */
-[data-theme="dark"] .configuracoes-page-container .form-group label {
-  color: #ffffff !important; /* Texto branco */
-}
-
+/* --- Dark Mode Fixes --- */
+[data-theme="dark"] .configuracoes-page-container .form-group label { color: #ffffff !important; }
 [data-theme="dark"] .configuracoes-page-container .form-group input,
-[data-theme="dark"] .configuracoes-page-container .form-group input:disabled {
-  color: #ffffff !important; /* Texto dentro do campo branco */
-  background-color: #1f1f1f !important; /* Fundo levemente mais claro que o card */
-  border-color: #444 !important; /* Borda mais visível */
+[data-theme="dark"] .configuracoes-page-container .form-group input:disabled,
+[data-theme="dark"] .input-wrapper input {
+  color: #ffffff !important;
+  background-color: #1f1f1f !important;
+  border-color: #444 !important;
 }

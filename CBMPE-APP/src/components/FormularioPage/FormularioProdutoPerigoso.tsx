@@ -2,6 +2,7 @@
  * @file FormularioProdutoPerigoso.tsx
  * @description Componente de apresentação para o Formulário de Produtos Perigosos (Natureza 4).
  * Implementa campos cruciais para registro de acidentes com PP (Item 7.7 do MOp.002).
+ * Autora: Vanessa Matias 💻.
  */
 import React from 'react';
 import './FormularioProdutoPerigoso.css';

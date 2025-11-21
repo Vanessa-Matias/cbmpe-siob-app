@@ -10,8 +10,6 @@
   --color-input-bg: #f9f9f9;
 }
 
-/* No seu index.css */
-
 /* 2. Variáveis para Dark Mode */
 [data-theme="dark"] {
   --color-bg: #1a1a1a;     /* Um cinza bem escuro em vez de preto. */
@@ -23,6 +21,16 @@
   --color-secondary: #878d92;
   --color-muted: #c6c0c0;
   --color-input-bg: #2a2a2a;
+}
+
+/* === NOVO BLOCO: RESET GLOBAL PARA REMOVER A FOLGA === */
+/* Isso garante que o site ocupe 100% da tela sem bordas brancas */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Impede rolagem lateral indesejada */
 }
 
 body {

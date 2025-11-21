@@ -2,6 +2,11 @@
     Layout Principal e Estrutura Geral
    ========================================================================== */
 
+   /*  Ajuste exclusivo para o Dashboard Operacional */
+.dashboard-operacional {
+  padding-top: 37px !important;   /* Ajuste fino apenas para esta página */
+}
+
 .dashboard-container {
   background-color: var(--color-bg);
   min-height: 100vh;
@@ -9,12 +14,26 @@
   display: flex; /* Ativa o layout flexível */
   flex-direction: column;  /* Coloca o Header em cima e o Main embaixo */
   width: 100%;             /* Força ocupar 100% da largura */
+  
   flex: 1;                 /* Se estiver ao lado da Sidebar, ocupa todo o espaço restante */
   overflow-x: hidden;      /* Previne barra de rolagem horizontal indesejada */
 }
 
 .dashboard-main {
-  padding: 32px;
+  /* 1. Espaço para a barra fixa (aprox 70px) + Espaço visual (32px) = 102px */
+  padding-top: 102px; 
+  
+  /* 2. Espaço lateral e inferior padrão para TODAS as páginas */
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 32px;
+  
+  background-color: transparent;
+  width: 100%;
+  box-sizing: border-box;
+  
+  /* Garante que o conteúdo ocupe a altura restante */
+  min-height: 100vh; 
 }
 
 /* barra do site */
@@ -23,16 +42,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 32px;
+  
   background-color: #AD131A;
   border-bottom: 1px solid var(--color-border);
-  width: 100%;             /* Força a largura total */
-  box-sizing: border-box;  /* Garante que o padding (32px) não estoure a largura */
-  margin: 0;               /* Remove margens externas indesejadas */
-  left: 0;                 /* Garante que comece do canto esquerdo */
-  position: sticky;
-  top: 0;
-  z-index: 900;
   
+  /* --- AQUI ESTÁ A MÁGICA --- */
+  position: fixed; /* Sai do fluxo normal e fixa na tela */
+  top: 0;
+  left: 0;
+  width: 100%; /* Ocupa 100% da largura da JANELA */
+  z-index: 999; /* Fica por cima de tudo */
+  margin: 0;
+  box-sizing: border-box; /* Garante que o padding não estoure a largura */
 }
 
 
@@ -401,20 +422,119 @@
   }
 }
 
+/* ==========================================================================
+   📱 AJUSTES PARA CELULAR (Mobile)
+   ========================================================================== */
 @media (max-width: 768px) {
-  .dashboard-main {
-    padding: 16px;
+
+  /* 1. HEADER: Deixa de flutuar e passa a ocupar espaço real */
+  .dashboard-header {
+    /* 'sticky' faz ele ocupar espaço físico (empurra o conteúdo) mas cola no topo ao rolar */
+    position: sticky; 
+    top: 0;
+    left: 0;
+    
+    /* Garante que a altura se adapte se o texto quebrar em 2 ou 3 linhas */
+    height: auto;
+    min-height: 60px;
+    padding: 12px 16px;
+    
+    z-index: 1000;
   }
+
+  /* 2. TÍTULO: Ajusta para não estourar */
+  .dashboard-header h1 {
+    font-size: 14px;        /* Fonte menor */
+    line-height: 1.4;       /* Espaço entre linhas */
+    white-space: normal;    /* Permite quebrar o texto em várias linhas */
+    text-align: right;      /* Alinha à direita para não bater no ícone */
+    margin-left: 10px;
+  }
+
+  /* 3. CONTEÚDO: Remove o padding gigante do Desktop */
+  .dashboard-main {
+    /* COMO A BARRA AGORA EMPURRA O CONTEÚDO, ZERAMOS O TOPO */
+    padding-top: 0 !important; 
+    
+    /* Espaçamento interno simples */
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-bottom: 30px !important;
+    
+    min-height: auto; /* Remove altura mínima forçada */
+  }
+
+  /* 4. GRIDS: Tudo em uma coluna só */
   .kpi-grid,
   .content-grid,
-  .status-grid {
-    grid-template-columns: 1fr;
+  .status-grid,
+  .chart-grid-6,
+  .report-kpi-grid,
+  .report-cards-grid,
+  .profile-form,
+  .form-group-grid-4-col,
+  .form-group-grid-2-col,
+  .checkbox-grid-3-col,
+  .checkbox-grid-2-col {
+    grid-template-columns: 1fr !important;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
-  .chart-grid-6 {
-    grid-template-columns: 1fr;
-  }
-  .chart-wrapper {
+  
+  /* Ajuste dos botões e cabeçalhos internos */
+  .settings-card-header,
+  .profile-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .profile-header .button-edit {
+    margin-left: 0;
+    width: 100%;
   }
 }
+
+/* ==========================================================================
+   📱 AJUSTES PARA CELULARES PEQUENOS (Telas < 380px)
+   ========================================================================== */
+@media (max-width: 380px) {
+
+  /* 1. Barra Vermelha Compacta */
+  .dashboard-header {
+    padding: 10px; /* Menos gordura */
+    flex-wrap: nowrap; /* Garante que ícone e título fiquem na mesma linha */
+  }
+
+  .dashboard-header h1 {
+    font-size: 13px; /* Fonte bem pequena para caber "Sistema Integrado..." */
+    line-height: 1.2;
+    margin-left: 8px;
+  }
+
+  .header-icon {
+    font-size: 20px; /* Ícone menor */
+    margin-right: 8px;
+  }
+
+  /* 2. Conteúdo Colado nas Bordas */
+  .dashboard-main {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    padding-bottom: 20px !important;
+    /* O padding-top: 0 ou sticky do bloco anterior (768px) continua valendo */
+  }
+
+  /* 3. Ajuste de Títulos Internos */
+  .dashboard-title h2,
+  .page-title h2 {
+    font-size: 20px; /* Títulos das páginas menores */
+  }
+  
+  /* Garante que os cards não estourem */
+  .kpi-card, .info-card, .report-card {
+    padding: 15px; /* Menos espaço interno nos cards */
+  }
+}
+

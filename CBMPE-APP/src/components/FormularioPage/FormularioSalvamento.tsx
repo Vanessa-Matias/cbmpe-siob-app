@@ -1,6 +1,7 @@
 /**
  * @file FormularioSalvamento.tsx
  * @description Formulário específico para ocorrências de salvamento.
+ * Autora: Vanessa Matias 💻
  */
 
 import React from 'react';
@@ -21,6 +22,15 @@ const FormularioSalvamento: React.FC<Props> = ({
   handleCancel,
   submitText,
 }) => {
+  
+  // --- BLINDAGEM DE DADOS ---
+  // Garante acesso seguro aos objetos aninhados
+  const salvamentoData = formData.salvamento || {};
+  const grupos = salvamentoData.grupos || {};
+  const tipo = salvamentoData.tipo || {};
+  const vitimas = salvamentoData.vitimas || {};
+  const acoes = salvamentoData.acoes || {};
+
   return (
     <form className="form-card" onSubmit={handleSubmit}>
       {/* --- CABEÇALHO --- */}
@@ -40,7 +50,7 @@ const FormularioSalvamento: React.FC<Props> = ({
         type="checkbox"
         id="grupoPessoa"
         name="salvamento.grupos.pessoa"
-        checked={formData.salvamento?.grupos?.pessoa || false}
+        checked={grupos.pessoa || false}
         onChange={handleChange}
       />
       <label htmlFor="grupoPessoa">Evento com Pessoa</label>
@@ -51,7 +61,7 @@ const FormularioSalvamento: React.FC<Props> = ({
         type="checkbox"
         id="grupoAnimal"
         name="salvamento.grupos.animal"
-        checked={formData.salvamento?.grupos?.animal || false}
+        checked={grupos.animal || false}
         onChange={handleChange}
       />
       <label htmlFor="grupoAnimal">Evento com Animal</label>
@@ -62,7 +72,7 @@ const FormularioSalvamento: React.FC<Props> = ({
         type="checkbox"
         id="grupoObjeto"
         name="salvamento.grupos.objeto"
-        checked={formData.salvamento?.grupos?.objeto || false}
+        checked={grupos.objeto || false}
         onChange={handleChange}
       />
       <label htmlFor="grupoObjeto">Evento com Objeto</label>
@@ -73,7 +83,7 @@ const FormularioSalvamento: React.FC<Props> = ({
         type="checkbox"
         id="grupoCadaver"
         name="salvamento.grupos.cadaver"
-        checked={formData.salvamento?.grupos?.cadaver || false}
+        checked={grupos.cadaver || false}
         onChange={handleChange}
       />
       <label htmlFor="grupoCadaver">Evento com Cadáver</label>
@@ -84,7 +94,7 @@ const FormularioSalvamento: React.FC<Props> = ({
         type="checkbox"
         id="grupoTransporte"
         name="salvamento.grupos.meioTransporte"
-        checked={formData.salvamento?.grupos?.meioTransporte || false}
+        checked={grupos.meioTransporte || false}
         onChange={handleChange}
       />
       <label htmlFor="grupoTransporte">Evento com Meio de Transporte</label>
@@ -95,7 +105,7 @@ const FormularioSalvamento: React.FC<Props> = ({
         type="checkbox"
         id="grupoArvore"
         name="salvamento.grupos.arvore"
-        checked={formData.salvamento?.grupos?.arvore || false}
+        checked={grupos.arvore || false}
         onChange={handleChange}
       />
       <label htmlFor="grupoArvore">Evento com Árvore</label>
@@ -106,7 +116,7 @@ const FormularioSalvamento: React.FC<Props> = ({
         type="checkbox"
         id="grupoOutro"
         name="salvamento.grupos.outro"
-        checked={formData.salvamento?.grupos?.outro || false}
+        checked={grupos.outro || false}
         onChange={handleChange}
       />
       <label htmlFor="grupoOutro">Outro</label>
@@ -124,7 +134,7 @@ const FormularioSalvamento: React.FC<Props> = ({
               type="checkbox"
               id="salvamentoAltura"
               name="salvamento.tipo.altura"
-              checked={formData.salvamento?.tipo?.altura || false}
+              checked={tipo.altura || false}
               onChange={handleChange}
             />
             <label htmlFor="salvamentoAltura">Em Altura</label>
@@ -134,7 +144,7 @@ const FormularioSalvamento: React.FC<Props> = ({
               type="checkbox"
               id="salvamentoAquatico"
               name="salvamento.tipo.aquatico"
-              checked={formData.salvamento?.tipo?.aquatico || false}
+              checked={tipo.aquatico || false}
               onChange={handleChange}
             />
             <label htmlFor="salvamentoAquatico">Aquático</label>
@@ -144,7 +154,7 @@ const FormularioSalvamento: React.FC<Props> = ({
               type="checkbox"
               id="salvamentoVeicular"
               name="salvamento.tipo.veicular"
-              checked={formData.salvamento?.tipo?.veicular || false}
+              checked={tipo.veicular || false}
               onChange={handleChange}
             />
             <label htmlFor="salvamentoVeicular">Veicular</label>
@@ -154,7 +164,7 @@ const FormularioSalvamento: React.FC<Props> = ({
               type="checkbox"
               id="salvamentoConfinado"
               name="salvamento.tipo.confinado"
-              checked={formData.salvamento?.tipo?.confinado || false}
+              checked={tipo.confinado || false}
               onChange={handleChange}
             />
             <label htmlFor="salvamentoConfinado">Espaço Confinado</label>
@@ -172,7 +182,7 @@ const FormularioSalvamento: React.FC<Props> = ({
               type="number"
               id="vitimasSocorridas"
               name="salvamento.vitimas.socorridas"
-              value={formData.salvamento?.vitimas?.socorridas || ''}
+              value={vitimas.socorridas || ''}
               onChange={handleChange}
             />
           </div>
@@ -182,7 +192,7 @@ const FormularioSalvamento: React.FC<Props> = ({
               type="number"
               id="vitimasFatais"
               name="salvamento.vitimas.fatais"
-              value={formData.salvamento?.vitimas?.fatais || ''}
+              value={vitimas.fatais || ''}
               onChange={handleChange}
             />
           </div>
@@ -192,7 +202,7 @@ const FormularioSalvamento: React.FC<Props> = ({
               type="text"
               id="tempoResgate"
               name="salvamento.tempoResgate"
-              value={formData.salvamento?.tempoResgate || ''}
+              value={salvamentoData.tempoResgate || ''}
               onChange={handleChange}
             />
           </div>
@@ -202,7 +212,7 @@ const FormularioSalvamento: React.FC<Props> = ({
               type="text"
               id="equipamentosUsados"
               name="salvamento.equipamentosUsados"
-              value={formData.salvamento?.equipamentosUsados || ''}
+              value={salvamentoData.equipamentosUsados || ''}
               onChange={handleChange}
               placeholder="Ex: Corda, macas, cilindros..."
             />
@@ -219,7 +229,7 @@ const FormularioSalvamento: React.FC<Props> = ({
               type="checkbox"
               id="acaoRetiradaVitima"
               name="salvamento.acoes.retiradaVitima"
-              checked={formData.salvamento?.acoes?.retiradaVitima || false}
+              checked={acoes.retiradaVitima || false}
               onChange={handleChange}
             />
             <label htmlFor="acaoRetiradaVitima">Retirada de vítima</label>
@@ -229,7 +239,7 @@ const FormularioSalvamento: React.FC<Props> = ({
               type="checkbox"
               id="acaoEstabilizacao"
               name="salvamento.acoes.estabilizacao"
-              checked={formData.salvamento?.acoes?.estabilizacao || false}
+              checked={acoes.estabilizacao || false}
               onChange={handleChange}
             />
             <label htmlFor="acaoEstabilizacao">Estabilização de veículo</label>
@@ -239,7 +249,7 @@ const FormularioSalvamento: React.FC<Props> = ({
               type="checkbox"
               id="acaoAtendimento"
               name="salvamento.acoes.atendimento"
-              checked={formData.salvamento?.acoes?.atendimento || false}
+              checked={acoes.atendimento || false}
               onChange={handleChange}
             />
             <label htmlFor="acaoAtendimento">Atendimento Pré-Hospitalar</label>
@@ -249,7 +259,7 @@ const FormularioSalvamento: React.FC<Props> = ({
               type="checkbox"
               id="acaoOutros"
               name="salvamento.acoes.outros"
-              checked={formData.salvamento?.acoes?.outros || false}
+              checked={acoes.outros || false}
               onChange={handleChange}
             />
             <label htmlFor="acaoOutros">Outros</label>

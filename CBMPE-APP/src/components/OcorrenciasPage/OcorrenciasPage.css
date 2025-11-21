@@ -284,42 +284,43 @@ ATUALIZADO com todos os status do componente React.
    Usado para informação (Pendente, Andamento, etc.)
 ==================================================== */
 .status-badge {
-    border: 2px solid transparent; /* Borda sutil */
+    border-width: 2px;    /* Borda mais grossa conforme solicitado */
+    border-style: solid;
 }
 
-/* PENDENTE (Cinza Leve) */
+/* PENDENTE (Cinza Leve - Original) */
 .status-pendente {
-    background-color: #d7d8d9; /* Fundo cinza bem claro */
+    background-color: #dfe0e2; /* Fundo cinza quase branco */
     color: #495057;            /* Texto cinza escuro */
-    border-color: #495057;     /* Borda cinza */
+    border-color: #c2c5c8;     /* Borda cinza definida */
 }
 
-/* EM ANDAMENTO (Amarelo Leve) */
+/* EM ANDAMENTO (Amarelo Leve - Original) */
 .status-em-andamento {
-    background-color: #f7e8c3; /* Fundo amarelo claro */
-    color: #c08f14;            /* Texto escuro */
-    border-color: #fbc02d;     /* Borda amarela */
+    background-color: #fdeded; /* Fundo amarelo bem suave */
+    color: #c49216;            /* Texto ocre/marrom para leitura */
+    border-color: #fbc02d;     /* Borda amarela suave */
+}
+
+/* TROTE (Marrom/Bege Leve - Original) */
+.status-trote {
+    background-color: #efccb175; /* Fundo bege quase branco */
+    color: #a37f61;            /* Texto marrom sóbrio */
+    border-color: #ebcab065;     /* Borda bege definida */
 }
 
 /* CONCLUÍDA (Verde Leve) */
 .status-concluída {
-    background-color: #ceeec7; /* Fundo verde claro */
-    color: #4b6f44;            /* Texto verde escuro */
-    border-color: #4b6f44;     /* Borda verde */
+    background-color: #e6f7ec;
+    color: #1a6334;
+    border-color: #b7e4c7;
 }
 
 /* CANCELADA (Vermelho Leve) */
 .status-cancelada {
-    background-color: #fad4d4; /* Fundo vermelho claro */
-    color: #ad131a;            /* Texto vermelho escuro */
-    border-color: #ad131a;     /* Borda vermelha */
-}
-
-/* TROTE (Novo Estilo - Marrom/Bege Leve) */
-.status-trote {
-    background-color: #e9dace; /* Fundo bege/marrom claro */
-    color: #876b55;            /* Texto marrom escuro */
-    border-color: #876b55;     /* Borda marrom */
+    background-color: #fdeded;
+    color: #7d1a24;
+    border-color: #f5c6cb;
 }
 
 /* ========================================

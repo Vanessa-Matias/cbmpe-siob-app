@@ -1,6 +1,7 @@
 /**
  * @file FormularioPage.tsx
  * @description Página principal do fluxo de criação/edição de ocorrência — agora com todas as naturezas de formulário integradas.
+ * Autora: Vanessa Matias 💻.
  */
 
 import React, { useState, useEffect } from 'react';
