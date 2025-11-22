@@ -68,7 +68,7 @@ const ConfiguracoesPage = () => {
 
   // Dados do Usuário (Perfil)
   const [userData, setUserData] = useState({
-    nome: 'Sargento Vanessa Matias',
+    nome: 'Capitã Vanessa Matias',
     matricula: '20240001',
     email: 'vanessa.matias@cbm.pe.gov.br',
     telefone: '(81) 98765-4321',
