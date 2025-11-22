@@ -4,29 +4,24 @@ import { useAuth } from '../../context/AuthContext';
 import './Sidebar.css';
 import siobLogo from '../../assets/siob-logo.png';
 import { 
-  FaXmark, FaGrip, FaTriangleExclamation, FaChartPie, FaUsers, FaShieldHalved, FaGear, FaArrowRightFromBracket, FaMoon, FaSun
+  FaXmark, FaGrip, FaTriangleExclamation, FaChartPie, FaUsers, FaShieldHalved, FaGear, FaArrowRightFromBracket 
 } from 'react-icons/fa6';
 
-// 1. Adicionei a nova propriedade 'toggleTheme' ao nosso "contrato".
+// 1. Removida a propriedade 'toggleTheme' do contrato.
 type SidebarProps = {
   isOpen: boolean;
   onClose: () => void;
-  toggleTheme: () => void; // A nova propriedade foi adicionada aqui.
 };
 
-const Sidebar = ({ isOpen, onClose, toggleTheme }: SidebarProps) => {
-  const currentTheme = document.documentElement.getAttribute('data-theme');
+const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
+  // Removida a lógica de ler o 'data-theme'
 
   // --- LÓGICA DE LOGOUT ---
-  const { logout } = useAuth(); // Pega a função de logout do contexto
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // 1. Chama a função que limpa o token/usuário
     logout(); 
-    
-    // 2. Redireciona para a tela de login
-    // Como o LoginPage inicia com isIntro=true, a tela de Boas-vindas aparecerá automaticamente!
     navigate('/login'); 
   };
 
@@ -62,22 +57,19 @@ const Sidebar = ({ isOpen, onClose, toggleTheme }: SidebarProps) => {
         </nav>
 
         <footer className="sidebar-footer">
-  <div className="user-profile">
-    <div className="user-avatar">CS</div>
-    <div className="user-info">
-      <span>Capitã Vanessa</span>
-      <small>Admin</small>
-    </div>
-  </div>
-          {/* Container para alinhar os botões do rodapé */}
+          <div className="user-profile">
+            <div className="user-avatar">CS</div>
+            <div className="user-info">
+              <span>Capitã Vanessa</span>
+              <small>Admin</small>
+            </div>
+          </div>
+          
           <div className="footer-actions">
             <button className="logout-button-sidebar" onClick={handleLogout}>
-            <FaArrowRightFromBracket /> <span>Sair</span>
-          </button>
-            
-            <button className="theme-toggle-button-sidebar" onClick={toggleTheme} title="Alternar tema">
-            {currentTheme === 'dark' ? <FaSun /> : <FaMoon />}
-          </button>
+              <FaArrowRightFromBracket /> <span>Sair</span>
+            </button>
+            {/* Botão de tema removido daqui */}
           </div>
         </footer>
       </aside>

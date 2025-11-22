@@ -1,9 +1,9 @@
 // ==========================================================================
 // App.tsx
-// Gerenciamento de rotas, autenticação e tema global.
+// Gerenciamento de rotas e autenticação. (Tema removido)
 // ==========================================================================
 
-import React, { useState } from 'react';
+import React from 'react'; // "useState" removido pois não é mais usado
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 // --- Páginas / Componentes ---
@@ -29,15 +29,7 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 // --- Componente de Rotas da Aplicação ---
 function AppRoutes() {
   
-  // --- LÓGICA DO TEMA (DARK MODE) ---
-  const [theme, setTheme] = useState('light');
-
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    // Atualiza o atributo no HTML para o CSS reagir
-    document.documentElement.setAttribute('data-theme', newTheme);
-  };
+  // A lógica de tema foi removida daqui
 
   return (
     <Routes>
@@ -49,8 +41,7 @@ function AppRoutes() {
         path="/"
         element={
           <PrivateRoute>
-            {/* Passamos a função real de alternar tema aqui */}
-            <DashboardLayout toggleTheme={toggleTheme} />
+            <DashboardLayout />
           </PrivateRoute>
         }
       >

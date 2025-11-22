@@ -42,11 +42,11 @@ Plataforma central para o comando e analistas, oferecendo **dashboards, relatór
 
 | Categoria | Ferramenta / Tecnologia |
 |------------|--------------------------|
-| **Frontend** | React.js, TypeScript, React Router |
+| **Frontend Web** | React.js, TypeScript, React Router (PWA) |
 | **Estilização** | CSS com Variáveis Globais (Temas) |
 | **Backend** | Node.js com Express *(sugerido)* |
-| **Banco de Dados** | MySQL  *(sugerido)* |
-| **Mobile** | React Native *(planejado para próxima fase)* |
+| **Banco de Dados** | PostgreSQL |
+| **Mobile** | React Native + Expo Go |
 | **Controle de Versão** | Git & GitHub |
 
 ---
@@ -55,14 +55,14 @@ Plataforma central para o comando e analistas, oferecendo **dashboards, relatór
 
 Para executar o projeto do painel web em seu ambiente de desenvolvimento local, siga os passos abaixo.
 
-### Clone o Repositório
+1. **Clone o Repositório**
 ```bash
 git clone [https://github.com/Vanessa-Matias/cbmpe-siob-app](https://github.com/Vanessa-Matias/cbmpe-siob-app)
 ```
 
-2. **Acesse a pasta do projeto**
+2. **Executando o Painel Web (React)** 💻
 ```bash
-cd cbmpe-siob-app
+cd web-app
 ```
 
 3. **Instale as dependências**
@@ -76,6 +76,31 @@ npm start
 ```
 
 Após executar o comando start, abra seu navegador e acesse http://localhost:3000 para ver a aplicação em execução.
+**Nota PWA:** Para testar a instalação e o modo offline, é necessário gerar a build de produção: npm run build seguido de npx serve -s build.
+
+5. **Executando o App Mobile (React Native)** 📱
+```bash
+# Acesse a pasta do projeto mobile (a partir da raiz)
+cd mobile-app
+
+```
+```bash
+# Instale as dependências
+npm install
+
+````
+```bash
+# Inicie o projeto Expo
+npx expo start
+
+````
+
+Certifique-se de ter o aplicativo Expo Go instalado no seu celular ou um emulador configurado. Escaneie o QR Code exibido no terminal com o app Expo Go (Android/iOS).
+
+**Troubleshooting Mobile:** Caso encontre problemas com o cache, execute: 
+```bash
+npx expo start -c
+```
 
 ---
 
@@ -83,12 +108,12 @@ Após executar o comando start, abra seu navegador e acesse http://localhost:300
 
 | Membro             | Responsabilidade(s)                               | GitHub                                                     | LinkedIn                                                              |
 | :----------------- | :------------------------------------------------ | :--------------------------------------------------------- | :-------------------------------------------------------------------- |
-| **Vanessa Matias** | Desenvolvimento Frontend & Backend              | [Vanessa-Matias](https://github.com/Vanessa-Matias)        | [Perfil](https://www.linkedin.com/in/vanessamatiasdev/)               |
+| **Vanessa Matias** | Desenvolvimento Front-End             | [Vanessa-Matias](https://github.com/Vanessa-Matias)        | [Perfil](https://www.linkedin.com/in/vanessamatiasdev/)               |
 | **Wedja Souza** | Gestão de Projetos, Documentação & UX/UI Designer | [WedjaSousa](https://github.com/WedjaSousa)                | [Perfil](https://www.linkedin.com/in/wedja-sousa-43639b19b/)           |
 | **Marcela Negrão** | UX/UI Designer & Banco de Dados                   | `(adicionar)`                                              | [Perfil](https://www.linkedin.com/in/marcela-negrão-0974582a5/)        |
-| **Wslany Amorim** | Banco de Dados                                    | [wslanyl](https://github.com/wslanyl)                      | [Perfil](https://www.linkedin.com/in/wslanylima/)                     |
-| **Sophia Santos** | UX/UI Designer                                    | [sophiasousaa](https://github.com/sophiasousaa)            | [Perfil](https://www.linkedin.com/in/santos-sophia/)                  |
-| **Agnes Ribeiro** | Documentação                                      | [AgnesRibeiro](https://github.com/AgnesRibeiro) | [Perfil](https://www.linkedin.com/in/agnes-ribeiro-6446392ab/)        |
+| **Wslany Amorim** | Banco de Dados & Back-End                                    | [wslanyl](https://github.com/wslanyl)                      | [Perfil](https://www.linkedin.com/in/wslanylima/)                 |
+| **Sophia Santos** | UX/UI Designer & Back-End                                   | [sophiasousaa](https://github.com/sophiasousaa)            | [Perfil](https://www.linkedin.com/in/santos-sophia/)                  |
+| **Agnes Ribeiro** | App- Mobile & Documentação                                      | [AgnesRibeiro](https://github.com/AgnesRibeiro) | [Perfil](https://www.linkedin.com/in/agnes-ribeiro-6446392ab/)        |
 
 ---
 

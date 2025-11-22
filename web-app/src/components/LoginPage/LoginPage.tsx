@@ -11,7 +11,7 @@ import './LoginPage.css';
 
 // Imagens principais
 import loginImage1 from '../../assets/login01.jpg';
-import loginImage2 from '../../assets/login02.jpg';
+import loginImage2 from '../../assets/login03.jpg';
 import siobLogo from '../../assets/siob-logo.png';
 import logoFormulario from '../../assets/siob-logo1.png';
 
