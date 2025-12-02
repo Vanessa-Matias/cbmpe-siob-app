@@ -2,9 +2,9 @@
    LoginPage.css - Interface refinada para o SIOB
    --------------------------------------------------------------------------
    Ajustes:
-   - Card posicionado à direita
-   - Fundo cinza translúcido
-   - Inputs com borda simples e elegante
+   - Centralização perfeita (Flexbox) para Tablets e Notebooks
+   - Logo do governo removida
+   - Inputs e card refinados
    ========================================================================= */
 
 /* RESET GLOBAL */
@@ -24,14 +24,13 @@ html, body {
 .login-container {
   position: relative;
   width: 100%;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh; /* Garante altura mínima total */
   color: #fff;
 }
 
 /* IMAGEM DE FUNDO */
 .hero-image {
-  position: absolute;
+  position: fixed; /* Fixa a imagem para não rolar junto com teclado mobile */
   top: 0;
   left: 0;
   width: 100%;
@@ -41,7 +40,7 @@ html, body {
 }
 
 /* ========================================================================== */
-/* TELA DE BOAS-VINDAS                                                       */
+/* TELA DE BOAS-VINDAS                                                        */
 /* ========================================================================== */
 .intro-content {
   padding: 20px 100px;
@@ -65,7 +64,7 @@ html, body {
   margin-left: 40px;
 }
 
-/* BOTÃO */
+/* BOTÃO DE ACESSO (INTRO) */
 .bottom-left-access {
   position: absolute;
   bottom: 100px;
@@ -90,31 +89,38 @@ html, body {
 }
 
 /* ========================================================================== */
-/* TELA DE LOGIN                                                             */
+/* TELA DE LOGIN (ESTRUTURA DE CENTRALIZAÇÃO)                                */
 /* ========================================================================== */
+
 .login-form-screen {
-  position: relative;
+  /* O Flexbox aqui garante a centralização vertical e horizontal perfeita */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centraliza Verticalmente */
+  align-items: center;     /* Centraliza Horizontalmente */
+  
   width: 100%;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  padding: 20px; /* Garante que o card não encoste nas bordas em telas pequenas */
+  overflow-y: auto; /* Permite rolar se a tela for muito pequena na altura */
 }
 
 /* CARD DE LOGIN */
 .login-box {
-  background-color: rgba(230, 230, 230, 0.905); /* tom cinza translúcido */
+  background-color: rgba(230, 230, 230, 0.829);
   color: #636262;
   border-radius: 18px;
-  padding: 55px;
+  padding: 40px;
   max-width: 420px;
+  width: 100%; /* Ocupa a largura disponível até o max-width */
   text-align: center;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
-
-  /* deslocado à direita */
-  position: absolute;
-  top: 50%;
-  right: 37%;
-  transform: translateY(-60%);
-  z-index: 20; 
+  
+  position: relative;
+  
+  /* Ajuste Fino: Empurra um pouco para baixo para compensar a logo flutuante */
+  margin-top: 30px; 
+  margin-bottom: 60px; /* Espaço para o rodapé não cobrir o botão em telas curtas */
 }
 
 /* LOGO E TÍTULO */
@@ -122,28 +128,28 @@ html, body {
   position: relative;
   display: flex;
   justify-content: center;
-  margin-bottom: 25px;
+  margin-bottom: 35px;
 }
 
 /* Deixa a logo para fora do card */
 .login-logo-image {
-  width: 275px;
+  width: 245px;
   height: auto;
   position: absolute;
-  top: -70px; /* move a logo para fora do card */
-  left: 40%;
-  transform: translateX(-37%);
+  top: -50px; /* Move a logo para fora do card */
+  left: 50%;    /* Centraliza em relação ao container pai */
+  transform: translateX(-50%); /* Garante o meio exato */
   z-index: 5;
 }
 
-/* Ajusta o topo do card para compensar a logo flutuante */
+/* Como a logo está absoluta e centralizada com left:50% */
+
 .login-box {
-  margin-top: 40px; /* dá espaço visual para a logo */
+  margin-top: 60px; /* Aumentei um pouco para dar ar à logo flutuante */
 }
 
-
 .login-subtitle.center {
-  color: #434242;
+  color: #373737;
   font-weight: 650;
   margin-bottom: 28px;
 }
@@ -151,7 +157,7 @@ html, body {
 /* INPUTS */
 .input-group {
   text-align: left;
-  margin-bottom: 18px;
+  margin-bottom: 8px;
 }
 
 .input-group label {
@@ -172,17 +178,14 @@ html, body {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* borda simples ao focar */
 .input-group input:focus {
   border: 1.8px solid #AE1A16;
   box-shadow: 0 0 4px rgba(174, 26, 22, 0.3);
 }
 
 /* ==========================================================================
-   INPUT DE SENHA COM ÍCONE MODERNO
+   INPUT DE SENHA
    ========================================================================== */
-
-/* Container relativo para posicionar o ícone dentro */
 .password-input-wrapper {
   position: relative;
   display: flex;
@@ -190,54 +193,35 @@ html, body {
   width: 100%;
 }
 
-/* O Input precisa de espaço na direita para o ícone não cobrir o texto */
 .password-input-wrapper input {
   width: 100%;
-  padding-right: 45px; /* Espaço reservado para o olho */
+  padding-right: 45px;
 }
 
-/* O Botão do Ícone (Olho) */
 .password-toggle-icon {
   position: absolute;
-  right: 12px; /* Distância da borda direita */
-  
-  /* Centralização Vertical Perfeita (Técnica Padrão de UI) */
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  
-  /* Remove estilos feios de botão padrão */
   background: none;
   border: none;
   cursor: pointer;
-  
-  /* Cor inicial: Cinza discreto/moderno */
   color: #9ca3af; 
-  
-  /* Área de clique confortável */
   padding: 6px; 
-  border-radius: 50%; /* Deixa o hover redondo */
-  
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  /* Suavidade na mudança de cor */
   transition: all 0.2s ease;
 }
 
-/* Garante que o SVG tenha um tamanho fixo e nítido */
 .password-toggle-icon svg {
   width: 20px;
   height: 20px;
 }
 
-.password-toggle-icon {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #666;
+.password-toggle-icon:hover {
+    color: #666;
 }
 
 /* BOTÃO DE LOGIN */
@@ -264,163 +248,146 @@ html, body {
   margin-bottom: 10px;
 }
 
-/* ========================================================================== */
-/* RESPONSIVIDADE                                                            */
-/* ========================================================================== */
+/* ==========================================================================
+   LIMPEZA DE NAVEGADORES
+   ========================================================================== */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none !important;
+}
+
+input[type="password"]::-webkit-contacts-auto-fill-button,
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  position: absolute;
+  right: 0;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE GERAL
+   ========================================================================== */
+
+/* Tablet e Mobile (Abaixo de 768px) */
 @media (max-width: 768px) {
   .login-box {
-    right: 50%;
-    transform: translate(50%, -50%);
-    width: 85%;
+    padding: 40px 30px;
+    margin-top: 80px; /* Reduz um pouco o espaço superior no mobile */
+  }
+
+  .login-logo-image {
+    width: 200px; /* Logo um pouco menor */
+    top: -35px;
   }
 }
 
 /* ==========================================================================
-   RODAPÉ INSTITUCIONAL (Logos do Governo)
+   RODAPÉ (COPYRIGHT)
    ========================================================================== */
-
 .login-footer-logos {
-  /* Fixa no rodapé do container de login */
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 20px 20px 30px 20px; /* Um pouco mais de espaço embaixo */
+  padding: 75px;
   
-  /* Centraliza o conteúdo */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
 
-  /* Gradiente preto transparente para garantir leitura sobre a imagem de fundo */
-  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-  
-  /* Garante que fique acima da imagem de fundo */
+  /* Gradiente suave para garantir leitura */
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
   z-index: 10;
-}
-
-.logos-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.footer-logo {
-  /* Define a altura da logo (ajuste conforme a proporção da sua imagem) */
-  height: 500px; 
-  width: auto;
-  object-fit: contain;
-  margin-left: -0px;
-  margin-bottom: -280px;
-  /* Sombra suave para destacar */
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-}
-
-.footer-logo:hover {
-  opacity: 1;
-  transform: scale(1.02);
 }
 
 .footer-copyright {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.6); /* Branco transparente */
-  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
   font-weight: 400;
   letter-spacing: .5px;
   text-align: center;
+  margin: 0;
 }
 
-/* --- Ajuste para Telas Pequenas (Mobile) --- */
-@media (max-width: 480px) {
-  .footer-logo {
-    height: 40px; /* Logo um pouco menor no celular */
-  }
+/* Celulares Pequenos */
+@media (max-width: 380px) {
   .login-footer-logos {
-    padding-bottom: 40px; /* Mais segurança contra a borda inferior do celular */
+    position: relative; /* Deixa fluir abaixo do card se a tela for minúscula */
+    margin-top: 20px;
   }
 }
 
 /* ==========================================================================
-   📱 AJUSTES PARA CELULARES PEQUENOS (Telas < 380px)
-   Ex: iPhone SE, Galaxy Fold (fechado)
+   AJUSTE MOBILE: LOGO E TEXTO LADO A LADO (Igual Desktop, mas menor)
    ========================================================================== */
-@media (max-width: 380px) {
-
-  /* --- 1. Ajuste da Tela de Boas-Vindas --- */
-  .intro-content {
-    padding: 20px; /* Menos borda para ganhar espaço */
-  }
-
-  .logo-siob-container {
-    margin-left: 0;    /* Remove a margem negativa */
-    margin-bottom: -20px; /* Menos sobreposição */
-    justify-content: center; /* Centraliza */
-  }
-
-  .intro-logo.large {
-    width: 80px; /* Logo menor */
-    margin-right: 10px;
-  }
-
-  .siob-text {
-    font-size: 24px; /* Texto SIOB menor */
-  }
-
-  .intro-subtitle.large {
-    font-size: 24px; /* Título principal menor */
-    text-align: center;
-  }
+@media (max-width: 768px) {
   
+  .intro-content {
+    padding: 20px;
+    
+    /* Ativa o modo linha para colocar as coisas lado a lado */
+    display: flex; 
+    flex-wrap: wrap;       /* Permite que o botão caia para a linha de baixo */
+    align-items: center;   /* Centraliza verticalmente a logo com o texto */
+    justify-content: flex-start; /* Alinha tudo à esquerda */
+  }
+
+  /* 1. Container da Logo */
+  .logo-siob-container {
+    /* Remove a margem negativa do desktop e dá um espaço simples */
+    margin: 0;
+    margin-right: -8px; /* Espaço entre a logo e o texto */
+  }
+
+  /* 2. A Logo em si */
+  .intro-logo.large {
+    /* Reduz de 155px para 100px (proporcional para celular) */
+    width: 100px; 
+    height: auto;
+    
+    /* Zera as margens negativas do desktop para não quebrar o flexbox */
+    margin-bottom: 0;
+    margin-left: 0;
+  }
+
+  /* 3. O Texto "Sistema Integrado..." */
+  .intro-subtitle.large {
+    /* Reduz de 33px para um tamanho que caiba ao lado da logo */
+    font-size: 18px; 
+    
+    /* Mantém as propriedades visuais */
+    font-weight: 700;
+    line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    
+    /* Ajustes de posição */
+    margin-left: 0; /* Remove a margem de 40px do desktop */
+    flex: 1;        /* Faz o texto ocupar o espaço restante da linha */
+    text-align: left;
+  }
+
+  /* 4. O Botão (precisa ir para baixo) */
   .bottom-left-access {
     position: relative;
     left: auto;
     bottom: auto;
-    margin-top: 30px;
-    text-align: center;
-    width: 100%;
+    
+    width: 80%;      /* Ocupa a largura total para forçar a quebra de linha */
+    margin-top: 450px; /* Espaço entre o texto e o botão */
+    margin-left: auto;   /* Empurra da esquerda */
+    margin-right: auto;  /* Empurra da direita */
+    text-align: center; /* Centraliza o botão na tela */
   }
-  
+
   .intro-access-button {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
+    font-size: 16px;
   }
+}
 
-  /* --- 2. Ajuste da Tela de Login (Card) --- */
-  .login-box {
-    width: 90%;      /* Ocupa quase toda a largura */
-    padding: 30px 20px; /* Menos padding interno */
-    margin-top: 20px;
-  }
-
-  /* Logo flutuante do Login */
-  .login-logo-image {
-    width: 100px; /* Um pouco menor */
-    top: -50px;   /* Ajusta a altura */
-  }
-
-  /* --- 3. Rodapé (Logos do Governo) --- */
-  .login-footer-logos {
-    position: relative; /* Deixa de ser absoluto para não ficar em cima do card */
-    margin-top: auto;   /* Empurra para o final do fluxo normal */
-    padding: 20px;
-    background: #1a1a1a; /* Fundo sólido escuro para garantir leitura */
-  }
-
-  .footer-logo {
-    height: 35px; /* Logos menores */
-    margin: 0 !important; /* Remove margens negativas que empurravam para fora */
-    transform: none !important; /* Remove deslocamentos manuais */
-  }
-  
-  /* Garante que a tela tenha scroll se ficar muito pequena */
-  .login-form-screen {
-    height: auto; 
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow-y: auto; /* Permite rolar a tela */
-  }
+/* Ajuste fino para celulares muito estreitos */
+@media (max-width: 360px) {
+  .intro-logo.large { width: 60px; }
+  .intro-subtitle.large { font-size: 17px; }
 }

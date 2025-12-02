@@ -15,9 +15,6 @@ import loginImage2 from '../../assets/login03.jpg';
 import siobLogo from '../../assets/siob-logo.png';
 import logoFormulario from '../../assets/siob-logo1.png';
 
-// --- Importação logo govpe ---
-import logoGov from '../../assets/logos.gov.png'; 
-
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -85,22 +82,13 @@ const LoginPage: React.FC = () => {
 
   // --- FUNÇÃO DE FORMATAÇÃO DE SENHA (MÁSCARA 0000.000-00) ---
   const formatarSenha = (valor: string) => {
-    // 1. Remove tudo que não é número
     let v = valor.replace(/\D/g, '');
-
-    // 2. Limita a 9 dígitos (4 + 3 + 2)
     if (v.length > 9) v = v.slice(0, 9);
-
-    // 3. Aplica a máscara
-    // Coloca o ponto depois do 4º dígito
     v = v.replace(/^(\d{4})(\d)/, '$1.$2');
-    // Coloca o traço depois do 3º dígito do segundo bloco
     v = v.replace(/\.(\d{3})(\d)/, '.$1-$2');
-
     return v;
   };
 
-  // Handler específico para a mudança da senha com formatação
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const valorFormatado = formatarSenha(e.target.value);
     setPassword(valorFormatado);
@@ -113,7 +101,6 @@ const LoginPage: React.FC = () => {
       <img src={loginImage1} alt="Bombeiro em ação" className="hero-image" />
 
       <div className="intro-content">
-        {/* Container Flex para Logo + SIOB */}
         <div className="logo-siob-container">
             <img src={siobLogo} alt="Logo SIOB" className="intro-logo large" />
         </div>
@@ -165,18 +152,10 @@ const LoginPage: React.FC = () => {
             <input
               id="password"
               type={showPassword ? 'text' : 'password'}
-              
-              /* Placeholder com o exemplo do formato */
               placeholder="0000.000-00"
-              
               value={password}
-              
-              /* CHAMA A FUNÇÃO DE FORMATAÇÃO */
               onChange={handlePasswordChange}
-              
               onKeyDown={onKeyDown}
-              
-              /* Limita o tamanho total (9 números + 2 pontuações = 11 caracteres) */
               maxLength={11} 
             />
             <button
@@ -197,14 +176,12 @@ const LoginPage: React.FC = () => {
         </button>
       </main>
 
-      {/* === RODAPÉ COM A SUA LOGO DO GOVERNO === */}
+      {/* === RODAPÉ SIMPLIFICADO (SEM LOGO GOV) === */}
       <footer className="login-footer-logos">
-        <div className="logos-wrapper">
-           {/* Imagem única que você importou */}
-           <img src={logoGov} alt="Logos Institucionais" className="footer-logo" />
-        </div>
         <p className="footer-copyright">
-          © 2025 Sistema Integrado de Ocorrências dos Bombeiros 
+          © Sistema Integrado de Ocorrências dos Bombeiros
+          <br />
+          versão 1.0 - 2025
         </p>
       </footer>
 

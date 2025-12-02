@@ -13,7 +13,8 @@ Container principal que gerencia a visibilidade e o fundo escuro (overlay).
   width: 100%;
   height: 100%;
   z-index: 1000; /* Garante que o menu fique na frente de outros elementos. */
-  visibility: hidden; /* Começa escondido. */
+  z-index: 9999;
+  visibility: hidden; /* Correção do ícone de zoom do mapa no menu hamburgue*/
   pointer-events: none; /* Não permite cliques quando escondido. */
 }
 
