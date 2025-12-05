@@ -1,303 +1,210 @@
 /**
  * @file DashboardContent.tsx
- * @description Painel principal com lógica de agregação e GRÁFICO DE MAPA.
- 
+ * @description Painel principal - Cores corrigidas conforme padrão COBRADE.
  */
 import React, { useEffect, useState } from "react";
 import {
-    PieChart,
-    Pie,
-    Cell,
-    ResponsiveContainer,
-    Tooltip,
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    LineChart,
-    Line,
+    PieChart, Pie, Cell, ResponsiveContainer, Tooltip,
+    BarChart, Bar, XAxis, YAxis, CartesianGrid,
+    LineChart, Line,
 } from "recharts";
 import {
-    AlertTriangle,
-    Clock,
-    CheckCircle,
-    BarChart3,
+    AlertTriangle, Clock, CheckCircle, BarChart3,
 } from "lucide-react";
 import "../DashboardPage/DashboardPage.css"; 
-import OccurrenceMap from './OccurrenceMap'; // IMPORTAÇÃO DO MAPA
+import OccurrenceMap from './OccurrenceMap'; 
+import { api } from '../../lib/api'; 
 
 // ======================================================================
-// 1- Estrutura de Tipos de Dados
+// 1. Tipos e Interfaces
 // ======================================================================
 interface Ocorrencia {
-    // Campos "limpos" que o dashboard vai USAR
+    id: string;
     tipo: string;
     status: string;
     regiao: string;
     data: string;
-    id: string; 
-    endereco: { 
-        latitude: string | number;
-        longitude: string | number;
+    prioridade: string;
+    endereco: {
+        latitude: number;
+        longitude: number;
         bairro: string;
     };
-
-    // Campos "brutos" que vêm do localStorage
-    situacao?: string; 
-    formulariosPreenchidos?: any; 
-    dataAviso?: string;
-}
-
-// Tipo corrigido para compatibilidade com o Recharts
-interface DadosGrafico {
-    name: string;
-    value: number;
-    [key: string]: any; 
 }
 
 // ======================================================================
-// 2️- Cores e Mapeamento
+// 2. CORES E PALETAS (CORRIGIDO)
 // ======================================================================
 
-// Paleta principal de cores alinhada com as Naturezas de Ocorrência (COBRADE)
+// Paleta oficial que você enviou
 const COLORS_TIPO_PALETTE = [
-    "#d81b60", // [0] - APH (Rosa/Magenta - Emergência Médica)
-    "#AD131A", // [1] - Incêndio (Vermelho forte, crítico)
-    "#cc5f0b", // [2] - Salvamento / Resgate (Laranja Queimado)
+    "#d81b60", // [0] - APH (Rosa/Magenta)
+    "#AD131A", // [1] - Incêndio (Vermelho forte)
+    "#cc5f0b", // [2] - Salvamento (Laranja)
     "#fbc02d", // [3] - Produtos Perigosos (Amarelo)
     "#43a047", // [4] - Prevenção (Verde)
-    "#1976d2", // [5] - Comunitária / Ações sociais (Azul)
-    "#00897b", // [6] - Vazamento / Outros (Verde-azulado)
-    "#6d4c41", // [7] - Outros / sobras (Marrom/Neutro)
+    "#1976d2", // [5] - Comunitária (Azul)
+    "#00897b", // [6] - Vazamento / Outros
+    "#6d4c41", // [7] - Outros / sobras
 ];
 
-// Mapeamento de Natureza para Cor, garantindo coerência visual no gráfico de Rosca
-const NATUREZA_COLOR_MAP: Record<string, string> = {
-  'APH': COLORS_TIPO_PALETTE[0], 
-  'Incêndio': COLORS_TIPO_PALETTE[1],
-  'Resgate': COLORS_TIPO_PALETTE[2], 
-  'Salvamento': COLORS_TIPO_PALETTE[2],
-  'Produtos Perigosos': COLORS_TIPO_PALETTE[3], 
-  'Prevenção': COLORS_TIPO_PALETTE[4],
-  'Comunitária': COLORS_TIPO_PALETTE[5],
-  'Atividade Comunitária': COLORS_TIPO_PALETTE[5], // Alias
-  'Gerenciamento': COLORS_TIPO_PALETTE[7], // Alias
-};
-// Cores dos Status (para KPIs e Badges da Tabela)
-const COLORS_STATUS = ["#c62828", "#fdd835", "#43a047"]; // Em Andamento, Pendente, Concluída
-
-const DADOS_MENSAIS_EVOLUCAO: DadosGrafico[] = [
-    { name: "Jan", value: 10 },
-    { name: "Fev", value: 12 },
-    { name: "Mar", value: 15 },
-    { name: "Abr", value: 20 },
-    { name: "Mai", value: 25 },
-    { name: "Jun", value: 30 },
-    { name: "Jul", value: 35 },
-    { name: "Ago", value: 42 },
-    { name: "Set", value: 45 },
-    { name: "Out", value: 50 },
-];
-
-// Dados Fictícios com coordenadas de Recife/PE para teste do mapa
-const DADOS_INICIAIS_FICTICIOS: Ocorrencia[] = [
-    { id: '1a', tipo: "APH Acidente Trânsito", status: "Em andamento", regiao: "Boa Viagem", data: "2025-10-25T14:00:00Z", endereco: { latitude: -8.1345, longitude: -34.9087, bairro: 'Boa Viagem' } },
-    { id: '2b', tipo: "Incêndio Estrutural", status: "Em andamento", regiao: "Imbiribeira", data: "2025-10-25T15:00:00Z", endereco: { latitude: -8.1001, longitude: -34.9010, bairro: 'Imbiribeira' } },
-    { id: '3c', tipo: "Resgate em Altura", status: "Pendente", regiao: "Várzea", data: "2025-10-25T14:15:00Z", endereco: { latitude: -8.0490, longitude: -34.9540, bairro: 'Várzea' } },
-    { id: '4d', tipo: "Salvamento Aquático", status: "Concluída", regiao: "Madalena", data: "2025-10-24T10:00:00Z", endereco: { latitude: -8.0535, longitude: -34.9000, bairro: 'Madalena' } },
-    { id: '5e', tipo: "Prevenção Aquática", status: "Pendente", regiao: "Pina", data: "2025-10-25T14:30:00Z", endereco: { latitude: -8.0850, longitude: -34.8870, bairro: 'Pina' } },
-];
-
-
-// ======================================================================
-// 3️- FUNÇÕES AUXILIARES GLOBAIS
-// ======================================================================
-
-/**
- * Interpreta o objeto 'formulariosPreenchidos' (do Form) e retorna uma string
- */
-const interpretarNatureza = (formularios: any): string => {
-    if (!formularios) return 'Ocorrência Básica';
-
-    if (formularios.incendio) return 'Incêndio';
-    if (formularios.salvamento) return 'Salvamento';
-    if (formularios.atdPreHospitalar) return 'APH';
-    if (formularios.prevencao) return 'Prevenção';
-    if (formularios.atividadeComunitaria) return 'Atividade Comunitária';
-    if (formularios.formularioGerenciamento) return 'Gerenciamento';
-    if (formularios.produtoPerigoso) return 'Produto Perigoso';
+// Função que garante a cor certa independente de maiúscula/minúscula
+const getCorPorNatureza = (nomeNatureza: string) => {
+    if (!nomeNatureza) return COLORS_TIPO_PALETTE[7]; // Marrom se vier vazio
     
-    return 'Ocorrência Básica'; // Caso nenhum esteja marcado
+    const nome = nomeNatureza.toUpperCase();
+
+    // INCÊNDIO -> VERMELHO (#AD131A)
+    if (nome.includes("INCENDIO") || nome.includes("INCÊNDIO")) return COLORS_TIPO_PALETTE[1];
+    
+    // SALVAMENTO/RESGATE -> LARANJA (#cc5f0b)
+    if (nome.includes("SALVAMENTO") || nome.includes("RESGATE")) return COLORS_TIPO_PALETTE[2];
+    
+    // APH -> ROSA (#d81b60)
+    if (nome.includes("APH") || nome.includes("HOSPITALAR")) return COLORS_TIPO_PALETTE[0];
+    
+    // PREVENÇÃO -> VERDE (#43a047)
+    if (nome.includes("PREVENCAO") || nome.includes("PREVENÇÃO")) return COLORS_TIPO_PALETTE[4];
+    
+    // PRODUTOS PERIGOSOS -> AMARELO (#fbc02d)
+    if (nome.includes("PERIGOSO") || nome.includes("QUIMICO")) return COLORS_TIPO_PALETTE[3];
+    
+    // COMUNITÁRIA -> AZUL (#1976d2)
+    if (nome.includes("COMUNITARIA") || nome.includes("COMUNITÁRIA")) return COLORS_TIPO_PALETTE[5];
+
+    // Padrão para outros
+    return COLORS_TIPO_PALETTE[6];
 };
 
-/**
- * Normaliza o objeto "bruto" do localStorage para o formato "limpo" do Dashboard
- */
-    const normalizarOcorrencia = (o: Ocorrencia): Ocorrencia => {
-        // 1. Normaliza Status
-        const statusLido = o.situacao || o.status || 'Pendente';
-        const statusLower = statusLido.toLowerCase();
-        let statusNormalizado: string;
+const DADOS_MENSAIS_EVOLUCAO = [
+    { name: "Jan", value: 10 }, { name: "Fev", value: 12 },
+    { name: "Mar", value: 15 }, { name: "Abr", value: 20 },
+    { name: "Mai", value: 25 }, { name: "Jun", value: 30 },
+    { name: "Jul", value: 35 }, { name: "Ago", value: 42 },
+    { name: "Set", value: 45 }, { name: "Out", value: 50 },
+];
 
-        if (statusLower.includes('finalizada') || statusLower.includes('concluída')) {
-            statusNormalizado = "Concluída";
-        } else if (statusLower.includes('em-andamento') || statusLower.includes('andamento')) {
-            statusNormalizado = "Em andamento";
-        } else if (statusLower.includes('pendente')) {
-            statusNormalizado = "Pendente";
-        } else {
-            statusNormalizado = statusLido;
-        }
-
-        // 2. Normaliza Tipo
-        const tipoNormalizado = o.formulariosPreenchidos ? interpretarNatureza(o.formulariosPreenchidos) : (o.tipo || 'Ocorrência Básica');
-
-        // 3. CORREÇÃO: Normaliza Data
-        // O formulário salva 'dataAviso', mas o dashboard usa 'data'
-        const dataNormalizada = o.dataAviso || o.data || new Date().toISOString().split('T')[0];
-
-        // 4. Retorna o objeto "limpo"
-        return { 
-            ...o, 
-            status: statusNormalizado,
-            tipo: tipoNormalizado,
-            data: dataNormalizada // <-- CAMPO DE DATA NORMALIZADO
-        };
-    };
-/**
- * Abrevia rótulos longos no eixo X dos gráficos
- */
 const abreviarRotulo = (nome: string): string => {
-    // ABREVIAÇÕES DE RASCUNHO/INCÊNDIO
-    if (nome.includes("em Edificação")) return "Inc. Edif."; 
-    if (nome.includes("Rascunho de Atendimento")) return "Rasc. Detal."; 
-    if (nome.includes("Ocorrência Básica")) return "Ocorr. Básica";
-    if (nome.includes("Incêndio Estrutural")) return "Inc. Estrut.";
-    if (nome.includes("Incêndio em Veículo")) return "Inc. Veíc."; 
-    
-    // ABREVIAÇÕES DE APH/SALVAMENTO E PREVENÇÃO
-    if (nome.includes("Acidente Trânsito")) return "Aci. Trâns.";
-    if (nome.includes("Resgate em Altura")) return "Resg. Altura";
-    if (nome.includes("Salvamento Aquático")) return "Salv. Aquát.";
-    if (nome.includes("Atividade Comunitária")) return "Ativ. Com.";
-    if (nome.includes("Prevenção Aquática")) return "Prev. Aquát."; 
-    
-    // Novas abreviações baseadas na função 'interpretarNatureza'
-    if (nome === "Produto Perigoso") return "Prod. Perig.";
-    if (nome === "Gerenciamento") return "Gerenc.";
-
+    if (nome.includes("Incêndio")) return "Incêndio";
+    if (nome.includes("Acidente")) return "Aci. Trâns.";
+    if (nome.includes("Salvamento")) return "Salvamento";
+    if (nome.includes("Prevenção")) return "Prev.";
+    if (nome.length > 12) return nome.substring(0, 10) + ".";
     return nome;
 };
 
 // ======================================================================
-// 4️- Componente Principal do Dashboard
+// 3. Funções Auxiliares de Normalização
+// ======================================================================
+const normalizarDadosAPI = (item: any): Ocorrencia => {
+    return {
+        id: item.id,
+        // Garante que o tipo venha formatado bonito (Ex: INCENDIO -> Incêndio)
+        tipo: formatarTipo(item.tipo),
+        status: normalizarStatus(item.status || item.situacao),
+        prioridade: item.prioridade || "Média",
+        regiao: item.bairro || item.municipio || "Região n/d",
+        data: item.dataHora || item.data_acionamento || new Date().toISOString(),
+        endereco: {
+            latitude: Number(item.latitude) || 0,
+            longitude: Number(item.longitude) || 0,
+            bairro: item.bairro || ""
+        }
+    };
+};
+
+// Deixa o texto bonito para o gráfico (Ex: APH, Incêndio)
+const formatarTipo = (tipoBruto: string) => {
+    if(!tipoBruto) return "Outros";
+    const t = tipoBruto.toUpperCase();
+    if (t.includes("INCENDIO")) return "Incêndio";
+    if (t.includes("APH")) return "APH";
+    if (t.includes("SALVAMENTO")) return "Salvamento";
+    if (t.includes("PREVENCAO")) return "Prevenção";
+    if (t.includes("PERIGOSO")) return "Prod. Perigoso";
+    if (t.includes("COMUNITARIA")) return "Ativ. Comunitária";
+    return t; // Retorna original se não conhecer
+};
+
+const normalizarStatus = (status: string) => {
+    if (!status) return "Pendente";
+    const s = status.toUpperCase();
+    if (s.includes("CONCLU") || s.includes("FINAL")) return "Concluída";
+    if (s.includes("ANDAMENTO")) return "Em andamento";
+    if (s.includes("PENDENTE")) return "Pendente";
+    if (s.includes("CANCEL")) return "Cancelada";
+    return "Pendente";
+};
+
+// ======================================================================
+// 4. Componente Principal
 // ======================================================================
 const DashboardContent: React.FC = () => {
-    
-    // Lógica de inicialização de estado
-    const [ocorrencias, setOcorrencias] = useState<Ocorrencia[]>(() => {
-        const data = localStorage.getItem("ocorrencias");
-        if (data) {
-          try {
-            const parsedData = JSON.parse(data);
-            const finalData = (parsedData.length > 0 ? parsedData : DADOS_INICIAIS_FICTICIOS) as Ocorrencia[];
-            // CORREÇÃO: Normaliza os dados carregados na inicialização
-            return finalData.map(normalizarOcorrencia); 
-          } catch (e) {
-            // Se houver erro no JSON, usa os dados fictícios normalizados
-            return DADOS_INICIAIS_FICTICIOS.map(normalizarOcorrencia);
-          }
-        }
-        // Se não houver nada no localStorage, usa os dados fictícios normalizados
-        return DADOS_INICIAIS_FICTICIOS.map(normalizarOcorrencia);
-    });
+    const [ocorrencias, setOcorrencias] = useState<Ocorrencia[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    // Lógica de carregamento e atualização (PWA)
-    const carregarDados = () => {
-        const data = localStorage.getItem("ocorrencias");
-        if (data) {
-            try {
-                const parsedData = JSON.parse(data);
-                // CORREÇÃO: Normaliza os dados na atualização PWA
-                setOcorrencias(parsedData.map(normalizarOcorrencia)); 
-            } catch (e) {
-                setOcorrencias([]); // Em caso de erro, limpa os dados
-            }
-        } else {
-            // Se o localStorage for limpo, volta para os dados fictícios
-            setOcorrencias(DADOS_INICIAIS_FICTICIOS.map(normalizarOcorrencia));
-        }
-    };
-
+    // --- BUSCA DADOS NA API ---
     useEffect(() => {
-        const atualizar = () => carregarDados();
-        // Carrega os dados na primeira vez (caso o localStorage mude enquanto o componente não está montado)
-        carregarDados(); 
-        
-        window.addEventListener("ocorrencias:updated", atualizar);
+        const carregarDados = async () => {
+            try {
+                setLoading(true);
+                const response = await api.get('/ocorrencias');
+                const listaBruta = response.data.data || [];
+                const listaTratada = listaBruta.map(normalizarDadosAPI);
+                setOcorrencias(listaTratada);
+            } catch (error) {
+                console.error("Erro ao carregar dashboard:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-        return () => window.removeEventListener("ocorrencias:updated", atualizar);
-    }, []); // Dependência vazia, executa apenas ao montar/desmontar
+        carregarDados();
+        const interval = setInterval(carregarDados, 15000);
+        return () => clearInterval(interval);
+    }, []);
 
-    // Função helper para agregação (CORRIGIDA)
-    // (Precisa ficar DENTRO do componente pois depende do state 'ocorrencias')
-    const aggregateData = (key: keyof Ocorrencia): DadosGrafico[] => {
-        return Object.entries(
-            ocorrencias.reduce((acc, o) => {
-                // Usa o campo 'tipo' ou 'status' (já normalizados)
-                let itemKey = o[key] as string; 
-                
-                acc[itemKey] = (acc[itemKey] || 0) + 1;
-                return acc;
-            }, {} as Record<string, number>)
-        ).map(([name, value]) => ({ name, value }));
-    };
+    // --- CÁLCULOS LOCAIS ---
 
-// ==================================================================
-// 5- Cálculos dos dados para os gráficos
-// ==================================================================
+    // 1. Agregação por Tipo (Rosca)
+    const dadosGraficoTipo = Object.entries(
+        ocorrencias.reduce((acc: any, curr) => {
+            const tipo = curr.tipo; // Já vem formatado (Incêndio, APH...)
+            acc[tipo] = (acc[tipo] || 0) + 1;
+            return acc;
+        }, {})
+    ).map(([name, value]) => ({ name, value: Number(value) }));
 
-// KPIs (Lendo status já normalizados)
+    // 2. Top 5 (Barras)
+    const dadosGraficoTop5 = [...dadosGraficoTipo]
+        .sort((a, b) => b.value - a.value)
+        .slice(0, 5);
 
-// Filtra pelo "DIA ATUAL" comparando as strings de data (YYYY-MM-DD)
-// 'hojeString' pega a data de hoje formatada, ex: "2025-11-15"
-    const hojeString = new Date().toISOString().split('T')[0]; 
+    // 3. KPIs
+    const totalHoje = ocorrencias.filter(o => {
+        const dataOcorrencia = new Date(o.data).toISOString().split('T')[0];
+        const dataHoje = new Date().toISOString().split('T')[0];
+        return dataOcorrencia === dataHoje;
+    }).length;
 
-    const ocorrenciasHoje = ocorrencias.filter(o => {
-        // 'o.data' foi normalizado e contém a string "YYYY-MM-DD"
-        return o.data === hojeString; 
-    });
-
-    const totalHoje = ocorrenciasHoje.length;
-
-    // O restante dos KPIs conta o TOTAL de ocorrências no sistema
     const emAndamento = ocorrencias.filter(o => o.status === "Em andamento").length;
     const pendentes = ocorrencias.filter(o => o.status === "Pendente").length;
     const concluidas = ocorrencias.filter(o => o.status === "Concluída").length;
 
-    // Gráfico 1 - Ocorrências por Tipo (Rosca)
-    const dadosGraficoTipo = aggregateData("tipo");
-    
-    // Gráfico 2 - Evolução Mensal (Linha)
-    const dadosEvolucaoMensal = DADOS_MENSAIS_EVOLUCAO; 
+    // 4. Dados Mapa
+    const dadosParaMapa = ocorrencias.filter(o => 
+        o.endereco.latitude !== 0 && o.endereco.longitude !== 0
+    );
 
-    // Gráfico 4 - Top 5 Tipos (Barras)
-    const dadosGraficoTop5: DadosGrafico[] = dadosGraficoTipo
-        .sort((a, b) => b.value - a.value) 
-        .slice(0, 5); 
+    if (loading && ocorrencias.length === 0) {
+        return <div className="loading-container"><p>Carregando dados operacionais...</p></div>;
+    }
 
-    // Filtragem de dados para o MAPA (Slot 3)
-    const ocorrenciasComGeo = ocorrencias.filter(o => o.endereco?.latitude && o.endereco?.longitude);
-    
-    // ==================================================================
-    // 6- Renderização da Interface
-    // ==================================================================
     return (
          <div className="dashboard-main dashboard-operacional">
             <div className="dashboard-title">
                 <h2>Dashboard Operacional</h2>
-                <p>Resumo dinâmico das Ocorrências</p>
+                <p>Monitoramento em Tempo Real</p>
             </div>
 
             {/* =================== KPI CARDS =================== */}
@@ -315,7 +222,7 @@ const DashboardContent: React.FC = () => {
                     <div className="kpi-info">
                         <span className="kpi-title">Em Andamento</span>
                         <span className="kpi-value">{emAndamento}</span>
-                        <span className="kpi-details">Equipes mobilizadas (Total)</span>
+                        <span className="kpi-details">Equipes em atuação</span>
                     </div>
                     <div className="kpi-icon"><Clock /></div>
                 </div>
@@ -324,7 +231,7 @@ const DashboardContent: React.FC = () => {
                     <div className="kpi-info">
                         <span className="kpi-title">Pendentes</span>
                         <span className="kpi-value">{pendentes}</span>
-                        <span className="kpi-details">Aguardando despacho (Total)</span>
+                        <span className="kpi-details">Aguardando despacho</span>
                     </div>
                     <div className="kpi-icon"><BarChart3 /></div>
                 </div>
@@ -333,36 +240,31 @@ const DashboardContent: React.FC = () => {
                     <div className="kpi-info">
                         <span className="kpi-title">Concluídas</span>
                         <span className="kpi-value">{concluidas}</span>
-                        <span className="kpi-details">Ocorrências encerradas (Total)</span>
+                        <span className="kpi-details">Total acumulado</span>
                     </div>
                     <div className="kpi-icon"><CheckCircle /></div>
                 </div>
             </div> 
 
-            {/* =================== GRÁFICOS (4 otimizados) =================== */}
+            {/* =================== GRÁFICOS E MAPA =================== */}
             <div className="chart-grid-6">
                 
-                {/* Slot 1 — Ocorrências por Tipo (Rosca) - Mapeamento por Natureza */}
+                {/* Slot 1 - Ocorrências por Tipo (Rosca) */}
                 <div className="info-card chart-card">
-                    <h3>Ocorrências por Tipo (Distribuição)</h3>
+                    <h3>Distribuição por Natureza</h3>
                     <ResponsiveContainer width="100%" height={300}>
                         <PieChart>
                             <Pie
-                                data={dadosGraficoTipo as any} 
-                                cx="50%"
-                                cy="50%"
-                                innerRadius={60} 
-                                outerRadius={120}
+                                data={dadosGraficoTipo} 
+                                cx="50%" cy="50%"
+                                innerRadius={60} outerRadius={120}
                                 label={({ name, percent }: any) => `${abreviarRotulo(name)} (${(percent * 100).toFixed(0)}%)`}
                                 dataKey="value"
                             >
-                                {dadosGraficoTipo.map((d, i) => {
-                                    // Tenta encontrar uma cor específica (ex: 'Incêndio', 'APH')
-                                    const corFatia = NATUREZA_COLOR_MAP[d.name] 
-                                        // Se não achar, usa a paleta genérica
-                                        || COLORS_TIPO_PALETTE[i % COLORS_TIPO_PALETTE.length]; 
-
-                                    return <Cell key={i} fill={corFatia} />;
+                                {dadosGraficoTipo.map((entry, index) => {
+                                    // AQUI ESTÁ A CORREÇÃO: Usa a função para pegar a cor EXATA
+                                    const cor = getCorPorNatureza(entry.name);
+                                    return <Cell key={`cell-${index}`} fill={cor} />;
                                 })}
                             </Pie>
                             <Tooltip />
@@ -370,11 +272,11 @@ const DashboardContent: React.FC = () => {
                     </ResponsiveContainer>
                 </div>
 
-                {/* Slot 2 — Evolução Mensal (Linha) */}
+                {/* Slot 2 - Evolução Mensal */}
                 <div className="info-card chart-card">
-                    <h3>Evolução Mensal 2025</h3>
+                    <h3>Evolução Mensal (2025)</h3>
                     <ResponsiveContainer width="100%" height={300}>
-                        <LineChart data={dadosEvolucaoMensal}>
+                        <LineChart data={DADOS_MENSAIS_EVOLUCAO}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="name" />
                             <YAxis />
@@ -384,46 +286,45 @@ const DashboardContent: React.FC = () => {
                     </ResponsiveContainer>
                 </div>
                 
-                {/* Slot 3 — MAPA OPERACIONAL DE OCORRÊNCIAS */}
+                {/* Slot 3 - MAPA OPERACIONAL */}
                 <div className="info-card chart-card">
-                    <h3>Mapa Operacional de Ocorrências</h3>
-                    <OccurrenceMap occurrences={ocorrenciasComGeo.map(o => ({
-                        id: o.id,
-                        regiao: o.endereco.bairro || o.regiao,
-                        latitude: o.endereco.latitude,
-                        longitude: o.endereco.longitude,
-                        status: o.status,
-                        tipo: o.tipo
-                    }))} />
+                    <h3>Mapa de Calor Operacional</h3>
+                    <div style={{ height: '300px', width: '100%', borderRadius: '8px', overflow: 'hidden' }}>
+                        {dadosParaMapa.length > 0 ? (
+                            <OccurrenceMap occurrences={dadosParaMapa.map(o => ({
+                                id: o.id,
+                                tipo: o.tipo,
+                                status: o.status,
+                                regiao: o.regiao,
+                                latitude: Number(o.endereco.latitude),
+                                longitude: Number(o.endereco.longitude)
+                            }))} />
+                        ) : (
+                            <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center', background: '#f0f0f0' }}>
+                                <p style={{ color: '#666' }}>Aguardando dados de GPS...</p>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
-                {/* Slot 4 — Top 5 Tipos (Barras) - RÓTULOS ABREVIADOS */}
+                {/* Slot 4 - Top 5 Tipos */}
                 <div className="info-card chart-card">
-                    <h3>Top 5 Tipos de Ocorrência Mais Frequêntes</h3>
+                    <h3>Top 5 Naturezas Mais Frequentes</h3>
                     <ResponsiveContainer width="100%" height={300}>
-                        <BarChart 
-                            data={dadosGraficoTop5}
-                            margin={{ top: 5, right: 5, left: 20, bottom: 5 }}
-                        >
+                        <BarChart data={dadosGraficoTop5} margin={{ top: 5, right: 5, left: 20, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis 
-                                dataKey="name" 
-                                interval={0}           /* Garante que NENHUM rótulo seja omitido */
-                                angle={-35}            /* Rotação na diagonal */
-                                textAnchor="end"       /* Âncora no final do texto */
-                                height={80}            /* Altura extra para acomodar o texto inclinado */
-                                tickFormatter={abreviarRotulo} /* <--- ABREVIAÇÃO APLICADA AQUI */
-                            />
+                            <XAxis dataKey="name" tickFormatter={abreviarRotulo} interval={0} angle={-15} textAnchor="end" height={60} />
                             <YAxis />
                             <Tooltip />
-                            <Bar dataKey="value" fill="#fbc02d" /> 
+                            <Bar dataKey="value" fill="#fbc02d" radius={[4, 4, 0, 0]} >
+                                {/* CORREÇÃO: Aplica as cores certas também nas barras */}
+                                {dadosGraficoTop5.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={getCorPorNatureza(entry.name)} />
+                                ))}
+                            </Bar>
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
-
-                {/* Slots 5 e 6 Físicos (Escondidos) */}
-                <div className="info-card chart-card" style={{display: 'none'}}></div> 
-                <div className="info-card chart-card" style={{display: 'none'}}></div>
             </div>
         </div>
     );

@@ -1,18 +1,14 @@
 /**
  * @file AuditoriaPage.tsx
- * @description Página para visualização de logs de auditoria do sistema com filtro em tempo real.
+ * @description Página para visualização de logs de auditoria (Dados Estáticos para Apresentação).
  */
 
-// Importações do React e dos estilos específicos da página.
 import React, { useState, useEffect } from 'react';
 import './AuditoriaPage.css';
+// Padronizando com os ícones que você já usa no projeto
+import { FaMagnifyingGlass } from 'react-icons/fa6'; 
 
-// --- Ícones SVG como Componentes Internos ---
-const SearchIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-);
-
-// --- Dados de Exemplo (Originais, sem filtro) ---
+// --- Dados de Exemplo (MANTIDOS para garantir funcionamento na apresentação) ---
 const allLogs = [
     { id: 1, user: 'Major Wedja Souza', cargo: 'Major', initials: 'WS', action: 'LOGIN', details: 'Login bem-sucedido no sistema', timestamp: '2025-10-26 08:00:15', ip: '187.55.12.34' },
     { id: 2, user: 'Capitã Vanessa Matias', cargo: 'Capitão', initials: 'VM', action: 'CREATE', details: 'Criou a ocorrência #B01234 (Incêndio em Edificação)', timestamp: '2025-10-26 09:15:42', ip: '177.99.45.11' },
@@ -23,29 +19,25 @@ const allLogs = [
     { id: 7, user: 'Major Wedja Souza', cargo: 'Major', initials: 'WS', action: 'EXPORT', details: 'Exportou relatório de ocorrências de Outubro/2025', timestamp: '2025-10-26 11:20:00', ip: '187.55.12.34' },
 ];
 
-// --- Componente Principal da Página de Auditoria ---
 const AuditoriaPage = () => {
     // --- Estados para os Filtros ---
-    // Armazenam os valores selecionados pelo usuário em cada campo de filtro.
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCargo, setSelectedCargo] = useState('');
     const [selectedAction, setSelectedAction] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
 
-    // --- Estado para os Logs Exibidos ---
-    // Armazena a lista de logs que será de fato renderizada na tabela, já filtrada.
     const [filteredLogs, setFilteredLogs] = useState(allLogs);
 
-    // --- Efeito para Aplicar os Filtros ---
-    // Este `useEffect` é executado toda vez que um dos estados de filtro (searchTerm, etc.) muda.
+    // --- Efeito de Filtro em Tempo Real ---
     useEffect(() => {
         let logs = allLogs;
 
-        // 1. Filtro por Termo de Busca (case-insensitive)
+        // 1. Filtro por Texto
         if (searchTerm) {
             logs = logs.filter(log =>
                 log.details.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                log.ip.toLowerCase().includes(searchTerm.toLowerCase())
+                log.ip.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                log.user.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
 
@@ -64,15 +56,15 @@ const AuditoriaPage = () => {
             logs = logs.filter(log => log.timestamp.startsWith(selectedDate));
         }
 
-        // Atualiza o estado dos logs que serão exibidos na tela.
         setFilteredLogs(logs);
 
-    }, [searchTerm, selectedCargo, selectedAction, selectedDate]); // O array de dependências
+    }, [searchTerm, selectedCargo, selectedAction, selectedDate]);
 
 
     return (
-        <div className="auditoria-page-container">
-            {/* Cabeçalho da página */}
+        <div className="page-container"> {/* Padronizado com as outras páginas */}
+            
+            {/* Cabeçalho */}
             <div className="page-header">
                 <div className="page-title">
                     <h2>Auditoria</h2>
@@ -87,13 +79,13 @@ const AuditoriaPage = () => {
                     <p>Os resultados são atualizados automaticamente.</p>
                 </div>
 
-                <div className="filter-grid">
+                <div className="filter-inputs">
                     {/* Input de busca */}
                     <div className="search-input-wrapper">
-                        <span className="search-icon"><SearchIcon /></span>
+                        <FaMagnifyingGlass className="search-icon" />
                         <input
                             type="text"
-                            placeholder="Buscar por detalhes ou IP..."
+                            placeholder="Buscar por usuário, detalhes ou IP..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -141,7 +133,7 @@ const AuditoriaPage = () => {
             
             {/* Tabela de Logs */}
             <div className="list-card">
-                <table className="auditoria-table">
+                <table className="auditoria-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead>
                         <tr>
                             <th>Usuário</th>
@@ -155,13 +147,24 @@ const AuditoriaPage = () => {
                         {filteredLogs.map((log) => (
                             <tr key={log.id}>
                                 <td data-label="Usuário">
-                                    <div className="table-user-info">
-                                        <div className="table-user-avatar">{log.initials}</div>
+                                    <div className="table-user-info" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <div className="table-user-avatar" style={{ 
+                                            background: '#d32f2f', color: '#fff', width: '32px', height: '32px', 
+                                            borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' 
+                                        }}>
+                                            {log.initials}
+                                        </div>
                                         <span>{log.user}</span>
                                     </div>
                                 </td>
                                 <td data-label="Ação">
-                                    <span className={`action-badge action-${log.action.toLowerCase()}`}>{log.action}</span>
+                                    <span className={`action-badge action-${log.action.toLowerCase()}`} style={{
+                                        padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold',
+                                        backgroundColor: log.action === 'DELETE' ? '#ffebee' : log.action === 'CREATE' ? '#e8f5e9' : '#e3f2fd',
+                                        color: log.action === 'DELETE' ? '#c62828' : log.action === 'CREATE' ? '#2e7d32' : '#1565c0'
+                                    }}>
+                                        {log.action}
+                                    </span>
                                 </td>
                                 <td data-label="Detalhes">{log.details}</td>
                                 <td data-label="Data e Hora">{log.timestamp}</td>
@@ -170,9 +173,9 @@ const AuditoriaPage = () => {
                         ))}
                     </tbody>
                 </table>
-                 {/* Mensagem para quando nenhum resultado é encontrado */}
+                 
                  {filteredLogs.length === 0 && (
-                    <div className="no-results-message">
+                    <div className="no-results-message" style={{ padding: '20px', textAlign: 'center', color: '#666' }}>
                         <p>Nenhum registro encontrado para os filtros selecionados.</p>
                     </div>
                 )}
@@ -182,4 +185,3 @@ const AuditoriaPage = () => {
 };
 
 export default AuditoriaPage;
-

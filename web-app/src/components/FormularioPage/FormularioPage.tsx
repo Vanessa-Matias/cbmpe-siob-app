@@ -1,7 +1,6 @@
 /**
  * @file FormularioPage.tsx
- * @description Página principal do fluxo de criação/edição de ocorrência — agora com todas as naturezas de formulário integradas.
- * Autora: Vanessa Matias 💻.
+ * @description Lógica corrigida: Detecção flexível de natureza na edição.
  */
 
 import React, { useState, useEffect } from 'react';
@@ -18,41 +17,21 @@ import FormularioProdutoPerigoso from './FormularioProdutoPerigoso';
 
 import './FormularioPage.css';
 import brasaoLogo from '../../assets/brasao.cbm.pe.png';
-
-/* ---------------------------------------------------------------------
-   Interface e Funções Auxiliares
---------------------------------------------------------------------- */
-interface OcorrenciaDashboard {
-  tipo: string;
-  status: string;
-  regiao: string;
-  data: string;
-  id?: string;
-  numAviso?: string;
-  prioridade?: string;
-}
-
-// UUID simples (mantido)
-const generateUUID = () =>
-  'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0;
-    const v = c === 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
+import { api } from '../../lib/api';
 
 /* ---------------------------------------------------------------------
    Estado inicial do formulário
 --------------------------------------------------------------------- */
 const getInitialFormData = () => ({
-  id: generateUUID(),
+  id: '', 
   numAviso: '',
   pontoBase: '',
   viaturaTipo: '',
   viaturaOrdem: '',
   dataAviso: new Date().toISOString().split('T')[0],
-  situacao: 'pendente',
-  prioridade: 'Média',
-  endereco: { rua: '', numero: '', bairro: '', municipio: 'Recife', latitude: '', longitude: '' },
+  situacao: 'PENDENTE',
+  prioridade: 'MEDIA',
+  endereco: { rua: '', numero: '', bairro: '', municipio: 'Recife', latitude: '', longitude: '', codigoLocal: '', referencia: '' },
   fotoOcorrencia: '',
   assinaturaDigital: '',
   formulariosPreenchidos: {
@@ -71,11 +50,11 @@ const getInitialFormData = () => ({
   veiculo1: {},
   veiculo2: {},
   historico: '',
+  qtdTotalVitimas: 0, feridas: 0, fatais: 0, ilesas: 0, desaparecidas: 0,
+  co: '', ciods: '', numero193: '',
+  veiculosEnvolvidos: 'NAO'
 });
 
-/* ---------------------------------------------------------------------
-   COMPONENTE PRINCIPAL
---------------------------------------------------------------------- */
 const FormularioPage: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
@@ -83,61 +62,110 @@ const FormularioPage: React.FC = () => {
   const [step, setStep] = useState<number>(1);
   const [formData, setFormData] = useState<any>(getInitialFormData());
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
-  const [activeNature, setActiveNature] = useState<
-    | 'incendio'
-    | 'salvamento'
-    | 'atdPreHospitalar'
-    | 'prevencao'
-    | 'atividadeComunitaria'
-    | 'formularioGerenciamento'
-    | 'produtoPerigoso'
-    | ''
-  >('');
+  const [activeNature, setActiveNature] = useState<string>('');
+  const [isSaving, setIsSaving] = useState(false);
 
   /* -----------------------------------------------------------------
-     CARREGAMENTO / EDIÇÃO (CORRIGIDO)
-  ----------------------------------------------------------------- */
-  useEffect(() => {
-    // Limpa o estado anterior para evitar "piscar" de dados antigos
-    setStep(1); 
-    setActiveNature('');
-    
-    if (id) {
-      // MODO EDIÇÃO
-      setIsEditMode(true);
-      const raw = localStorage.getItem('ocorrencias');
-      const list = raw ? JSON.parse(raw) : [];
-      const found = list.find((o: any) => o.id === id);
-
-      if (found) {
-        // 1. Carrega os dados salvos
-        setFormData(found);
-        
-        // 2. Detecta a natureza (se houver), mas NÃO MUDA DE ETAPA
-        const markedNature = findMarkedNature(found.formulariosPreenchidos || {});
-        if (markedNature) {
-          setActiveNature(markedNature);
-        }
-        // O 'step' permanece 1, forçando o usuário a ver o FormularioBasico
-      
-      } else {
-        alert('Ocorrência não encontrada. Abrindo formulário em branco.');
-        setIsEditMode(false);
-        setFormData(getInitialFormData());
-      }
-    } else {
-      // MODO CRIAÇÃO
-      setIsEditMode(false);
-      setFormData(getInitialFormData());
-    }
-  }, [id]); // O 'id' é a única dependência 
-
-  /* -----------------------------------------------------------------
-     DETECTA QUAL FORMULÁRIO DE NATUREZA ESTÁ MARCADO
+     TRADUTOR REVERSO (CORRIGIDO PARA FLEXIBILIDADE)
   ----------------------------------------------------------------- */
+  const adaptarParaFrontend = (dadosBack: any) => {
+      const dataFormatada = dadosBack.data_acionamento ? String(dadosBack.data_acionamento).split('T')[0] : '';
+      
+      // Normaliza o tipo para comparação segura (Tudo maiúsculo)
+      const tipoBack = (dadosBack.tipo || '').toUpperCase();
+
+      return {
+          ...getInitialFormData(), 
+          id: dadosBack.id,
+          
+          numAviso: dadosBack.nr_aviso,
+          pontoBase: dadosBack.ponto_base,
+          viaturaTipo: dadosBack.viatura_tipo,
+          viaturaOrdem: dadosBack.viatura_numero,
+          dataAviso: dataFormatada,
+          situacao: (dadosBack.status || 'PENDENTE').toLowerCase(),
+          prioridade: dadosBack.prioridade === 'MEDIA' ? 'Média' : (dadosBack.prioridade || 'Média'),
+          historico: dadosBack.historico_texto,
+          
+          co: dadosBack.cod_co,
+          ciods: dadosBack.cod_ciods,
+          numero193: dadosBack.cod_193,
+
+          endereco: {
+              rua: dadosBack.rua_avenida,
+              numero: dadosBack.numero_local,
+              bairro: dadosBack.bairro,
+              municipio: dadosBack.municipio,
+              referencia: dadosBack.ponto_referencia,
+              latitude: dadosBack.latitude,
+              longitude: dadosBack.longitude,
+              codigoLocal: '' 
+          },
+
+          guarnicaoEmpenhada: {
+              postoGrad: dadosBack.guarnicao_posto_grad,
+              matriculaCmt: dadosBack.guarnicao_matricula,
+              nomeGuerraCmt: dadosBack.guarnicao_nome_guerra,
+              componentes: dadosBack.guarnicao_componentes || Array(6).fill(''),
+              vistoDivisao: ''
+          },
+
+          qtdTotalVitimas: dadosBack.vitimas_total,
+          feridas: dadosBack.vitimas_feridas,
+          fatais: dadosBack.vitimas_fatais,
+          ilesas: dadosBack.vitimas_ilesas,
+          desaparecidas: dadosBack.vitimas_desaparecidas,
+
+          veiculosEnvolvidos: dadosBack.veiculos_envolvidos === 'Nenhum' ? 'NAO' : 'SIM',
+          
+          // LÓGICA FLEXÍVEL DE DETECÇÃO DE NATUREZA
+          formulariosPreenchidos: {
+              incendio: tipoBack.includes('INCENDIO') || tipoBack.includes('INCÊNDIO'),
+              salvamento: tipoBack.includes('SALVAMENTO') || tipoBack.includes('RESGATE'),
+              atdPreHospitalar: tipoBack.includes('APH') || tipoBack.includes('PRE-HOSPITALAR'),
+              prevencao: tipoBack.includes('PREVENCAO') || tipoBack.includes('PREVENÇÃO'),
+              produtoPerigoso: tipoBack.includes('PERIGOSO'),
+              atividadeComunitaria: tipoBack.includes('COMUNITARIA') || tipoBack.includes('COMUNITÁRIA'),
+              formularioGerenciamento: tipoBack.includes('GERENCIAMENTO'),
+              outroRelatorio: false
+          }
+      };
+  };
+
+  /* -----------------------------------------------------------------
+     CARREGAMENTO
+  ----------------------------------------------------------------- */
+  useEffect(() => {
+    if (id) {
+      setIsEditMode(true);
+      carregarDadosDaAPI(id);
+    } else {
+      setIsEditMode(false);
+      setFormData(getInitialFormData());
+      setStep(1);
+    }
+  }, [id]);
+
+  const carregarDadosDaAPI = async (idOcorrencia: string) => {
+      try {
+          const response = await api.get(`/ocorrencias/${idOcorrencia}`);
+          const dadosBrutos = response.data;
+          
+          const dadosAdaptados = adaptarParaFrontend(dadosBrutos);
+          setFormData(dadosAdaptados);
+          
+          const markedNature = findMarkedNature(dadosAdaptados.formulariosPreenchidos);
+          if(markedNature) setActiveNature(markedNature);
+
+      } catch (error) {
+          console.error("Erro ao carregar ocorrência:", error);
+          alert("Erro ao carregar dados. Voltando para lista.");
+          navigate('/ocorrencias');
+      }
+  }
+
   const findMarkedNature = (formularios: any) => {
     if (!formularios) return '';
-
     if (formularios.incendio) return 'incendio';
     if (formularios.salvamento) return 'salvamento';
     if (formularios.atdPreHospitalar) return 'atdPreHospitalar';
@@ -145,14 +173,12 @@ const FormularioPage: React.FC = () => {
     if (formularios.atividadeComunitaria) return 'atividadeComunitaria';
     if (formularios.formularioGerenciamento) return 'formularioGerenciamento';
     if (formularios.produtoPerigoso) return 'produtoPerigoso';
-
     return '';
   };
 
   /* -----------------------------------------------------------------
      HANDLERS
   ----------------------------------------------------------------- */
-
   const handleChange = (e: any) => {
     const { name, value, type } = e.target;
     const finalValue = type === 'checkbox' ? e.target.checked : value;
@@ -174,7 +200,6 @@ const FormularioPage: React.FC = () => {
         cur[keys[keys.length - 1]] = finalValue;
       }
 
-      // Atualiza activeNature se o usuário marcar/desmarcar natureza
       if (keys[0] === 'formulariosPreenchidos') {
         const updatedNaturezas = { ...next.formulariosPreenchidos, [keys[1]]: finalValue };
         setActiveNature(findMarkedNature(updatedNaturezas));
@@ -185,51 +210,125 @@ const FormularioPage: React.FC = () => {
   };
 
   /* -----------------------------------------------------------------
-     SUBMIT BÁSICO E FINALIZAÇÃO
+     TRADUTOR (FRONTEND -> BACKEND DTO)
   ----------------------------------------------------------------- */
-  const handleSubmit = (e: React.FormEvent) => {
+  const prepararDTO = (dados: any) => {
+      return {
+          tipo: activeNature ? activeNature.toUpperCase() : "OCORRENCIA_BASICA",
+          prioridade: dados.prioridade === 'Média' ? 'MEDIA' : dados.prioridade.toUpperCase(),
+          status: dados.situacao === 'pendente' ? 'PENDENTE' : dados.situacao.toUpperCase(),
+          
+          data_acionamento: new Date().toISOString(),
+          hora_acionamento: new Date().toISOString(),
+          
+          rua_avenida: dados.endereco?.rua || "Rua não informada",
+          numero_local: dados.endereco?.numero || "S/N",
+          bairro: dados.endereco?.bairro || "Centro",
+          municipio: dados.endereco?.municipio || "Recife",
+          ponto_referencia: dados.endereco?.referencia || "",
+          latitude: Number(dados.endereco?.latitude) || 0,
+          longitude: Number(dados.endereco?.longitude) || 0,
+
+          historico_texto: dados.historico || "Sem histórico",
+          nr_aviso: dados.numAviso || "AVISO-AUTO",
+          viatura_tipo: dados.viaturaTipo || "ABT",
+          viatura_numero: dados.viaturaOrdem || "000",
+          ponto_base: dados.pontoBase || "PB-01",
+          
+          cod_co: dados.co || "CO-000",
+          cod_ciods: dados.ciods || "CIODS-000",
+          cod_193: dados.numero193 || "193-000",
+          ome_gb_secao: "GBI",
+
+          vitimas_total: Number(dados.qtdTotalVitimas) || 0,
+          vitimas_feridas: Number(dados.feridas) || 0,
+          vitimas_fatais: Number(dados.fatais) || 0,
+          vitimas_ilesas: Number(dados.ilesas) || 0,
+          vitimas_desaparecidas: Number(dados.desaparecidas) || 0,
+          
+          veiculos_envolvidos: dados.veiculosEnvolvidos === 'SIM' ? 'Sim' : 'Nenhum'
+      };
+  };
+
+  /* -----------------------------------------------------------------
+     PERSISTÊNCIA
+  ----------------------------------------------------------------- */
+  const persistirOcorrencia = async (dados: any, isFinalizing = false) => {
+    setIsSaving(true); 
+
+    try {
+      const dto = prepararDTO(dados);
+      
+      // MODO EDIÇÃO (PUT)
+      if (dados.id && dados.id.length > 5) { 
+          await api.put(`/ocorrencias/${dados.id}`, dto);
+          
+          if (isFinalizing) {
+              alert("Ocorrência atualizada com sucesso!");
+              navigate('/ocorrencias'); 
+          }
+      
+      // MODO CRIAÇÃO (POST)
+      } else {
+          const response = await api.post('/ocorrencias', dto);
+          const novaOcorrencia = response.data;
+          
+          // Tenta pegar o ID gerado (pode vir em .id ou .data.id)
+          const novoID = novaOcorrencia.id || novaOcorrencia.data?.id; 
+
+          if (novoID) {
+              setFormData((prev: any) => ({ ...prev, id: novoID }));
+              setIsEditMode(true); 
+          }
+          
+          if (isFinalizing) {
+             alert("Ocorrência criada com sucesso!");
+             navigate('/ocorrencias');
+          }
+      }
+
+      window.dispatchEvent(new Event('ocorrencias:updated'));
+      
+    } catch (err: any) {
+      console.error('Erro ao salvar:', err);
+      const msg = err.response?.data?.message || 'Erro ao salvar. Verifique os campos.';
+      alert(msg);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  // --- HANDLER PRINCIPAL (SALVAR E AVANÇAR) ---
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const markedNature = findMarkedNature(formData.formulariosPreenchidos);
-    persistirOcorrencia(formData, false);
+    
+    // 1. Salva o Básico primeiro (para garantir que temos o ID)
+    await persistirOcorrencia(formData, false);
 
+    // 2. Se salvou com sucesso e tem natureza, AVANÇA para etapa 2
     if (markedNature) {
       setActiveNature(markedNature);
-      setStep(2);
-      alert('Formulário Básico salvo. Continue preenchendo a Etapa 2.');
+      setStep(2); 
+    } else {
+      // Se não marcou natureza, já redireciona para a lista
+      navigate('/ocorrencias');
     }
   };
 
   const handleFinalizeNature = (e: React.FormEvent) => {
     e.preventDefault();
-    persistirOcorrencia(formData, true);
-    setFormData(getInitialFormData());
-  };
-
-  const persistirOcorrencia = (dados: any, shouldRedirect = false) => {
-    try {
-      const raw = localStorage.getItem('ocorrencias');
-      const lista = raw ? JSON.parse(raw) : [];
-      const filtered = lista.filter((o: any) => o.id !== dados.id);
-      filtered.push(dados);
-      localStorage.setItem('ocorrencias', JSON.stringify(filtered));
-
-      window.dispatchEvent(new Event('ocorrencias:updated'));
-      if (shouldRedirect) navigate('/ocorrencias');
-    } catch (err) {
-      console.error('Erro ao salvar ocorrência:', err);
-      alert('Erro ao salvar ocorrência.');
-    }
+    persistirOcorrencia(formData, true); 
   };
 
   const handleCancel = () => {
-    if (window.confirm('Deseja cancelar e voltar à listagem de ocorrências?')) {
+    if (window.confirm('Deseja cancelar e voltar à listagem?')) {
       navigate('/ocorrencias');
     }
   };
 
   /* -----------------------------------------------------------------
-     RENDERIZA O FORMULÁRIO CORRESPONDENTE À NATUREZA
+     RENDERIZAÇÃO
   ----------------------------------------------------------------- */
   const renderNatureForm = () => {
     const sharedProps = {
@@ -237,39 +336,28 @@ const FormularioPage: React.FC = () => {
       handleChange,
       handleSubmit: handleFinalizeNature,
       handleCancel: () => setStep(1),
-      submitText: isEditMode ? 'Atualizar e Finalizar' : 'Finalizar Ocorrência',
+      submitText: isEditMode ? 'Salvar Alterações' : 'Finalizar Ocorrência',
+      isLoading: isSaving
     };
 
     switch (activeNature) {
-      case 'incendio':
-        return <FormularioIncendio {...sharedProps} />;
-      case 'salvamento':
-        return <FormularioSalvamento {...sharedProps} />;
-      case 'atdPreHospitalar':
-        return <FormularioAPH {...sharedProps} />;
-      case 'prevencao':
-        return <FormularioPrevencao {...sharedProps} />;
-      case 'atividadeComunitaria':
-        return <FormularioAtividadeComunitaria {...sharedProps} />;
-      case 'formularioGerenciamento':
-        return <FormularioGerenciamento {...sharedProps} />;
-      case 'produtoPerigoso':
-        return <FormularioProdutoPerigoso {...sharedProps} />;
+      case 'incendio': return <FormularioIncendio {...sharedProps} />;
+      case 'salvamento': return <FormularioSalvamento {...sharedProps} />;
+      case 'atdPreHospitalar': return <FormularioAPH {...sharedProps} />;
+      case 'prevencao': return <FormularioPrevencao {...sharedProps} />;
+      case 'atividadeComunitaria': return <FormularioAtividadeComunitaria {...sharedProps} />;
+      case 'formularioGerenciamento': return <FormularioGerenciamento {...sharedProps} />;
+      case 'produtoPerigoso': return <FormularioProdutoPerigoso {...sharedProps} />;
       default:
         return (
           <div className="sub-section">
-            <p>Nenhuma natureza marcada. Marque uma opção e salve para avançar.</p>
-            <button className="button-cancel" onClick={() => setStep(1)}>
-              Voltar
-            </button>
+            <p>Nenhuma natureza marcada.</p>
+            <button className="button-cancel" onClick={() => setStep(1)}>Voltar</button>
           </div>
         );
     }
   };
 
-  /* -----------------------------------------------------------------
-     RENDERIZAÇÃO FINAL
-  ----------------------------------------------------------------- */
   const deveAvancar = Object.values(formData.formulariosPreenchidos || {}).some((v: any) => v === true);
   const totalEtapas = deveAvancar ? 2 : 1;
 
@@ -278,12 +366,8 @@ const FormularioPage: React.FC = () => {
       <div className="unified-card">
         <header className="page-header">
           <div className="page-title">
-            <h2>{isEditMode ? `Editando Ocorrência #${formData.numAviso || 'Rascunho'}` : 'Nova Ocorrência'}</h2>
-            <p>
-              {step === 1
-                ? `Etapa 1 de ${totalEtapas}: Formulário Básico`
-                : `Etapa 2 de ${totalEtapas}: Detalhes da Natureza`}
-            </p>
+            <h2>{isEditMode ? `Editando Ocorrência` : 'Nova Ocorrência'}</h2>
+            <p>{step === 1 ? `Etapa 1 de ${totalEtapas}: Formulário Básico` : `Etapa 2 de ${totalEtapas}: Detalhes da Natureza`}</p>
           </div>
           <img src={brasaoLogo} alt="Brasão CBMPE" className="header-logo" />
         </header>
@@ -294,7 +378,8 @@ const FormularioPage: React.FC = () => {
             handleChange={handleChange}
             handleSubmit={handleSubmit}
             handleCancel={handleCancel}
-            submitText={deveAvancar ? 'Avançar' : 'Salvar Rascunho'}
+            submitText={deveAvancar ? 'Salvar e Avançar' : 'Salvar e Finalizar'}
+            isLoading={isSaving}
           />
         ) : (
           renderNatureForm()

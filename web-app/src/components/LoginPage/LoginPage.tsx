@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext'; 
 import './LoginPage.css';
 
 // Imagens principais
@@ -17,7 +17,9 @@ import logoFormulario from '../../assets/siob-logo1.png';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  
+  // Usamos 'signIn' conforme definido no seu AuthContext atualizado
+  const { signIn } = useAuth(); 
 
   const [isIntro, setIsIntro] = useState(true);
   const [email, setEmail] = useState('');
@@ -34,43 +36,25 @@ const LoginPage: React.FC = () => {
     return null;
   };
 
-  const safeStore = (key: string, value: string) => {
-    try {
-      localStorage.setItem(key, value);
-      return 'localStorage';
-    } catch {
-      try {
-        sessionStorage.setItem(key, value);
-        return 'sessionStorage';
-      } catch {
-        return null;
-      }
-    }
-  };
-
   const handleLogin = async () => {
     setError(null);
     const v = validate();
     if (v) return setError(v);
+    
     setLoading(true);
-    await new Promise(r => setTimeout(r, 600));
 
     try {
-      const mockUser = {
-        id: 1,
-        username: "tenente.amanda",
-        email,
-        nome: "Tenente Amanda",
-        cargo: "Chefe de Guarnição"
-      };
-      const mockToken = "fake-jwt-token-12345";
-      const where1 = safeStore('authToken', mockToken);
-      const where2 = safeStore('authUser', JSON.stringify(mockUser));
-      if (!where1 || !where2) throw new Error('Erro ao armazenar credenciais.');
-      login(mockToken, mockUser);
+      // Chamada real ao backend via AuthContext
+      await signIn({ email, password }); 
+      
+      // Se sucesso, redireciona
       navigate('/dashboard', { replace: true });
+
     } catch (err: any) {
-      setError(err?.message || 'Erro ao simular login');
+      console.error("Erro no login:", err);
+      // Tenta capturar mensagem de erro do backend ou usa genérica
+      const msg = err.response?.data?.message || 'Erro ao realizar login. Verifique suas credenciais.';
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -80,20 +64,10 @@ const LoginPage: React.FC = () => {
   const onKeyDown = (e: React.KeyboardEvent) => { if (e.key === 'Enter') handleLogin(); };
   const handleIntroClick = () => setIsIntro(false);
 
-  // --- FUNÇÃO DE FORMATAÇÃO DE SENHA (MÁSCARA 0000.000-00) ---
-  const formatarSenha = (valor: string) => {
-    let v = valor.replace(/\D/g, '');
-    if (v.length > 9) v = v.slice(0, 9);
-    v = v.replace(/^(\d{4})(\d)/, '$1.$2');
-    v = v.replace(/\.(\d{3})(\d)/, '.$1-$2');
-    return v;
-  };
-
+  // --- CORREÇÃO: Removida a máscara para evitar erro de senha incorreta ---
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const valorFormatado = formatarSenha(e.target.value);
-    setPassword(valorFormatado);
+    setPassword(e.target.value);
   };
-
 
   // --- Tela 1: Boas-Vindas ---
   const renderIntroScreen = () => (
@@ -152,11 +126,10 @@ const LoginPage: React.FC = () => {
             <input
               id="password"
               type={showPassword ? 'text' : 'password'}
-              placeholder="0000.000-00"
+              placeholder="Digite sua senha"
               value={password}
               onChange={handlePasswordChange}
               onKeyDown={onKeyDown}
-              maxLength={11} 
             />
             <button
               type="button"
@@ -176,7 +149,6 @@ const LoginPage: React.FC = () => {
         </button>
       </main>
 
-      {/* === RODAPÉ SIMPLIFICADO (SEM LOGO GOV) === */}
       <footer className="login-footer-logos">
         <p className="footer-copyright">
           © Sistema Integrado de Ocorrências dos Bombeiros
@@ -184,7 +156,6 @@ const LoginPage: React.FC = () => {
           versão 1.0 - 2025
         </p>
       </footer>
-
     </div>
   );
 
@@ -193,6 +164,6 @@ const LoginPage: React.FC = () => {
       {isIntro ? renderIntroScreen() : renderLoginScreen()}
     </div>
   );
-};
+}; 
 
 export default LoginPage;

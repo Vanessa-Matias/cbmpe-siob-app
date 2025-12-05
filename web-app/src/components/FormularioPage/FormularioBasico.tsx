@@ -17,9 +17,10 @@ interface Props {
   handleSubmit: (e: React.FormEvent) => void;
   handleCancel: () => void;
   submitText: string;
+  isLoading?: boolean; // <--- 1. ADICIONADO AQUI
 }
 
-const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmit, handleCancel, submitText }) => {
+const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmit, handleCancel, submitText, isLoading }) => { // <--- 2. ADICIONADO AQUI
   
   // --- BLINDAGEM DE DADOS (Segurança contra Crashes) ---
   // Garante acesso seguro aos objetos aninhados, mesmo que venham vazios do banco/localstorage
@@ -98,6 +99,7 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
   
   // --- 5. Handler que captura a assinatura antes de submeter ---
   const preSubmitHandler = (e: React.FormEvent) => {
+      e.preventDefault(); // IMPORTANTE: Previne reload
       // Captura a assinatura no formato base64 antes de enviar
       if (signaturePadInstance.current && !signaturePadInstance.current.isEmpty()) {
           const dataURL = signaturePadInstance.current.toDataURL(); 
@@ -233,7 +235,6 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
           <input type="text" id="referencia" name="endereco.referencia" value={endereco.referencia || ''} onChange={handleChange} placeholder="Ex: Próximo ao Shopping Recife" />
         </div>
         
-        {/* CAPTURA DE GPS */}
         <div className="form-group" style={{ marginTop: '1.5rem' }}>
           <label>Coordenadas GPS</label>
           <div className="gps-capture-group">
@@ -484,11 +485,16 @@ const FormularioBasico: React.FC<Props> = ({ formData, handleChange, handleSubmi
 
       {/* --- BOTÕES --- */}
       <div className="form-actions">
-        <button type="button" className="button-cancel" onClick={handleCancel}>
+        <button type="button" className="button-cancel" onClick={handleCancel} disabled={isLoading}>
           Cancelar
         </button>
-        <button type="submit" className="submit-button">
-          {submitText}
+        <button 
+            type="submit" 
+            className="submit-button"
+            disabled={isLoading} // <--- 3. BLOQUEIO AQUI
+            style={{ opacity: isLoading ? 0.7 : 1, cursor: isLoading ? 'not-allowed' : 'pointer' }}
+        >
+          {isLoading ? 'Salvando...' : submitText}
         </button>
       </div>
     </form>
