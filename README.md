@@ -4,13 +4,15 @@ O **SIOB (Sistema Integrado de Ocorrências de Bombeiros)** é uma solução dig
 
 A plataforma substitui o preenchimento manual de formulários em papel por um sistema **digital eficiente e responsivo**, que funciona **tanto online quanto offline**, garantindo a integridade e agilidade das informações.
 
-## O sistema é composto por duas frentes principais:
+## 🔗 Estrutura do Projeto (Repositórios)
 
-### 📱 Aplicativo de Campo (PWA / Mobile)
-Ferramenta robusta para os militares em atendimento, permitindo o **registro padronizado de ocorrências em tempo real**, com captura de mídias (fotos, vídeos), **geolocalização e assinaturas digitais**.
+O sistema é dividido em três partes integradas. Acesse os códigos abaixo:
 
-### 💻 Painel Administrativo (Web)
-Plataforma central para o comando e analistas, oferecendo **dashboards, relatórios, gestão de usuários e visão geral das operações registradas**.
+| Módulo | Descrição | Link do Repositório |
+| :--- | :--- | :--- |
+| **💻 Painel Web** | Plataforma administrativa (React) | **Você está aqui** |
+| **📱 Mobile App** | Aplicativo de campo (React Native) | [Acessar Repositório](https://github.com/AgnesRibeiro/cbmpe-siob-app) |
+| **⚙️ Back-end** | API e Banco de Dados (Node.js) | [Acessar Repositório](https://github.com/marcelanegrao/SIOB-back-end) |
 
 > Este projeto está sendo desenvolvido pela equipe de alunas do **3º período do curso de Análise e Desenvolvimento de Sistemas (2025.2)** da **Faculdade Senac Pernambuco**.
 
@@ -26,16 +28,6 @@ Plataforma central para o comando e analistas, oferecendo **dashboards, relatór
 - 👤 **Gestão de Usuários:** CRUD, redefinição de senha e controle de perfis.  
 - 🛡️ **Auditoria e Logs:** rastreabilidade de ações críticas.  
 - 📈 **Dashboard Operacional:** KPIs e gráficos dinâmicos sobre as ocorrências.  
-
-### 📱 Aplicativo de Campo (Mobile)
-- 🔒 **Autenticação Segura:** login com credenciais institucionais.  
-- 📝 **Registro de Ocorrência:** formulários padronizados (Básico, Incêndio, APH, etc.).  
-- 📴 **Modo Offline:** registro de dados sem conexão, com sincronização posterior.  
-- 📍 **Captura de GPS:** localização automática da ocorrência.  
-- 📸 **Captura de Fotos:** anexos diretamente da câmera.  
-- ✍️ **Assinatura Digital:** coleta de assinaturas de testemunhas/vítimas.  
-- 🔄 **Edição Offline:** ajustes antes da sincronização.  
-
 ---
 
 ## 🛠️ Ferramentas e Tecnologias
@@ -53,7 +45,8 @@ Plataforma central para o comando e analistas, oferecendo **dashboards, relatór
 
 ## 🚀 Como Executar o Projeto
 
-Para executar o projeto do painel web em seu ambiente de desenvolvimento local, siga os passos abaixo.
+Para executar o projeto do painel web em seu ambiente de desenvolvimento local, siga os passos abaixo. Obs: Após executar o comando start, abra seu navegador e acesse http://localhost:3000 para ver a aplicação em execução.
+**Nota PWA:** Para testar a instalação e o modo offline, é necessário gerar a build de produção: npm run build seguido de npx serve -s build.
 
 1. **Clone o Repositório**
 ```bash
@@ -74,46 +67,18 @@ npm install
 ```bash
 npm start
 ```
-
-Após executar o comando start, abra seu navegador e acesse http://localhost:3000 para ver a aplicação em execução.
-**Nota PWA:** Para testar a instalação e o modo offline, é necessário gerar a build de produção: npm run build seguido de npx serve -s build.
-
-5. **Executando o App Mobile (React Native)** 📱
-```bash
-# Acesse a pasta do projeto mobile (a partir da raiz)
-cd mobile-app
-
-```
-```bash
-# Instale as dependências
-npm install
-
-````
-```bash
-# Inicie o projeto Expo
-npx expo start
-
-````
-
-Certifique-se de ter o aplicativo Expo Go instalado no seu celular ou um emulador configurado. Escaneie o QR Code exibido no terminal com o app Expo Go (Android/iOS).
-
-**Troubleshooting Mobile:** Caso encontre problemas com o cache, execute: 
-```bash
-npx expo start -c
-```
-
 ---
 
 ## 👩‍💻 Equipe
 
 | Membro             | Responsabilidade(s)                               | GitHub                                                     | LinkedIn                                                              |
 | :----------------- | :------------------------------------------------ | :--------------------------------------------------------- | :-------------------------------------------------------------------- |
-| **Vanessa Matias** | Desenvolvimento Front-End             | [Vanessa-Matias](https://github.com/Vanessa-Matias)        | [Perfil](https://www.linkedin.com/in/vanessamatiasdev/)               |
-| **Wedja Souza** | Gestão de Projetos, Documentação & UX/UI Designer | [WedjaSousa](https://github.com/WedjaSousa)                | [Perfil](https://www.linkedin.com/in/wedja-sousa-43639b19b/)           |
-| **Marcela Negrão** | UX/UI Designer & Banco de Dados                   | `(adicionar)`                                              | [Perfil](https://www.linkedin.com/in/marcela-negrão-0974582a5/)        |
+| **Vanessa Matias** | Desenvolvimento Front-End             | [Vanessa](https://github.com/Vanessa-Matias)        | [Perfil](https://www.linkedin.com/in/vanessamatiasdev/)               |
+| **Wedja Souza** | Gestão de Projetos, Documentação & UX/UI Designer | [WedjaS](https://github.com/WedjaSousa)                | [Perfil](https://www.linkedin.com/in/wedja-sousa-43639b19b/)           |
+| **Marcela Negrão** | UX/UI Designer & Banco de Dados                   | [Marcel](https://github.com/marcelanegrao)         | [Perfil](https://www.linkedin.com/in/marcela-negrão-0974582a5/)        |
 | **Wslany Amorim** | Banco de Dados & Back-End                                    | [wslanyl](https://github.com/wslanyl)                      | [Perfil](https://www.linkedin.com/in/wslanylima/)                 |
-| **Sophia Santos** | UX/UI Designer & Back-End                                   | [sophiasousaa](https://github.com/sophiasousaa)            | [Perfil](https://www.linkedin.com/in/santos-sophia/)                  |
-| **Agnes Ribeiro** | App- Mobile & Documentação                                      | [AgnesRibeiro](https://github.com/AgnesRibeiro) | [Perfil](https://www.linkedin.com/in/agnes-ribeiro-6446392ab/)        |
+| **Sophia Santos** | UX/UI Designer & Back-End                                   | [Sophia](https://github.com/sophiasousaa)            | [Perfil](https://www.linkedin.com/in/santos-sophia/)                  |
+| **Agnes Ribeiro** | App- Mobile & Documentação                                      | [Agnes](https://github.com/AgnesRibeiro) | [Perfil](https://www.linkedin.com/in/agnes-ribeiro-6446392ab/)        |
 
 ---
 
